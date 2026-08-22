@@ -1,0 +1,11 @@
+# 改行コードを LF に統一する。
+# 収集スクリプトは Windows(手元) と Linux(GitHub Actions) の両方から
+# 同じ JSON ファイルを書き換えるため、揃えないと無意味な差分が発生する。
+* text=auto eol=lf
+
+# バイナリ扱い
+*.gz binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary
