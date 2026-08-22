@@ -1,6 +1,9 @@
 # ドキュメント（ローカル管理のみ。リポジトリには含めない）
 docs/
 
+# VS Code のワークスペースファイル（ローカル環境固有）
+*.code-workspace
+
 # Node.js
 node_modules/
 npm-debug.log*
