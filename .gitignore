@@ -1,0 +1,24 @@
+# ドキュメント（ローカル管理のみ。リポジトリには含めない）
+docs/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Astro / ビルド成果物
+site/dist/
+site/.astro/
+site/node_modules/
+
+# 環境変数
+.env
+.env.local
+
+# エディタ / OS
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+*.swp
