@@ -163,3 +163,6 @@
 {"at":"2026-08-24T01:01:25+09:00","division":"top100","hourKey":"2026-08-24-0000","httpStatus":200,"result":"saved","entryCount":100}
 {"at":"2026-08-24T01:01:26+09:00","division":"rookie","hourKey":"2026-08-24-0000","httpStatus":200,"result":"saved","entryCount":100}
 {"at":"2026-08-24T01:01:27+09:00","division":"remix","hourKey":"2026-08-24-0000","httpStatus":200,"result":"saved","entryCount":100}
+{"at":"2026-08-24T02:02:27+09:00","division":"top100","hourKey":"2026-08-24-0100","httpStatus":200,"result":"saved","entryCount":100}
+{"at":"2026-08-24T02:02:28+09:00","division":"rookie","hourKey":"2026-08-24-0100","httpStatus":200,"result":"saved","entryCount":100}
+{"at":"2026-08-24T02:02:29+09:00","division":"remix","hourKey":"2026-08-24-0100","httpStatus":200,"result":"saved","entryCount":100}
