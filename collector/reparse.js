@@ -4,9 +4,9 @@
 //   node collector/reparse.js --dry-run
 //   node collector/reparse.js --event 2026-summer --parser sds-history-v2 --dry-run
 //
-// **--dry-run はパーサの回帰確認そのものである**（04-collector.md 10 節）。
+// **--dry-run はパーサの回帰確認そのものである。**
 // 差分 0 が「解析結果が変わっていない」ことの担保になる。テストコードを置かない
-// 代わりの手段なので、パーサに手を入れたら必ず通す（06-decisions.md D-24）。
+// 代わりの手段なので、パーサに手を入れたら必ず通す。
 //
 // HTTP は 1 回も出さない。git commit / push もしない。
 

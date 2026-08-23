@@ -45,10 +45,7 @@ export function epochToIso(epoch) {
   return `${date}T${time}+09:00`;
 }
 
-/**
- * 取得できる最新の時刻キー。
- * 公式は「現在時刻の 1 時間前」までを公開する（02-data-source.md 2 節）。
- */
+/** 取得できる最新の時刻キー。公式は「現在時刻の 1 時間前」までを公開する。 */
 export function latestFetchableHourKey(nowEpoch) {
   return epochToHourKey(nowEpoch - HOUR_MS);
 }

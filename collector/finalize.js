@@ -4,7 +4,7 @@
 //   node collector/finalize.js --event 2025-summer
 //
 // 最終ランキングがいつ公開され、いつアーカイブパスが作られるかを公式から
-// 機械的に判定する手段がないため、自動化しない（04-collector.md 4.2）。
+// 機械的に判定する手段がないため、自動化しない。
 //
 // git commit / push は行わない。手元でファイル出力までを行う。
 
@@ -22,7 +22,7 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 /**
  * 投稿期間に収まっているべきエントリの割合。
  * 全件一致は条件にできない。2026 冬のアーカイブページには投稿期間外の
- * registeredAt を持つエントリが 1 件含まれていた（02-data-source.md 5 節）。
+ * registeredAt を持つエントリが 1 件含まれていた。
  */
 const MIN_IN_PERIOD_RATIO = 0.9;
 
@@ -49,7 +49,7 @@ async function finalizeDivision(root, event, parser, division) {
   }
   if (response.status === 404) {
     // アーカイブページがまだ作られていない。毎時履歴の not-published と同じで、
-    // 予期された状態であり記録しない（06-decisions.md D-32）。
+    // 予期された状態であり記録しない。
     return { division, ok: false, notYet: true, message: 'アーカイブページがまだ作られていない' };
   }
   if (response.status !== 200) {
