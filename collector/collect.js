@@ -136,8 +136,6 @@ function planEvent(event, nowEpoch, maxRequests) {
   };
 }
 
-// ---------------------------------------------------------------- --dry-run
-
 /** 連続する時刻をまとめて表示する。欠けている箇所がそのまま見えるようにする。 */
 function compressHourKeys(hourKeys) {
   const groups = [];
@@ -154,6 +152,8 @@ function compressHourKeys(hourKeys) {
     group.count === 1 ? group.from : `${group.from} .. ${group.to}（${group.count}）`,
   );
 }
+
+// ---------------------------------------------------------------- --dry-run
 
 function printDryRun(event, plan, nowEpoch) {
   console.log(`\n${event.eventId}（${event.title}）`);
@@ -231,7 +231,7 @@ async function collectEvent(event, options, nowEpoch, plan) {
   const counters = new Map(
     event.divisions.map((division) => [
       division,
-      { saved: 0, unavailable: 0, notPublished: 0, error: 0 },
+      { saved: [], unavailable: 0, notPublished: 0, error: 0 },
     ]),
   );
   const warnings = [];
@@ -366,7 +366,7 @@ async function collectEvent(event, options, nowEpoch, plan) {
     );
     store.addCollected(state, hourKey, entryCount);
     store.mergeVideos(videos, parsed.videos, hourKey);
-    counter.saved += 1;
+    counter.saved.push(hourKey);
     console.log(`${label} saved（${entryCount} 件）`);
     logAttempt(event.eventId, {
       division,
@@ -417,26 +417,31 @@ async function collectEvent(event, options, nowEpoch, plan) {
 
 // ---------------------------------------------------------------- 報告
 
-function summarizeEvent(summary) {
+export function summarizeEvent(summary) {
   const saved = [];
+  const hours = new Set();
   let unavailable = 0;
   let notPublished = 0;
   let error = 0;
   for (const [division, counter] of summary.counters) {
-    if (counter.saved > 0) saved.push(`${division} +${counter.saved}`);
+    if (counter.saved.length > 0) saved.push(`${division} +${counter.saved.length}`);
+    for (const hourKey of counter.saved) hours.add(hourKey);
     unavailable += counter.unavailable;
     notPublished += counter.notPublished;
     error += counter.error;
   }
-  return { saved, unavailable, notPublished, error };
+  // 時刻キーはゼロ詰めなので辞書順がそのまま時刻順になる。
+  return { saved, hours: [...hours].sort(), unavailable, notPublished, error };
 }
 
-function buildCommitMessage(summaries) {
+export function buildCommitMessage(summaries) {
   const segments = [];
   for (const summary of summaries) {
-    const { saved, unavailable } = summarizeEvent(summary);
+    const { hours, unavailable } = summarizeEvent(summary);
     const chunks = [];
-    if (saved.length > 0) chunks.push(`${saved.join(', ')} hours`);
+    // どの部門が何件かより、どの時刻が増えたかが後から見て役に立つ。
+    // 部門ごとの内訳は差分そのものに出るので、ここでは全部門をまとめる。
+    if (hours.length > 0) chunks.push(compressHourKeys(hours).join(', '));
     if (unavailable > 0) chunks.push(`${unavailable} unavailable`);
     if (chunks.length > 0) {
       segments.push({ eventId: summary.event.eventId, text: chunks.join(', ') });
@@ -528,4 +533,6 @@ async function main() {
   if (summaries.some((summary) => summary.parseFailed)) process.exitCode = 1;
 }
 
-await main();
+// 直接実行されたときだけ走らせる。import しても main() が動かないようにして、
+// コミットメッセージの組み立てを外から検査できるようにする。
+if (import.meta.main) await main();
