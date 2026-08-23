@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "eventId": "2026-summer",
+  "title": "ボカコレ2026夏",
+  "parser": "sds-history-v1",
+  "finalParser": "archive-page-v1",
+  "eventTag": "ボカコレ2026夏",
+  "collect": {
+    "hourFrom": "2026-08-21-1800",
+    "hourUntil": "2026-08-24-2300",
+    "until": "2026-09-30T00:00:00+09:00",
+    "maxRequestsPerRun": 120
+  },
+  "divisions": ["top100", "rookie", "remix"],
+  "final": {
+    "archiveUrlTemplate": "https://vocaloid-collection.jp/2026-summer/ranking/{division}/",
+    "submissionFrom": "2026-08-21T19:00:00+09:00",
+    "submissionUntil": "2026-08-24T17:00:00+09:00"
+  }
+}

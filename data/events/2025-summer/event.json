@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "eventId": "2025-summer",
+  "title": "ボカコレ2025夏",
+  "parser": "sds-history-v1",
+  "finalParser": "archive-page-v1",
+  "eventTag": "ボカコレ2025夏",
+  "collect": {
+    "hourFrom": "2025-08-22-1700",
+    "hourUntil": "2025-08-25-2300",
+    "until": "2025-12-31T00:00:00+09:00",
+    "maxRequestsPerRun": 120
+  },
+  "divisions": ["top100", "rookie", "remix"],
+  "final": {
+    "archiveUrlTemplate": "https://vocaloid-collection.jp/2025-summer/ranking/{division}/",
+    "submissionFrom": "2025-08-22T19:00:00+09:00",
+    "submissionUntil": "2025-08-25T17:00:00+09:00"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "eventId": "2026-winter",
+  "title": "ボカコレ2026冬",
+  "parser": "sds-history-v1",
+  "finalParser": "archive-page-v1",
+  "eventTag": "ボカコレ2026冬",
+  "collect": {
+    "hourFrom": "2026-02-20-1800",
+    "hourUntil": "2026-02-23-2300",
+    "until": "2026-06-30T00:00:00+09:00",
+    "maxRequestsPerRun": 120
+  },
+  "divisions": ["top100", "rookie", "remix"],
+  "final": {
+    "archiveUrlTemplate": "https://vocaloid-collection.jp/2026-winter/ranking/{division}/",
+    "submissionFrom": "2026-02-20T19:00:00+09:00",
+    "submissionUntil": "2026-02-23T17:00:00+09:00"
+  }
+}

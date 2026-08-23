@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "events": [
+    { "eventId": "2026-summer", "title": "ボカコレ2026夏" },
+    { "eventId": "2026-winter", "title": "ボカコレ2026冬" },
+    { "eventId": "2025-summer", "title": "ボカコレ2025夏" }
+  ]
+}
