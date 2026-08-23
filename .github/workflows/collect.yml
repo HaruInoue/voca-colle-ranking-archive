@@ -1,0 +1,63 @@
+name: collect
+
+# 毎時ランキングの収集。開催中の開催回（collect.until が未来）だけを対象にする。
+# 対象が無ければ HTTP リクエストを 1 回も出さずに終わる。
+
+on:
+  schedule:
+    # 30 分ごと。毎時 0 分は GitHub Actions のジョブが集中して遅延するため避ける。
+    - cron: '25,55 * * * *'
+  workflow_dispatch:
+
+# リポジトリ既定の GITHUB_TOKEN は read のため、明示しないと push が 403 になる。
+permissions:
+  contents: write
+
+# 実行を直列化する。git push の競合を避けるため実行中のものは打ち切らない。
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # .nvmrc と同じ版を使う。依存が 0 なのでキャッシュは指定しない。
+          node-version-file: .nvmrc
+
+      - name: 収集
+        run: node collector/collect.js --commit-message-out "$RUNNER_TEMP/msg.txt"
+
+      # 解析失敗（終了コード 1）でも、保存できたデータは残してジョブは失敗させる。
+      # 途中でクラッシュした場合はコミットしない（index.json が更新されておらず
+      # スナップショットと食い違うため）。捨てた分は次の実行が取り直す。
+      - name: コミット・プッシュ
+        if: ${{ !cancelled() }}
+        run: |
+          set -euo pipefail
+
+          if [ ! -f "$RUNNER_TEMP/msg.txt" ]; then
+            echo "コミットメッセージが無い（収集が最後まで走っていない）ためコミットしない"
+            exit 0
+          fi
+
+          # コミットするかは git に判定させる。スクリプトの自己申告より確実。
+          if [ -z "$(git status --porcelain data/)" ]; then
+            echo "data/ に変更が無いためコミットしない"
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          git add data/
+          git commit -F "$RUNNER_TEMP/msg.txt"
+          # push が競合したらジョブを失敗させる。次の実行がチェックアウトし直して
+          # 取り直すので欠測にはならない。
+          git push origin "HEAD:$GITHUB_REF_NAME"

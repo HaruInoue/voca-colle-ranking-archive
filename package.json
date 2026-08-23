@@ -1,0 +1,8 @@
+{
+  "name": "voca-colle-ranking-archive",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.19.0"
+  }
+}
