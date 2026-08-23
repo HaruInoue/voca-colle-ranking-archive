@@ -95,11 +95,16 @@ export function writeJsonIfChanged(filePath, value, compactKeys) {
   return writeTextIfChanged(filePath, stringifyJson(value, compactKeys));
 }
 
-/** 生データは不変なので、既に存在するファイルには書かない。 */
-export function writeRawIfAbsent(filePath, text) {
-  if (fs.existsSync(filePath)) return false;
+/** 生データを gzip で書く。同じ内容なら同じバイト列になる（mtime を持たない）。 */
+export function writeRaw(filePath, text) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, zlib.gzipSync(Buffer.from(text, 'utf8'), { level: 9 }));
+}
+
+/** 毎時履歴の生データは時刻ごとに不変なので、既に存在するファイルには書かない。 */
+export function writeRawIfAbsent(filePath, text) {
+  if (fs.existsSync(filePath)) return false;
+  writeRaw(filePath, text);
   return true;
 }
 
@@ -120,13 +125,18 @@ export const snapshotPath = (root, eventId, division, hourKey) =>
 export const rawSnapshotPath = (root, eventId, division, hourKey) =>
   path.join(eventDir(root, eventId), 'raw', 'hourly', division, `${hourKey}.json.gz`);
 
+export const finalPath = (root, eventId, division) =>
+  path.join(eventDir(root, eventId), 'final', `${division}.json`);
+export const rawFinalPath = (root, eventId, division) =>
+  path.join(eventDir(root, eventId), 'raw', 'final', `${division}.html.gz`);
+
 /**
  * 解析に失敗した生データ・別の開催回だった生データの退避先。
  * スナップショットと 1 対 1 にならないため raw/hourly とは分ける
  * （reparse.js が raw/hourly だけを辿れるようにするため）。
  */
-export const rawAnomalyPath = (root, eventId, kind, division, hourKey) =>
-  path.join(eventDir(root, eventId), 'raw', kind, division, `${hourKey}.json.gz`);
+export const rawAnomalyPath = (root, eventId, kind, division, fileName) =>
+  path.join(eventDir(root, eventId), 'raw', kind, division, fileName);
 
 // ---------------------------------------------------------------- event.json
 
@@ -318,6 +328,39 @@ export function writeSnapshot(root, snapshot) {
   return writeJsonIfChanged(filePath, snapshot, ['columns', 'entries']);
 }
 
+// ---------------------------------------------------------------- 最終ランキング
+
+/**
+ * 毎時スナップショットと同じ columns / entries を持つ。閲覧側が同じ描画処理を使える。
+ * 時刻に紐づかない全期間集計なので hourKey / aggregatedAt / ranking は持たない。
+ */
+export function buildFinalRanking({ eventId, division, capturedAt, url, parser, columns, entries }) {
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    eventId,
+    division,
+    isFinal: true,
+    capturedAt,
+    source: { url, parser },
+    columns,
+    entries,
+  };
+}
+
+const FINAL_COMPACT_KEYS = ['columns', 'entries'];
+
+export function writeFinalRanking(root, final) {
+  const filePath = finalPath(root, final.eventId, final.division);
+  const prev = readJsonFile(filePath);
+  // 取得し直しただけで capturedAt の差分を出さない。順位が同じなら据え置く。
+  const unchanged =
+    prev !== null &&
+    stringifyJson({ ...final, capturedAt: prev.capturedAt }, FINAL_COMPACT_KEYS) ===
+      stringifyJson(prev, FINAL_COMPACT_KEYS);
+  if (unchanged) return false;
+  return writeJsonIfChanged(filePath, final, FINAL_COMPACT_KEYS);
+}
+
 // ---------------------------------------------------------------- videos.json
 
 const VIDEO_KEYS = [
@@ -340,6 +383,10 @@ export function readVideos(root, eventId) {
  * 取り込むスナップショットの hourKey が既存の sourceHour 以上なら上書きし、
  * 未満なら無視する。こうしておくと、どの順で何回流しても同じ結果になり、
  * raw/ からの再解析と結果が一致する。
+ *
+ * 最終ランキングからの取り込みでは hourKey に `'final'` を渡す。
+ * 辞書順でどの時刻キーよりも後になるため、開催後に取得した最終ランキングの値が
+ * 常に勝つ。これも順序に依存しない。
  */
 export function mergeVideos(state, incoming, hourKey) {
   for (const [watchId, video] of Object.entries(incoming)) {

@@ -3,19 +3,28 @@
 // パーサは取得元の構造が変わったときにだけ版を増やす。
 // event.json の parser で開催回ごとに固定するため、新版を追加しても旧版は消さない。
 
+import * as archivePageV1 from './archive-page-v1.js';
 import * as sdsHistoryV1 from './sds-history-v1.js';
 
+/** 毎時履歴用（event.json の parser） */
 const HOURLY_PARSERS = {
   'sds-history-v1': sdsHistoryV1,
 };
 
-export function resolveHourlyParser(name) {
-  const parser = HOURLY_PARSERS[name];
+/** 最終ランキング用（event.json の finalParser） */
+const FINAL_PARSERS = {
+  'archive-page-v1': archivePageV1,
+};
+
+function resolve(table, kind, name) {
+  const parser = table[name];
   if (!parser) {
-    const known = Object.keys(HOURLY_PARSERS).join(', ');
-    throw new Error(`毎時履歴のパーサ "${name}" が無い。実装済み: ${known}`);
+    throw new Error(`${kind}のパーサ "${name}" が無い。実装済み: ${Object.keys(table).join(', ')}`);
   }
   return parser;
 }
+
+export const resolveHourlyParser = (name) => resolve(HOURLY_PARSERS, '毎時履歴', name);
+export const resolveFinalParser = (name) => resolve(FINAL_PARSERS, '最終ランキング', name);
 
 export { ParseError } from './parse-error.js';

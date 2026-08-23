@@ -288,7 +288,7 @@ async function collectEvent(event, options, nowEpoch, plan) {
     } catch (cause) {
       if (!(cause instanceof ParseError)) throw cause;
       store.writeRawIfAbsent(
-        store.rawAnomalyPath(ROOT, event.eventId, 'parse-failed', division, hourKey),
+        store.rawAnomalyPath(ROOT, event.eventId, 'parse-failed', division, `${hourKey}.json.gz`),
         response.text,
       );
       parseFailed = true;
@@ -316,7 +316,7 @@ async function collectEvent(event, options, nowEpoch, plan) {
     // 別の開催回のデータが混入することを防ぐ。
     if (!parsed.ranking.tag.includes(event.eventTag)) {
       store.writeRawIfAbsent(
-        store.rawAnomalyPath(ROOT, event.eventId, 'tag-mismatch', division, hourKey),
+        store.rawAnomalyPath(ROOT, event.eventId, 'tag-mismatch', division, `${hourKey}.json.gz`),
         response.text,
       );
       warnings.push(
