@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "eventId": "2026-summer",
   "division": "top100",
-  "updatedAt": "2026-08-23T17:02:35+09:00",
+  "updatedAt": "2026-08-23T18:04:02+09:00",
   "aggregationPeriod": {
     "startDateTime": "2026-08-22T00:00:00+09:00",
     "endDateTime": "2026-08-24T17:00:00+09:00",
@@ -48,7 +48,8 @@
     { "hourKey": "2026-08-23-1300", "entryCount": 100 },
     { "hourKey": "2026-08-23-1400", "entryCount": 100 },
     { "hourKey": "2026-08-23-1500", "entryCount": 100 },
-    { "hourKey": "2026-08-23-1600", "entryCount": 100 }
+    { "hourKey": "2026-08-23-1600", "entryCount": 100 },
+    { "hourKey": "2026-08-23-1700", "entryCount": 100 }
   ],
   "unavailable": [
     { "hourKey": "2026-08-21-1800", "reason": "out-of-period" },
