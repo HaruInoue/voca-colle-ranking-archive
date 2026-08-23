@@ -83,22 +83,33 @@ export function readJsonFile(filePath) {
   }
 }
 
-/** 内容が変わらない場合は書かない（更新時刻だけの差分を作らないため）。 */
-export function writeTextIfChanged(filePath, text) {
+/**
+ * 内容が変わらない場合は書かない（更新時刻だけの差分を作らないため）。
+ * dryRun のときは書かずに「書き換わるか」だけを返す（reparse.js の --dry-run 用）。
+ * 判定は書き出す文字列そのものの比較なので、実際に書いた場合と食い違わない。
+ */
+export function writeTextIfChanged(filePath, text, dryRun = false) {
   if (fs.existsSync(filePath) && fs.readFileSync(filePath, 'utf8') === text) return false;
+  if (dryRun) return true;
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, text, 'utf8');
   return true;
 }
 
-export function writeJsonIfChanged(filePath, value, compactKeys) {
-  return writeTextIfChanged(filePath, stringifyJson(value, compactKeys));
+export function writeJsonIfChanged(filePath, value, compactKeys, dryRun = false) {
+  return writeTextIfChanged(filePath, stringifyJson(value, compactKeys), dryRun);
 }
 
 /** 生データを gzip で書く。同じ内容なら同じバイト列になる（mtime を持たない）。 */
 export function writeRaw(filePath, text) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, zlib.gzipSync(Buffer.from(text, 'utf8'), { level: 9 }));
+}
+
+/** 生データを読む。無ければ null（最終ランキングは未取得のことがある）。 */
+export function readRaw(filePath) {
+  if (!fs.existsSync(filePath)) return null;
+  return zlib.gunzipSync(fs.readFileSync(filePath)).toString('utf8');
 }
 
 /** 毎時履歴の生データは時刻ごとに不変なので、既に存在するファイルには書かない。 */
@@ -122,8 +133,24 @@ export const indexJsonPath = (root, eventId, division) =>
   path.join(eventDir(root, eventId), 'hourly', division, 'index.json');
 export const snapshotPath = (root, eventId, division, hourKey) =>
   path.join(eventDir(root, eventId), 'hourly', division, `${hourKey}.json`);
+export const rawHourlyDir = (root, eventId, division) =>
+  path.join(eventDir(root, eventId), 'raw', 'hourly', division);
 export const rawSnapshotPath = (root, eventId, division, hourKey) =>
-  path.join(eventDir(root, eventId), 'raw', 'hourly', division, `${hourKey}.json.gz`);
+  path.join(rawHourlyDir(root, eventId, division), `${hourKey}.json.gz`);
+
+/**
+ * raw/hourly に残っている時刻キー。
+ * 保存に至った時刻だけが置かれるため、スナップショットと 1 対 1 に対応する。
+ */
+export function listRawHourKeys(root, eventId, division) {
+  const dir = rawHourlyDir(root, eventId, division);
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((name) => name.endsWith('.json.gz'))
+    .map((name) => name.slice(0, -'.json.gz'.length))
+    .sort(compareHourKey);
+}
 
 export const finalPath = (root, eventId, division) =>
   path.join(eventDir(root, eventId), 'final', `${division}.json`);
@@ -280,7 +307,7 @@ export function recordAggregationPeriod(state, ranking) {
   );
 }
 
-export function writeIndexState(root, state, updatedAt) {
+export function writeIndexState(root, state, updatedAt, dryRun = false) {
   const value = {
     schemaVersion: SCHEMA_VERSION,
     eventId: state.eventId,
@@ -290,10 +317,12 @@ export function writeIndexState(root, state, updatedAt) {
     collected: state.collected,
     unavailable: state.unavailable,
   };
-  return writeJsonIfChanged(indexJsonPath(root, state.eventId, state.division), value, [
-    'collected',
-    'unavailable',
-  ]);
+  return writeJsonIfChanged(
+    indexJsonPath(root, state.eventId, state.division),
+    value,
+    ['collected', 'unavailable'],
+    dryRun,
+  );
 }
 
 // ---------------------------------------------------------------- スナップショット
@@ -323,9 +352,9 @@ export function buildSnapshot({
   };
 }
 
-export function writeSnapshot(root, snapshot) {
+export function writeSnapshot(root, snapshot, dryRun = false) {
   const filePath = snapshotPath(root, snapshot.eventId, snapshot.division, snapshot.hourKey);
-  return writeJsonIfChanged(filePath, snapshot, ['columns', 'entries']);
+  return writeJsonIfChanged(filePath, snapshot, ['columns', 'entries'], dryRun);
 }
 
 // ---------------------------------------------------------------- 最終ランキング
@@ -349,7 +378,7 @@ export function buildFinalRanking({ eventId, division, capturedAt, url, parser, 
 
 const FINAL_COMPACT_KEYS = ['columns', 'entries'];
 
-export function writeFinalRanking(root, final) {
+export function writeFinalRanking(root, final, dryRun = false) {
   const filePath = finalPath(root, final.eventId, final.division);
   const prev = readJsonFile(filePath);
   // 取得し直しただけで capturedAt の差分を出さない。順位が同じなら据え置く。
@@ -358,7 +387,7 @@ export function writeFinalRanking(root, final) {
     stringifyJson({ ...final, capturedAt: prev.capturedAt }, FINAL_COMPACT_KEYS) ===
       stringifyJson(prev, FINAL_COMPACT_KEYS);
   if (unchanged) return false;
-  return writeJsonIfChanged(filePath, final, FINAL_COMPACT_KEYS);
+  return writeJsonIfChanged(filePath, final, FINAL_COMPACT_KEYS, dryRun);
 }
 
 // ---------------------------------------------------------------- videos.json
@@ -403,13 +432,13 @@ export function mergeVideos(state, incoming, hourKey) {
   }
 }
 
-export function writeVideos(root, eventId, state) {
+export function writeVideos(root, eventId, state, dryRun = false) {
   const sorted = {};
   for (const watchId of Object.keys(state.videos).sort(compareString)) {
     sorted[watchId] = state.videos[watchId];
   }
   const value = { schemaVersion: SCHEMA_VERSION, eventId, videos: sorted };
-  return writeJsonIfChanged(videosJsonPath(root, eventId), value, ['owner']);
+  return writeJsonIfChanged(videosJsonPath(root, eventId), value, ['owner'], dryRun);
 }
 
 // ---------------------------------------------------------------- ログ
