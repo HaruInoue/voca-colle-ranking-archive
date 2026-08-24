@@ -97,7 +97,7 @@ function selectTargets(events, options, nowEpoch) {
 /**
  * 部門ごとの候補時刻を求める。
  * 候補 = 収集範囲の全時刻 − collected − unavailable。
- * 収集範囲 = collect.hourFrom 〜 min(collect.hourUntil, 現在時刻 - 1 時間)。
+ * 収集範囲 = collect.hourFrom 〜 min(collect.hourUntil, 取得できる最新時刻)。
  */
 function planEvent(event, nowEpoch, maxRequests) {
   const limit = maxRequests ?? event.collect.maxRequestsPerRun;
@@ -166,7 +166,7 @@ function printDryRun(event, plan, nowEpoch) {
   );
   if (plan.clamped) {
     console.log(
-      `    ※ collect.hourUntil（${event.collect.hourUntil}）より「現在時刻 - 1 時間」が古いため打ち切った`,
+      `    ※ collect.hourUntil（${event.collect.hourUntil}）より「取得できる最新時刻」が古いため打ち切った`,
     );
   }
   for (const entry of plan.divisions) {
