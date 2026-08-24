@@ -13,7 +13,7 @@
   },
   "divisions": ["top100", "rookie", "remix"],
   "final": {
-    "archiveUrlTemplate": "https://vocaloid-collection.jp/2026-summer/ranking/{division}/",
+    "archiveUrlTemplate": "https://vocaloid-collection.jp/ranking/{division}/",
     "submissionFrom": "2026-08-21T19:00:00+09:00",
     "submissionUntil": "2026-08-24T17:00:00+09:00"
   }
