@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="ボカコレランキングアーカイブ">
+  <rect width="32" height="32" rx="6" fill="#0E7A62" />
+  <!-- 時刻ごとの順位を並べた棒。左から右へ時間が進むことを表す -->
+  <rect x="6" y="18" width="4" height="8" fill="#ffffff" />
+  <rect x="12" y="13" width="4" height="13" fill="#ffffff" />
+  <rect x="18" y="8" width="4" height="18" fill="#ffffff" />
+  <rect x="24" y="11" width="4" height="15" fill="#D4F82A" />
+</svg>

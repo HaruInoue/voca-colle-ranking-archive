@@ -1,0 +1,48 @@
+---
+import { siteHref } from '@/lib/urls.js';
+
+const config = {
+  indexUrl: siteHref('/search-index.json'),
+  videoUrlTemplate: siteHref('/{eventId}/watch/{watchId}/'),
+};
+---
+
+<search class="site-search" data-site-search>
+  <script type="application/json" id="search-config" set:html={JSON.stringify(config)} is:inline />
+
+  <div class="search-field">
+    <label class="visually-hidden" for="search-input">動画を検索</label>
+    <input
+      id="search-input"
+      class="search-input"
+      type="search"
+      role="combobox"
+      autocomplete="off"
+      aria-expanded="false"
+      aria-controls="search-listbox"
+      aria-autocomplete="list"
+      placeholder="タイトル / 投稿者名 / 動画ID"
+    />
+
+    {/* 未入力のときだけ出す。入力後は同じ位置に type="search" の消去ボタンが現れる */}
+    <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M15.5 15.5 21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </svg>
+
+    <div class="search-panel" hidden>
+      <div class="search-listbox" id="search-listbox" role="listbox" aria-label="検索候補"></div>
+      <p class="search-note" hidden></p>
+    </div>
+  </div>
+
+  {/* 候補パネルは閉じている間 hidden で読み上げ対象から外れるため、live region は外に置く */}
+  <p class="visually-hidden" role="status" data-search-status></p>
+</search>
+
+
+<script>
+  import { setupSiteSearch } from '@/scripts/site-search.js';
+
+  setupSiteSearch();
+</script>

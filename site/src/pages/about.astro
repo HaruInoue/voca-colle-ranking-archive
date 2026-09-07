@@ -1,0 +1,82 @@
+---
+import Base from '@/layouts/Base.astro';
+const repositoryUrl = 'https://github.com/HaruInoue/voca-colle-ranking-archive';
+---
+
+<Base title="このサイトについて" crumbs={[{ label: 'このサイトについて' }]}>
+  <div class="panel prose">
+    <h1>このサイトについて</h1>
+
+    <p>
+      ボカコレの公式サイトは、過去の毎時ランキングを確認することができません。<br>
+      このサイトは、各時刻のランキングを保存して後からでも「どの曲がいつ何位だったか」を見られるようにしたものです。
+    </p>
+
+    <h2>非公式のアーカイブです</h2>
+    <p>
+      井上春が運営する非公式のアーカイブサイトです。<br>
+      ボカコレ運営、株式会社ドワンゴ、その他の関係団体とは一切関係がありません。<br>
+      公式の発表や最新の情報は<a href="https://vocaloid-collection.jp/">ボカコレ公式サイト</a>で確認してください。
+    </p>
+
+    <h2>出典</h2>
+    <p>
+      順位と各種数値は<a href="https://vocaloid-collection.jp/">ボカコレ公式サイト</a>から取得したものを表示しています。<br>
+      サムネイル画像のみ、取得した過去のデータではなくニコニコ動画のものを表示しています。
+    </p>
+
+    <h2>数値の見方</h2>
+    <ul>
+      <li>順位と再生・コメント・マイリスト・いいねの数は、<strong>その時刻に記録された値</strong>です。</li>
+      <li>
+        毎時ランキングは100位までです。<strong>100位より下だった曲の順位は分かりません。</strong><br>
+        順位変動の欄は、前の時刻に100位以内にいなかった曲を<code>Rank in</code>、比べられる前の時刻がない場合を<code>-</code>と表示しています。
+      </li>
+      <li>
+        <strong>最終ランキングは開催期間全体の集計</strong>で、毎時ランキングの最後の時刻のランキングとは別のものです。<br>
+        動画ページに表示されている推移のグラフには含めていません。
+      </li>
+    </ul>
+
+    <h2>削除依頼・お問い合わせ</h2>
+    <p>
+      掲載内容の削除・修正のご依頼、その他のお問い合わせは<a href="mailto:haruinoue.net@gmail.com">haruinoue.net@gmail.com</a>までご連絡ください。<br>
+      権利者からのご依頼には速やかに対応します。
+    </p>
+    <p>
+      このサイトのデータとソースコードは<a href={repositoryUrl}>GitHub</a>で公開しています。<br>
+      表示の不具合やデータの誤りは<a href={`${repositoryUrl}/issues`}>GitHub の Issue</a>でも受け付けています。
+    </p>
+  </div>
+</Base>
+
+<style>
+  .prose h1 {
+    font-size: 1.625rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-4);
+  }
+
+  .prose h2 {
+    font-size: 1.0625rem;
+    margin: var(--space-6) 0 var(--space-2);
+  }
+
+  .prose ul {
+    padding-left: 1.25rem;
+    margin: 0 0 var(--space-4);
+  }
+
+  .prose li {
+    margin-bottom: var(--space-2);
+  }
+
+  .prose code {
+    font-size: 0.8125rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-1);
+    padding: 0 var(--space-1);
+  }
+</style>

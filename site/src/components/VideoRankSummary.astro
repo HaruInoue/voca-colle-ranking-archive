@@ -1,0 +1,147 @@
+---
+import { divisionLabel } from '@/lib/ranking.js';
+import { divisionHref } from '@/lib/urls.js';
+
+interface Props {
+  eventId: string;
+  seriesList: any[];
+}
+
+const { eventId, seriesList } = Astro.props as Props;
+---
+
+  <ul class="best-ranks">
+    {
+      seriesList.map((series) => (
+        <li class="best-rank">
+          <p class="best-rank-division">
+            <span class="division-badge" data-division={series.division} aria-hidden="true" />
+            {divisionLabel(series.division)}部門
+          </p>
+
+          <dl class="best-rank-values">
+            <div class="best-rank-row best-rank-row-hourly">
+              <dt class="best-rank-label">毎時ランキング最高順位</dt>
+              <dd>
+                {series.bestRank !== null ? (
+                  <a
+                    class="numeric best-rank-num"
+                    href={divisionHref(eventId, series.division, series.bestRankHourKey)}
+                  >
+                    {series.bestRank}位
+                  </a>
+                ) : (
+                  <span class="best-rank-num best-rank-empty">ランクインなし</span>
+                )}
+              </dd>
+            </div>
+            <div class="best-rank-row">
+              <dt class="best-rank-label">最終ランキング</dt>
+              <dd>
+                {series.finalEntry ? (
+                  <a class="numeric best-rank-num" href={divisionHref(eventId, series.division)}>
+                    {series.finalEntry.rank}位
+                  </a>
+                ) : (
+                  <span class="best-rank-num best-rank-empty">
+                    {series.finalPublished ? '圏外' : '集計前'}
+                  </span>
+                )}
+              </dd>
+            </div>
+            <div class="best-rank-row">
+              <dt class="best-rank-label">ランクイン</dt>
+              <dd class="numeric best-rank-num">
+                <span aria-hidden="true">
+                  {series.rankedHourCount} / {series.totalHourCount} 回
+                </span>
+                <span class="visually-hidden">
+                  集計 {series.totalHourCount} 回のうち {series.rankedHourCount} 回
+                </span>
+              </dd>
+            </div>
+          </dl>
+        </li>
+      ))
+    }
+  </ul>
+
+<style>
+  .best-ranks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    /* min() は、パネルが 20rem より狭いときにトラックがはみ出すのを防ぐため */
+    grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+    gap: var(--space-3);
+  }
+
+  .best-rank {
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-2);
+    background: var(--surface-raised);
+    padding: var(--space-3);
+  }
+
+  .best-rank-division {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .best-rank :global(.division-badge) {
+    width: 1.1em;
+    height: 1.1em;
+  }
+
+  .best-rank-label {
+    color: var(--muted-text);
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+
+  .best-rank-values {
+    margin: var(--space-3) 0 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .best-rank-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  .best-rank-row-hourly {
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .best-rank-values dd {
+    margin: 0;
+  }
+
+  .best-rank-num {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .best-rank-empty {
+    color: var(--muted-text);
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+
+  .best-rank a {
+    display: inline-block;
+    min-height: 24px;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+</style>

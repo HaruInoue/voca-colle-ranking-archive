@@ -1,0 +1,154 @@
+---
+import Base from '@/layouts/Base.astro';
+import NicovideoPlayer from '@/components/NicovideoPlayer.astro';
+import ExternalVideoLinks from '@/components/ExternalVideoLinks.astro';
+import VideoRankSummary from '@/components/VideoRankSummary.astro';
+import VideoTrends from '@/components/VideoTrends.astro';
+import { publishableEvents, loadEvent, loadVideos } from '@/lib/data.js';
+import { rankedWatchIds, videoDivisionSeries } from '@/lib/video-series.js';
+import { canonicalDivision, divisionLabel } from '@/lib/ranking.js';
+import { divisionHref, eventHref, ownerUrl } from '@/lib/urls.js';
+import { formatIsoDateTime, formatDuration } from '@/lib/format.js';
+
+export function getStaticPaths() {
+  return publishableEvents().flatMap((event) =>
+    rankedWatchIds(event.eventId).map((watchId) => ({
+      params: { eventId: event.eventId, watchId },
+    }))
+  );
+}
+
+const { eventId, watchId } = Astro.params;
+const event = loadEvent(eventId);
+const video = loadVideos(eventId)[watchId];
+
+if (!video) {
+  throw new Error(`曲情報が見つかりません: ${eventId} の ${watchId}`);
+}
+
+const seriesList = videoDivisionSeries(eventId, watchId);
+
+const mainDivision = canonicalDivision(seriesList);
+const crumbs = [
+  { label: event.title, href: eventHref(eventId) },
+  ...(mainDivision
+    ? [
+        {
+          label: `${divisionLabel(mainDivision)}部門`,
+          href: divisionHref(eventId, mainDivision),
+        },
+      ]
+    : []),
+  { label: video.title },
+];
+---
+
+<Base
+  title={`${video.title} | ${event.title}`}
+  eventId={eventId}
+  crumbs={crumbs}
+  description={`${event.title}における「${video.title}」の順位と指標の推移。`}
+>
+  <article>
+    <div class="panel video-main">
+      <header class="video-header">
+        <p class="display-ja">{event.title}</p>
+        <h1>{video.title}</h1>
+      </header>
+
+      <div class="video-body">
+        <div class="video-media">
+          <NicovideoPlayer watchId={watchId} title={video.title} />
+
+          <dl class="video-meta">
+            <div>
+              <dt>投稿者</dt>
+              <dd>
+                {
+                  video.owner?.id ? (
+                    <a href={ownerUrl(video.owner.id)} target="_blank" rel="noopener noreferrer">
+                      {video.owner.name}
+                    </a>
+                  ) : (
+                    video.owner?.name
+                  )
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>投稿日時</dt>
+              <dd class="numeric">{formatIsoDateTime(video.registeredAt)}</dd>
+            </div>
+            <div>
+              <dt>再生時間</dt>
+              <dd class="numeric">{formatDuration(video.duration)}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <VideoRankSummary eventId={eventId} seriesList={seriesList} />
+      </div>
+    </div>
+
+    <VideoTrends seriesList={seriesList} eventFinal={event.final} />
+
+    <ExternalVideoLinks watchId={watchId} />
+  </article>
+</Base>
+
+<style>
+  .video-header h1 {
+    margin-top: var(--space-1);
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  .video-body {
+    margin-top: var(--space-4);
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .video-meta {
+    margin: var(--space-3) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    /* 投稿者はリンクに縦の余白があり、既定の stretch では文字が下にずれる */
+    align-items: baseline;
+    gap: var(--space-2) var(--space-5);
+    font-size: 0.8125rem;
+  }
+
+  .video-meta > div {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  /* プレイヤー 44rem と順位まとめ 18rem が両方収まる幅から2カラムにする */
+  @media (min-width: 70rem) {
+    .video-body {
+      grid-template-columns: minmax(0, 44rem) minmax(18rem, 1fr);
+      gap: var(--space-5);
+      align-items: start;
+    }
+  }
+
+  .video-meta dt {
+    color: var(--muted-text);
+    white-space: nowrap;
+  }
+
+  .video-meta dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .video-meta a {
+    display: inline-block;
+    padding: var(--space-1) 0;
+    min-height: 24px;
+  }
+</style>

@@ -1,0 +1,69 @@
+name: deploy
+
+# data/ または site/ の変更を GitHub Pages へ反映する。
+# collect ワークフローが data/ を更新した push でも自動的に走る。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'site/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    # 実行中のビルドより新しい push があれば、古い方を打ち切って最新を優先する。
+    # 公開そのものは打ち切らない。deploy-pages を途中で止めると Pages の状態が中途半端に残る。
+    concurrency:
+      group: pages-build
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          # .nvmrc と同じ版を使う。
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: 依存関係のインストール
+        working-directory: site
+        run: npm ci
+
+      - name: ビルド
+        working-directory: site
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: false
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

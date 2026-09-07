@@ -1,0 +1,404 @@
+---
+import { divisionLabel, METRIC_KEYS, METRIC_LABELS } from '@/lib/ranking.js';
+import {
+  parseHourKey,
+  formatNumber,
+  formatSignedNumber,
+  hourKeyToPlotSeconds,
+  isoToPlotSeconds,
+} from '@/lib/format.js';
+
+interface Props {
+  seriesList: any[];
+  eventFinal?: { submissionFrom?: string; submissionUntil?: string };
+}
+
+const { seriesList, eventFinal } = Astro.props as Props;
+
+const chartData = seriesList.map((series) => ({
+  division: series.division,
+  label: divisionLabel(series.division),
+  x: series.points.map((point) => hourKeyToPlotSeconds(point.hourKey)),
+  rank: series.points.map((point) => point.rank),
+  metrics: Object.fromEntries(
+    METRIC_KEYS.map((key) => [key, series.points.map((point) => point[key])])
+  ),
+  diffs: Object.fromEntries(
+    METRIC_KEYS.map((key) => [key, series.diffs.map((diff: any) => diff[key])])
+  ),
+}));
+
+const tally = {
+  from: isoToPlotSeconds(eventFinal?.submissionFrom),
+  until: isoToPlotSeconds(eventFinal?.submissionUntil),
+};
+const hasOutsideTally = chartData.some(
+  (series) =>
+    (tally.until !== null && series.x.at(-1) > tally.until) ||
+    (tally.from !== null && series.x[0] < tally.from)
+);
+
+const zoomWindows = [0, 48, 24, 12];
+
+const tables = seriesList.map((series) => ({
+  division: series.division,
+  rows: series.points
+    .map((point, i) => ({ point, diffs: series.diffs[i] }))
+    .filter((row) => row.point.rank !== null),
+}));
+---
+
+<section class="panel trends" aria-labelledby="trends-heading">
+  <h2 id="trends-heading">順位と数値の推移</h2>
+
+  {
+    seriesList.map((series, seriesIndex) => (
+      <section class="division-trend" aria-labelledby={`trend-${series.division}`}>
+        <h3 id={`trend-${series.division}`}>{divisionLabel(series.division)}部門の推移</h3>
+
+        <div class="chart-tools" data-chart-tools={seriesIndex} hidden>
+          <div class="zoom-group" role="group" aria-label="グラフの表示期間">
+            <span class="zoom-label">表示期間</span>
+            {zoomWindows.map((hours) => (
+              <button type="button" class="pill zoom-pill" data-zoom-hours={hours}>
+                {hours === 0 ? '全期間' : `最後の ${hours} 時間`}
+              </button>
+            ))}
+          </div>
+          {hasOutsideTally && (
+            <p class="chart-legend">
+              <span class="chart-legend-band" aria-hidden="true" />
+              網掛けは公式の集計期間の外
+            </p>
+          )}
+        </div>
+
+        <div class="chart-block">
+          <h4>順位</h4>
+          <div class="chart" data-chart="rank" data-series={seriesIndex} role="img"
+            aria-label={`${divisionLabel(series.division)}部門の順位推移のグラフ。値は下の表で確認できます。`}>
+            <div class="chart-tip" aria-hidden="true" hidden>
+              <span class="chart-tip-time"></span>
+              <span class="chart-tip-value"></span>
+              <span class="chart-tip-diff" hidden></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-charts">
+          {METRIC_KEYS.map((key) => (
+            <div class="chart-block">
+              <h4>{METRIC_LABELS[key]}</h4>
+              <div class="chart chart-small" data-chart={key} data-series={seriesIndex} role="img"
+                aria-label={`${divisionLabel(series.division)}部門の${METRIC_LABELS[key]}数の推移のグラフ。値は下の表で確認できます。`}>
+                <div class="chart-tip" aria-hidden="true" hidden>
+                  <span class="chart-tip-time"></span>
+                  <span class="chart-tip-value"></span>
+                  <span class="chart-tip-diff" hidden></span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <details class="trend-table">
+          <summary>
+            <span class="disclosure-caret" aria-hidden="true"></span>
+            グラフの数値を表で見る（{tables[seriesIndex].rows.length} 時刻）
+          </summary>
+          <div class="table-scroll">
+            <table>
+              <caption class="visually-hidden">
+                {divisionLabel(series.division)}部門の時刻ごとの順位と 4 指標。
+                各指標は累計と、直前に比較できる時刻からの増分の 2 列。
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">集計日時</th>
+                  <th scope="col" class="numeric">順位</th>
+                  {METRIC_KEYS.map((key) => (
+                    <th scope="col" class="numeric" colspan="2">{METRIC_LABELS[key]}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {tables[seriesIndex].rows.map((row) => (
+                  <tr>
+                    <th scope="row" class="numeric">{parseHourKey(row.point.hourKey).full}</th>
+                    <td class="numeric">{row.point.rank}</td>
+                    {METRIC_KEYS.map((key) => [
+                      <td class="numeric">{formatNumber(row.point[key])}</td>,
+                      <td class="diff-cell numeric">
+                        {row.diffs[key] === null ? '' : formatSignedNumber(row.diffs[key])}
+                      </td>,
+                    ])}
+                  </tr>
+                ))}
+              </tbody>
+              {series.finalEntry && (
+                <tfoot>
+                  <tr>
+                    <th scope="row">最終ランキング（全期間集計）</th>
+                    <td class="numeric">{series.finalEntry.rank}</td>
+                    {METRIC_KEYS.map((key) => [
+                      <td class="numeric">{formatNumber(series.finalEntry[key])}</td>,
+                      <td class="diff-cell" />,
+                    ])}
+                  </tr>
+                </tfoot>
+              )}
+            </table>
+          </div>
+        </details>
+      </section>
+    ))
+  }
+</section>
+
+<script type="application/json" id="trend-data"   set:html={JSON.stringify({ series: chartData, tally })}
+  is:inline
+/>
+<script>
+  import { setupVideoTrends } from '@/scripts/video-trends.js';
+  setupVideoTrends();
+</script>
+
+<style>
+  .trends {
+    margin-top: var(--space-6);
+  }
+
+  .trends h2 {
+    font-size: 1.1875rem;
+    font-weight: 900;
+    margin-bottom: var(--space-3);
+  }
+
+  .division-trend + .division-trend {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .division-trend h3 {
+    font-size: 1.0625rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .chart-block h4 {
+    font-size: 0.8125rem;
+    color: var(--muted-text);
+    margin-bottom: var(--space-1);
+  }
+
+  .chart-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .zoom-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .zoom-label {
+    color: var(--muted-text);
+    font-size: 0.75rem;
+  }
+
+  .zoom-pill {
+    min-height: 2rem;
+    padding: 0 var(--space-3);
+    font-size: 0.8125rem;
+  }
+
+  .chart-legend {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    color: var(--muted-text);
+    font-size: 0.75rem;
+  }
+
+  .chart-legend-band {
+    width: 1.5rem;
+    height: 0.875rem;
+    border-right: 1px dashed color-mix(in srgb, var(--muted-text) 60%, transparent);
+    background: color-mix(in srgb, var(--muted-text) 12%, transparent);
+  }
+
+  .chart {
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+  }
+
+  .chart :global(.u-over) {
+    cursor: crosshair;
+  }
+
+  .chart :global(.u-select) {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .chart-tip {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    display: grid;
+    gap: 1px;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-1);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    font-size: 0.75rem;
+    line-height: 1.35;
+    white-space: nowrap;
+    transform: translate(-50%, calc(-100% - 10px));
+  }
+
+  .chart-tip[data-below] {
+    transform: translate(-50%, 10px);
+  }
+
+  .chart-tip-time {
+    color: var(--muted-text);
+  }
+
+  .chart-tip-value {
+    font-weight: 700;
+  }
+
+  .chart-tip-diff {
+    color: var(--muted-text);
+  }
+
+  .chart-small {
+    min-height: 120px;
+  }
+
+  .metric-charts {
+    margin-top: var(--space-4);
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 40rem) {
+    .metric-charts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .trend-table {
+    margin-top: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-2);
+    background: var(--surface-raised);
+    font-size: 0.8125rem;
+  }
+
+  .trend-table summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-height);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-2);
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+  }
+
+  .trend-table summary:hover {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .trend-table[open] summary {
+    border-bottom: 1px solid var(--border);
+    border-radius: var(--radius-2) var(--radius-2) 0 0;
+  }
+
+  .trend-table summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .disclosure-caret {
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.7rem;
+    background-color: currentColor;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 14'%3E%3Cpath d='M1.4 0 0 1.4 5.2 7 0 12.6 1.4 14 8 7z'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    transition: rotate 0.15s ease;
+  }
+
+  .trend-table[open] .disclosure-caret {
+    rotate: 90deg;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .disclosure-caret {
+      transition: none;
+    }
+  }
+
+  .table-scroll {
+    padding: var(--space-3);
+    overflow-x: auto;
+  }
+
+  /* 列は内容の幅に合わせる。width: 100% だと、横スクロールが必要な狭い画面でも
+     余った幅が集計日時の列に回り、日時の右側だけが広く空く */
+  table {
+    border-collapse: collapse;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-1) var(--space-2);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  td.diff-cell {
+    padding-left: 0;
+    text-align: left;
+    color: var(--muted-text);
+    font-size: 0.6875rem;
+  }
+
+  thead th,
+  tbody th,
+  tfoot th {
+    text-align: left;
+    font-weight: 700;
+  }
+
+  thead th.numeric {
+    text-align: right;
+  }
+
+  thead th[colspan] {
+    text-align: center;
+  }
+
+  tfoot th,
+  tfoot td {
+    border-top: 2px solid var(--border-strong);
+    font-weight: 700;
+  }
+</style>

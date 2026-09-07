@@ -1,0 +1,114 @@
+---
+import { parseHourKey } from '@/lib/format.js';
+
+interface Props {
+  hourKeys: string[];
+  rightEdge: string;
+  hasFinal: boolean;
+}
+
+const { hourKeys, rightEdge, hasFinal } = Astro.props as Props;
+const options = hourKeys.map((hourKey) => ({ hourKey, label: parseHourKey(hourKey).full }));
+
+// スクリプトが付く前に押されても 1 時刻ぶんだけ動くようにする。端は自分自身に留める
+const edgeIndex = hourKeys.indexOf(rightEdge);
+const atOldest = edgeIndex <= 0;
+const atLatest = edgeIndex >= hourKeys.length - 1;
+const previousHour = hourKeys[Math.max(0, edgeIndex - 1)];
+const nextHour = hourKeys[Math.min(hourKeys.length - 1, edgeIndex + 1)];
+---
+
+<nav class="hour-nav" aria-label="表示する時刻">
+  <a
+    class:list={['hour-btn', { 'is-disabled': atOldest }]}
+    aria-disabled={atOldest ? 'true' : undefined}
+    data-hour-nav="prev"
+    href={`?hour=${previousHour}`}
+    rel="prev"
+  >
+    <span aria-hidden="true">◀</span>
+    <span class="visually-hidden">1 時刻古い方へ移動</span>
+  </a>
+
+  <select id="hour-select" data-hour-nav="select" aria-label="表示する時刻へ移動">
+    {
+      options.map((option) => (
+        <option value={option.hourKey} selected={option.hourKey === rightEdge}>
+          {option.label}
+        </option>
+      ))
+    }
+  </select>
+
+  <a
+    class:list={['hour-btn', { 'is-disabled': atLatest }]}
+    aria-disabled={atLatest ? 'true' : undefined}
+    data-hour-nav="next"
+    href={`?hour=${nextHour}`}
+    rel="next"
+  >
+    <span aria-hidden="true">▶</span>
+    <span class="visually-hidden">1 時刻新しい方へ移動</span>
+  </a>
+</nav>
+
+<noscript>
+  <p class="noscript-note">
+    JavaScript が無効なため、直近 6 時刻{hasFinal && 'と最終ランキング'}のみ表示しています。
+  </p>
+</noscript>
+
+<style>
+  .hour-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .hour-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--control-square);
+    min-height: var(--control-square);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--body-text);
+    text-decoration: none;
+    box-shadow: var(--shadow-1);
+  }
+
+  .hour-btn:hover {
+    border-color: var(--accent);
+    background: var(--surface-raised);
+  }
+
+  .hour-btn.is-disabled {
+    opacity: 0.35;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  #hour-select {
+    min-height: var(--control-square);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    box-shadow: var(--shadow-1);
+    color: var(--body-text);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .noscript-note {
+    margin: var(--space-2) 0 0;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-1);
+    font-size: 0.8125rem;
+    background: var(--surface-raised);
+  }
+</style>

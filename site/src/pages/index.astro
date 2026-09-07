@@ -1,0 +1,115 @@
+---
+import Base from '@/layouts/Base.astro';
+import { publishableEvents, publishableDivisions, loadHourlyIndex } from '@/lib/data.js';
+import { divisionLabel } from '@/lib/ranking.js';
+import { divisionHref, eventHref } from '@/lib/urls.js';
+import { eventTheme } from '@/lib/theme.js';
+import { formatPeriod } from '@/lib/format.js';
+
+const events = publishableEvents().map((summary) => {
+  const divisions = publishableDivisions(summary.eventId);
+  const periods = divisions
+    .map((division) => loadHourlyIndex(summary.eventId, division)?.aggregationPeriod)
+    .filter(Boolean);
+  const theme = eventTheme(summary.eventId);
+  return {
+    ...summary,
+    divisions: divisions.map((division) => ({ division, label: divisionLabel(division) })),
+    accent: theme.accent,
+    onAccent: theme.onAccent,
+    period: formatPeriod(
+      periods.map((period) => period.startDateTime).sort()[0],
+      periods.map((period) => period.endDateTime).sort().at(-1)
+    ),
+  };
+});
+---
+
+<Base
+  title=""
+  description="ボカコレの毎時ランキングを開催回・部門・時刻ごとに振り返れる非公式のアーカイブです。"
+>
+  <div class="hero">
+    <h1>
+      <span class="display-en">Hourly Ranking</span>
+      <span class="hero-ja">ボカコレ毎時ランキング非公式アーカイブ</span>
+    </h1>
+    <p class="hero-lead">公式サイトでは見られなくなった過去の毎時ランキングを保存しています。<br>ランキングや再生数の推移が確認できます。</p>
+  </div>
+
+  <ul class="entry-list">
+    {
+      events.map((event) => (
+        <li
+          class="entry-card"
+          style={`--card-accent:${event.accent};--card-on-accent:${event.onAccent}`}
+        >
+          <h2 class="entry-card-title">
+            <a href={eventHref(event.eventId)}>{event.title}</a>
+          </h2>
+          <div class="entry-card-body">
+            <p class="event-card-period numeric">{event.period}</p>
+            <ul class="division-links">
+              {event.divisions.map((item) => (
+                <li>
+                  <a class="pill division-link" href={divisionHref(event.eventId, item.division)}>
+                    <span class="division-badge" data-division={item.division} aria-hidden="true" />
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
+
+<style>
+  .hero {
+    margin-bottom: var(--space-5);
+  }
+
+  .hero-ja {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .hero-lead {
+    margin: var(--space-2) 0 0;
+    font-size: 0.9375rem;
+    color: var(--muted-text);
+  }
+
+  .event-card-period {
+    font-size: 0.8125rem;
+    color: var(--muted-text);
+    margin: 0 0 var(--space-3);
+  }
+
+  .division-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .division-link {
+    padding: 0 var(--space-3);
+    font-size: 0.9375rem;
+  }
+
+  .division-link .division-badge {
+    width: 1.1em;
+    height: 1.1em;
+  }
+
+  .division-link:hover {
+    border-color: var(--card-accent);
+  }
+</style>

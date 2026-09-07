@@ -1,0 +1,131 @@
+---
+import '../styles/global.css';
+import SiteSearch from '@/components/SiteSearch.astro';
+import { siteHref } from '@/lib/urls.js';
+import { themeStyle } from '@/lib/theme.js';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  eventId?: string;
+  crumbs?: Crumb[];
+  wide?: boolean;
+}
+
+const { title, description, eventId, crumbs = [], wide = false } = Astro.props as Props;
+const pageTitle = title ? `${title} | ボカコレランキングアーカイブ` : 'ボカコレランキングアーカイブ';
+---
+
+<!doctype html>
+<html lang="ja" data-event-theme={eventId ?? undefined} style={eventId ? themeStyle(eventId) : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem('color-scheme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.dataset.colorScheme = theme;
+        }
+      } catch {}
+    </script>
+    <link rel="icon" href={siteHref('/logo.svg')} type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&family=Poppins:wght@700;900&display=swap"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">本文へ移動</a>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <p class="site-title">
+          <a class="site-brand" href={siteHref('/')}>
+            <svg class="site-logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+              <rect x="4" y="18" width="4" height="8" fill="currentColor" />
+              <rect x="10" y="13" width="4" height="13" fill="currentColor" />
+              <rect x="16" y="8" width="4" height="18" fill="currentColor" />
+              <rect x="22" y="11" width="4" height="15" fill="currentColor" />
+            </svg>
+            <span>ボカコレランキングアーカイブ</span>
+          </a>
+          <a class="site-tagline" href={siteHref('/about/')}>
+            非公式アーカイブ<span class="visually-hidden">（このサイトについて）</span>
+          </a>
+        </p>
+        <SiteSearch />
+      </div>
+    </header>
+
+    {
+      crumbs.length > 0 && (
+        <nav class="breadcrumb" aria-label="現在位置">
+          <ol>
+            <li><a href={siteHref('/')}>開催回一覧</a></li>
+            {crumbs.map((crumb) => (
+              <li>{crumb.href ? <a href={crumb.href}>{crumb.label}</a> : <span aria-current="page">{crumb.label}</span>}</li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
+    <main id="main" class={wide ? 'page page-wide' : 'page'}>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <p>
+          このサイトは非公式のアーカイブサイトです。ボカコレ運営およびドワンゴとは関係ありません。
+        </p>
+        <div class="site-footer-actions">
+          <a href={siteHref('/about/')}>このサイトについて</a>
+          <button class="theme-toggle" type="button" aria-label="ダークテーマに切り替え" title="ダークテーマに切り替え">
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const themeToggle = document.querySelector('.theme-toggle');
+
+      function resolvedTheme() {
+        return document.documentElement.dataset.colorScheme
+          ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      }
+
+      function updateThemeToggle() {
+        const nextTheme = resolvedTheme() === 'dark' ? 'light' : 'dark';
+        const label = `${nextTheme === 'dark' ? 'ダーク' : 'ライト'}テーマに切り替え`;
+        themeToggle.setAttribute('aria-label', label);
+        themeToggle.title = label;
+      }
+
+      updateThemeToggle();
+      themeToggle.addEventListener('click', () => {
+        const nextTheme = resolvedTheme() === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.colorScheme = nextTheme;
+        try {
+          localStorage.setItem('color-scheme', nextTheme);
+        } catch {}
+        updateThemeToggle();
+      });
+    </script>
+  </body>
+</html>

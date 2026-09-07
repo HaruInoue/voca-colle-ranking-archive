@@ -1,0 +1,75 @@
+---
+import { divisionLabel } from '@/lib/ranking.js';
+
+interface Notice {
+  title: string;
+  body: string;
+  division?: string;
+}
+
+interface Props {
+  notices: Notice[];
+  showDivision?: boolean;
+}
+
+const { notices, showDivision = false } = Astro.props as Props;
+---
+
+{
+  notices.length > 0 && (
+    <aside class="notices" aria-label="この開催回についての注記">
+      {notices.map((notice) => (
+        <article class="notice">
+          <h2 class="notice-title">
+            {notice.title}
+            {showDivision && notice.division && (
+              <span class="notice-scope">{divisionLabel(notice.division)}部門</span>
+            )}
+          </h2>
+          <div class="notice-body" set:html={notice.body} />
+        </article>
+      ))}
+    </aside>
+  )
+}
+
+<style>
+  .notices {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-5);
+  }
+
+  .notice {
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-2);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .notice-title {
+    font-size: 0.9375rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+
+  .notice-scope {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--muted-text);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-1);
+    padding: 0 var(--space-2);
+  }
+
+  .notice-body {
+    font-size: 0.9375rem;
+  }
+
+  .notice-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

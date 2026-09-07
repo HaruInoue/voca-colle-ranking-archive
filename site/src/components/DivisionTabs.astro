@@ -1,0 +1,48 @@
+---
+import { publishableDivisions } from '@/lib/data.js';
+import { divisionLabel } from '@/lib/ranking.js';
+import { divisionHref } from '@/lib/urls.js';
+
+interface Props {
+  eventId: string;
+  current?: string;
+}
+
+const { eventId, current } = Astro.props as Props;
+const divisions = publishableDivisions(eventId);
+---
+
+<nav class="division-tabs" aria-label="部門の切り替え">
+  <ul>
+    {
+      divisions.map((division) => (
+        <li>
+          <a
+            class={division === current ? 'pill pill-current' : 'pill'}
+            href={divisionHref(eventId, division)}
+            aria-current={division === current ? 'page' : undefined}
+          >
+            <span class="division-badge" data-division={division} aria-hidden="true" />
+            {divisionLabel(division)}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .division-tabs ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .division-tabs :global(.division-badge) {
+    width: 1.1em;
+    height: 1.1em;
+  }
+</style>

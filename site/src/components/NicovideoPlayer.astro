@@ -1,0 +1,41 @@
+---
+import { embedScriptUrl, watchUrl } from '@/lib/urls.js';
+
+interface Props {
+  watchId: string;
+  title: string;
+}
+
+const { watchId, title } = Astro.props as Props;
+---
+
+<div class="player">
+  <script type="application/javascript" src={embedScriptUrl(watchId)} is:inline></script>
+  <noscript>
+    <a class="player-fallback" href={watchUrl(watchId)}>{title}</a>
+  </noscript>
+</div>
+
+<style>
+  .player {
+    width: 100%;
+    max-width: 44rem;
+  }
+
+  .player :global(iframe) {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+    border-radius: var(--radius-2);
+    background: #000;
+  }
+
+  .player-fallback {
+    display: inline-block;
+    padding: var(--space-3);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-1);
+  }
+</style>

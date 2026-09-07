@@ -1,0 +1,101 @@
+---
+import { externalVideoLinkGroups, serviceIconHref } from '@/lib/urls.js';
+
+interface Props {
+  watchId: string;
+}
+
+const { watchId } = Astro.props as Props;
+const groups = externalVideoLinkGroups(watchId);
+---
+
+<section class="panel external" aria-labelledby="external-heading">
+  <h2 id="external-heading">この曲を他のページで見る</h2>
+  {
+    groups.map((group) => (
+      <div class="external-group">
+        <h3>{group.name}</h3>
+        <ul>
+          {group.links.map((link) => (
+            <li>
+              <a class="external-link" href={link.url} target="_blank" rel="noopener noreferrer">
+                <img
+                  class="external-icon"
+                  src={serviceIconHref(link.icon)}
+                  alt=""
+                  width="16"
+                  height="16"
+                  loading="lazy"
+                  decoding="async"
+                />
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .external {
+    margin: var(--space-6) 0 0;
+  }
+
+  .external h2 {
+    font-size: 1.0625rem;
+    font-weight: 900;
+    margin-bottom: var(--space-3);
+  }
+
+  .external-group + .external-group {
+    margin-top: var(--space-4);
+  }
+
+  .external-group h3 {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--muted-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .external-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .external-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-height);
+    padding: 0 var(--space-4);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--body-text);
+    text-decoration: none;
+    font-size: 0.875rem;
+    box-shadow: var(--shadow-1);
+  }
+
+  .external-link:hover {
+    border-color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .external-icon {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    padding: 1px;
+    box-sizing: content-box;
+    background: #fff;
+    border-radius: 3px;
+  }
+</style>
