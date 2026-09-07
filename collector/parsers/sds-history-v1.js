@@ -1,15 +1,9 @@
-// 毎時履歴 JSON のパーサ。
-//
-// https://data.sds.nicovideo.jp/static/vocacolle-ranking-history/{division}/{hourKey}.json
-//
-// HTTP も保存も知らない純関数として保つ（fetch / ファイル I/O / process を参照しない）。
-// この境界が無いと raw/ からの再解析が成立しない。
+// 毎時履歴JSONを解析する。
 
 import { ParseError } from './parse-error.js';
 
 export const name = 'sds-history-v1';
 
-/** スナップショットの entries の列。版を増やすときはここも版ごとに持つ。 */
 export const columns = ['rank', 'watchId', 'view', 'comment', 'mylist', 'like'];
 
 const METRICS = ['view', 'comment', 'mylist', 'like'];
@@ -30,17 +24,7 @@ function requireInteger(value, label) {
   return value;
 }
 
-/**
- * @param {string} rawText 生データ（JSON 文字列）
- * @param {object} _context event.json の値（この版では使わない）
- * @returns {{
- *   status: 'ok' | 'empty' | 'out-of-period',
- *   ranking: object | null,
- *   entries: Array<Array<number|string>>,
- *   videos: Record<string, object>,
- * }}
- * @throws {ParseError} 想定の構造で読めない場合
- */
+/** 毎時履歴JSONを解析する。 */
 export function parse(rawText, _context = {}) {
   let body;
   try {
@@ -49,7 +33,6 @@ export function parse(rawText, _context = {}) {
     throw new ParseError(`JSON として読めない: ${cause.message}`);
   }
 
-  // HTTP 200 でも本文が 404 の状態があるため、meta.status の確認は必須。
   const metaStatus = body?.meta?.status;
   if (typeof metaStatus !== 'number') throw new ParseError('meta.status が無い');
   if (metaStatus === 404) {
@@ -81,7 +64,6 @@ export function parse(rawText, _context = {}) {
   videosRaw.forEach((video, i) => {
     if (!video || typeof video !== 'object') throw new ParseError(`videos[${i}] がオブジェクトでない`);
 
-    // 公式データに順位番号は無い。掲載順から採番する。
     const rank = i + 1;
     const watchId = requireString(video.id, `videos[${i}].id`);
     const count = video.count;
@@ -106,7 +88,6 @@ export function parse(rawText, _context = {}) {
               name: optionalString(owner.name),
             }
           : null,
-      // thumbnail は 6 種あるが middleUrl のみ保存する。画像自体は取り込まない。
       thumbnailUrl: optionalString(video.thumbnail?.middleUrl),
       shortDescription: optionalString(video.shortDescription),
     };

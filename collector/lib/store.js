@@ -1,8 +1,4 @@
-// data/ 配下の読み書き。
-//
-// 手元（Windows）と GitHub Actions（Linux）が同じファイルを書き換えるため、
-// 書き出し方を固定する（インデント 2 / 末尾改行 1 つ / LF / キー順は定義順 /
-// 並びは昇順）。揃っていないと、内容が同じでも Git の差分になる。
+// data配下を読み書きする。
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -13,14 +9,13 @@ import { compareHourKey, hourKeyToEpoch, hourKeyToIso } from './hours.js';
 export const SCHEMA_VERSION = 1;
 const DEFAULT_MAX_REQUESTS_PER_RUN = 120;
 
-/** 文字列の昇順。localeCompare は環境で結果が変わるため使わない。 */
+/** 文字列を比較する。 */
 export const compareString = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 
 // ---------------------------------------------------------------- 直列化
 
 const isPrimitive = (v) => v === null || typeof v !== 'object';
 
-/** 1 行に収める形。差分が読める粒度のものだけに使う。 */
 function renderInline(value) {
   if (isPrimitive(value)) return JSON.stringify(value);
   if (Array.isArray(value)) return `[${value.map(renderInline).join(', ')}]`;
@@ -63,10 +58,7 @@ function render(value, indent, compactKeys) {
   return `{\n${items}\n${indent}}`;
 }
 
-/**
- * 決められた形で JSON にする。
- * compactKeys に挙げたキーの値は 1 行（配列なら 1 要素 1 行）に収める。
- */
+/** JSONを固定形式で文字列化する。 */
 export function stringifyJson(value, compactKeys = []) {
   return `${render(value, '', new Set(compactKeys))}\n`;
 }
@@ -83,11 +75,7 @@ export function readJsonFile(filePath) {
   }
 }
 
-/**
- * 内容が変わらない場合は書かない（更新時刻だけの差分を作らないため）。
- * dryRun のときは書かずに「書き換わるか」だけを返す（reparse.js の --dry-run 用）。
- * 判定は書き出す文字列そのものの比較なので、実際に書いた場合と食い違わない。
- */
+/** 内容が変わる場合だけテキストを書き込む。 */
 export function writeTextIfChanged(filePath, text, dryRun = false) {
   if (fs.existsSync(filePath) && fs.readFileSync(filePath, 'utf8') === text) return false;
   if (dryRun) return true;
@@ -100,19 +88,19 @@ export function writeJsonIfChanged(filePath, value, compactKeys, dryRun = false)
   return writeTextIfChanged(filePath, stringifyJson(value, compactKeys), dryRun);
 }
 
-/** 生データを gzip で書く。同じ内容なら同じバイト列になる（mtime を持たない）。 */
+/** 生データをgzipで書き込む。 */
 export function writeRaw(filePath, text) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, zlib.gzipSync(Buffer.from(text, 'utf8'), { level: 9 }));
 }
 
-/** 生データを読む。無ければ null（最終ランキングは未取得のことがある）。 */
+/** 生データを読み込む。 */
 export function readRaw(filePath) {
   if (!fs.existsSync(filePath)) return null;
   return zlib.gunzipSync(fs.readFileSync(filePath)).toString('utf8');
 }
 
-/** 毎時履歴の生データは時刻ごとに不変なので、既に存在するファイルには書かない。 */
+/** 存在しない場合だけ生データを書き込む。 */
 export function writeRawIfAbsent(filePath, text) {
   if (fs.existsSync(filePath)) return false;
   writeRaw(filePath, text);
@@ -138,10 +126,7 @@ export const rawHourlyDir = (root, eventId, division) =>
 export const rawSnapshotPath = (root, eventId, division, hourKey) =>
   path.join(rawHourlyDir(root, eventId, division), `${hourKey}.json.gz`);
 
-/**
- * raw/hourly に残っている時刻キー。
- * 保存に至った時刻だけが置かれるため、スナップショットと 1 対 1 に対応する。
- */
+/** 保存済みraw時刻キーを返す。 */
 export function listRawHourKeys(root, eventId, division) {
   const dir = rawHourlyDir(root, eventId, division);
   if (!fs.existsSync(dir)) return [];
@@ -167,15 +152,7 @@ export const rawAnomalyPath = (root, eventId, kind, division, fileName) =>
 
 // ---------------------------------------------------------------- event.json
 
-/**
- * 新しい開催回が先。順序は `collect.hourFrom`（実際の開催時期）で決める。
- *
- * **eventId の季節名から順序を決めてはいけない。**
- * 公式の命名は開催時期を保証しない。「冬」が年初に開催されるとは限らず、
- * 2027 夏が 7 月・2027 冬が 12 月ということもあり得る。
- * `collect.hourFrom` は必須項目で、その回の集計開始より前を指すため、
- * 命名の規則を仮定せずに実際の時系列で並べられる。
- */
+/** 開催回を新しい順に比較する。 */
 export function compareEventDesc(a, b) {
   const ta = hourKeyToEpoch(a.collect.hourFrom);
   const tb = hourKeyToEpoch(b.collect.hourFrom);
@@ -183,7 +160,7 @@ export function compareEventDesc(a, b) {
   return compareString(b.eventId, a.eventId);
 }
 
-/** ディレクトリ名の一覧。並びに意味は持たせない（順序は readEvents が決める）。 */
+/** 開催回IDを返す。 */
 export function listEventIds(root) {
   const dir = eventsRoot(root);
   if (!fs.existsSync(dir)) return [];
@@ -195,7 +172,7 @@ export function listEventIds(root) {
     .sort(compareString);
 }
 
-/** すべての開催回を読み、新しい順に並べて返す。 */
+/** 全開催回を新しい順で返す。 */
 export function readEvents(root) {
   return listEventIds(root)
     .map((eventId) => readEvent(root, eventId))
@@ -238,7 +215,7 @@ export function readEvent(root, eventId) {
   };
 }
 
-/** data/events.json は event.json から生成する。手で編集しない。 */
+/** events.jsonを書き出す。 */
 export function writeEventsJson(root, events) {
   const value = {
     schemaVersion: SCHEMA_VERSION,
@@ -284,10 +261,7 @@ export function addUnavailable(state, hourKey, reason) {
   state.changed = true;
 }
 
-/**
- * 公式の集計期間を記録する。既存の記録と変わった場合は保存しつつ警告を返す。
- * @returns {string|null} 警告文
- */
+/** 公式の集計期間を記録する。 */
 export function recordAggregationPeriod(state, ranking) {
   const next = {
     startDateTime: ranking.startDateTime,
@@ -359,10 +333,7 @@ export function writeSnapshot(root, snapshot, dryRun = false) {
 
 // ---------------------------------------------------------------- 最終ランキング
 
-/**
- * 毎時スナップショットと同じ columns / entries を持つ。閲覧側が同じ描画処理を使える。
- * 時刻に紐づかない全期間集計なので hourKey / aggregatedAt / ranking は持たない。
- */
+/** 最終ランキングの保存データを作る。 */
 export function buildFinalRanking({ eventId, division, capturedAt, url, parser, columns, entries }) {
   return {
     schemaVersion: SCHEMA_VERSION,
@@ -381,7 +352,6 @@ const FINAL_COMPACT_KEYS = ['columns', 'entries'];
 export function writeFinalRanking(root, final, dryRun = false) {
   const filePath = finalPath(root, final.eventId, final.division);
   const prev = readJsonFile(filePath);
-  // 取得し直しただけで capturedAt の差分を出さない。順位が同じなら据え置く。
   const unchanged =
     prev !== null &&
     stringifyJson({ ...final, capturedAt: prev.capturedAt }, FINAL_COMPACT_KEYS) ===
@@ -406,17 +376,7 @@ export function readVideos(root, eventId) {
   return { videos: raw?.videos ?? {}, changed: false };
 }
 
-/**
- * videos.json をマージ更新する。
- *
- * 取り込むスナップショットの hourKey が既存の sourceHour 以上なら上書きし、
- * 未満なら無視する。こうしておくと、どの順で何回流しても同じ結果になり、
- * raw/ からの再解析と結果が一致する。
- *
- * 最終ランキングからの取り込みでは hourKey に `'final'` を渡す。
- * 辞書順でどの時刻キーよりも後になるため、開催後に取得した最終ランキングの値が
- * 常に勝つ。これも順序に依存しない。
- */
+/** 動画情報をマージする。 */
 export function mergeVideos(state, incoming, hourKey) {
   for (const [watchId, video] of Object.entries(incoming)) {
     const prev = state.videos[watchId];
@@ -443,7 +403,7 @@ export function writeVideos(root, eventId, state, dryRun = false) {
 
 // ---------------------------------------------------------------- ログ
 
-/** collection-log.jsonl に 1 行追記する。保存に至らなかった試行も残す。 */
+/** 収集ログを追記する。 */
 export function appendLog(root, eventId, record) {
   const filePath = logPath(root, eventId);
   fs.mkdirSync(path.dirname(filePath), { recursive: true });

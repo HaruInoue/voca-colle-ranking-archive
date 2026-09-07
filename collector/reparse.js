@@ -1,14 +1,5 @@
 #!/usr/bin/env node
-// raw/ の生データを読み直して、スナップショットと videos.json を作り直す。
-//
-//   node collector/reparse.js --dry-run
-//   node collector/reparse.js --event 2026-summer --parser sds-history-v2 --dry-run
-//
-// **--dry-run はパーサの回帰確認そのものである。**
-// 差分 0 が「解析結果が変わっていない」ことの担保になる。テストコードを置かない
-// 代わりの手段なので、パーサに手を入れたら必ず通す。
-//
-// HTTP は 1 回も出さない。git commit / push もしない。
+// rawデータを再解析する。
 
 import path from 'node:path';
 import process from 'node:process';
@@ -20,7 +11,6 @@ import { ParseError, resolveFinalParser, resolveHourlyParser } from './parsers/i
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 
-/** videos.json のマージで使う sourceHour。辞書順でどの時刻キーよりも後になる。 */
 const FINAL_SOURCE_HOUR = 'final';
 
 const USAGE = `使い方: node collector/reparse.js [--event <eventId>] [--parser <name>] [--dry-run]
@@ -35,21 +25,13 @@ const USAGE = `使い方: node collector/reparse.js [--event <eventId>] [--parse
 
 const relative = (filePath) => path.relative(ROOT, filePath).split(path.sep).join('/');
 
-/**
- * 1 開催回を raw から作り直す。
- *
- * `capturedAt` と `source.url` は生データから導けないため、既存のファイルから
- * 引き継ぐ。こうすると差分に出るのはパーサの出力だけになり、`--dry-run` が
- * そのまま回帰確認として使える。
- */
+/** 1開催回をrawデータから再構築する。 */
 function reparseEvent(event, options) {
   const parserName = options.parser ?? event.parser;
   const parser = resolveHourlyParser(parserName);
   const changed = [];
   const problems = [];
 
-  // videos.json は空から作り直す。既存に足すと、パーサが返さなくなった動画が
-  // いつまでも残り、raw だけを根拠にした状態にならない。
   const videos = { videos: {}, changed: false };
   const states = new Map(
     event.divisions.map((division) => [
@@ -58,8 +40,6 @@ function reparseEvent(event, options) {
     ]),
   );
 
-  // 時刻順・部門順に流す。collect.js の取得順と揃えることで、同じ時刻に同じ動画が
-  // 複数部門から入る場合も収集時と同じ結果になる。
   const items = event.divisions
     .flatMap((division, divisionIndex) =>
       store
@@ -81,8 +61,6 @@ function reparseEvent(event, options) {
       continue;
     }
 
-    // raw/hourly には保存に至った時刻だけが入っている。ここで保存対象から外れるのは
-    // パーサの挙動が変わったということなので、差分ではなく異常として報告する。
     if (parsed.status !== 'ok') {
       problems.push(`${label}: status が ${parsed.status} になった`);
       continue;
@@ -114,8 +92,6 @@ function reparseEvent(event, options) {
     }
 
     const state = states.get(division);
-    // 集計期間が変わった旨の警告は収集時に出ているので、ここでは受け取らない。
-    // 実際に値が変わっていれば index.json の差分として出る。
     store.recordAggregationPeriod(state, parsed.ranking);
     store.addCollected(state, hourKey, parsed.entries.length);
     store.mergeVideos(videos, parsed.videos, hourKey);
@@ -123,14 +99,10 @@ function reparseEvent(event, options) {
 
   reparseFinal(event, videos, changed, problems, options);
 
-  // index.json は unavailable を生データから導けないため、既存のものに
-  // entryCount と aggregationPeriod だけを上書きする。
   const now = epochToIso(Date.now());
   for (const state of states.values()) {
     const filePath = store.indexJsonPath(ROOT, event.eventId, state.division);
     const keptAt = store.readJsonFile(filePath)?.updatedAt ?? now;
-    // まず updatedAt を据え置いたまま判定する。中身が変わっていなければ
-    // 再解析しただけで updatedAt の差分を出さない。
     if (!store.writeIndexState(ROOT, state, keptAt, true)) continue;
     store.writeIndexState(ROOT, state, now, options.dryRun);
     changed.push(relative(filePath));
@@ -143,7 +115,7 @@ function reparseEvent(event, options) {
   return { hourlyCount: items.length, changed, problems };
 }
 
-/** 最終ランキングを raw から作り直す。未取得の部門は飛ばす。 */
+/** 最終ランキングをrawデータから再構築する。 */
 function reparseFinal(event, videos, changed, problems, options) {
   if (!event.finalParser) return;
   const parser = resolveFinalParser(event.finalParser);
@@ -224,7 +196,6 @@ async function main() {
       (options.dryRun ? `差分 ${changedTotal}` : `書き換え ${changedTotal}`) +
       ` / 異常 ${problemTotal}`,
   );
-  // --dry-run で差分が出たらパーサの出力が変わったということなので失敗させる。
   if (problemTotal > 0 || (options.dryRun && changedTotal > 0)) process.exitCode = 1;
 }
 

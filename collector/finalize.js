@@ -1,12 +1,5 @@
 #!/usr/bin/env node
-// 最終ランキングの取得。開催回あたり 1 回、手動で実行する。
-//
-//   node collector/finalize.js --event 2025-summer
-//
-// 最終ランキングがいつ公開され、いつアーカイブパスが作られるかを公式から
-// 機械的に判定する手段がないため、自動化しない。
-//
-// git commit / push は行わない。手元でファイル出力までを行う。
+// 最終ランキングを取得する。
 
 import path from 'node:path';
 import process from 'node:process';
@@ -19,14 +12,8 @@ import { ParseError, resolveFinalParser } from './parsers/index.js';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 
-/**
- * 投稿期間に収まっているべきエントリの割合。
- * 全件一致は条件にできない。2026 冬のアーカイブページには投稿期間外の
- * registeredAt を持つエントリが 1 件含まれていた。
- */
 const MIN_IN_PERIOD_RATIO = 0.9;
 
-/** videos.json のマージで使う sourceHour。辞書順でどの時刻キーよりも後になる。 */
 const FINAL_SOURCE_HOUR = 'final';
 
 const USAGE = `使い方: node collector/finalize.js --event <eventId>
@@ -36,7 +23,7 @@ const USAGE = `使い方: node collector/finalize.js --event <eventId>
   --help
 `;
 
-/** アーカイブページの HTML を取得して検証し、最終ランキングとして保存する。 */
+/** 最終ランキングを取得して保存する。 */
 async function finalizeDivision(root, event, parser, division) {
   const url = event.final.archiveUrlTemplate.replace('{division}', division);
 
@@ -48,8 +35,6 @@ async function finalizeDivision(root, event, parser, division) {
     return { division, ok: false, message: `取得に失敗（${cause.message}）` };
   }
   if (response.status === 404) {
-    // アーカイブページがまだ作られていない。毎時履歴の not-published と同じで、
-    // 予期された状態であり記録しない。
     return { division, ok: false, notYet: true, message: 'アーカイブページがまだ作られていない' };
   }
   if (response.status !== 200) {
@@ -68,13 +53,10 @@ async function finalizeDivision(root, event, parser, division) {
     return { division, ok: false, message: `解析に失敗（${cause.message}）` };
   }
 
-  // 目的の部門のページかを確認する。毎時履歴の setting.tag に相当する検証。
   if (parsed.pageId !== null && parsed.pageId !== division) {
     return { division, ok: false, message: `別の部門のページ（pageId: ${parsed.pageId}）` };
   }
 
-  // 開催期間中は日付なしのパスに前回開催の最終ランキングが出るため、
-  // どの開催回のデータかを registeredAt で判別する。
   const check = checkSubmissionPeriod(event, parsed.videos);
   if (check.ratio < MIN_IN_PERIOD_RATIO) {
     return {
@@ -87,8 +69,6 @@ async function finalizeDivision(root, event, parser, division) {
     };
   }
 
-  // 生データとスナップショットは必ず同じ取得結果から書く。
-  // 片方だけ残すと raw/ からの再解析が一致しなくなるため、ここは上書きを許す。
   store.writeRaw(store.rawFinalPath(root, event.eventId, division), response.text);
   store.writeFinalRanking(
     root,
@@ -113,7 +93,7 @@ async function finalizeDivision(root, event, parser, division) {
   };
 }
 
-/** registeredAt が投稿期間に収まっているエントリの割合を数える。 */
+/** 投稿期間内のエントリ比率を数える。 */
 function checkSubmissionPeriod(event, videos) {
   const from = isoToEpoch(event.final.submissionFrom, `${event.eventId}: final.submissionFrom`);
   const until = isoToEpoch(event.final.submissionUntil, `${event.eventId}: final.submissionUntil`);
@@ -124,7 +104,6 @@ function checkSubmissionPeriod(event, videos) {
   for (const [watchId, video] of Object.entries(videos)) {
     if (!video.registeredAt) continue;
     total += 1;
-    // オフセットの無い文字列はローカル時刻として解釈されるため、期間外として数える。
     const at = /(?:Z|[+-]\d{2}:?\d{2})$/.test(video.registeredAt)
       ? Date.parse(video.registeredAt)
       : Number.NaN;
@@ -198,7 +177,6 @@ async function main() {
 
   const failed = results.filter((result) => !result.ok);
   console.log(`\n${results.length - failed.length}/${results.length} 部門を保存した`);
-  // 保存できなかった部門があれば失敗させる（静かに欠測させない）。
   if (failed.length > 0) process.exitCode = 1;
 }
 

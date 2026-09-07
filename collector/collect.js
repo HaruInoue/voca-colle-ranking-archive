@@ -1,14 +1,5 @@
 #!/usr/bin/env node
-// 毎時ランキングの収集。
-//
-// 「収集範囲の未取得時刻を埋める」という 1 つのループで、開催中の収集も
-// 過去回の一括取り込みも扱う。分岐は入力（対象の開催回と候補数）だけ。
-//
-//   node collector/collect.js                                      Actions と同じ（開催中のみ）
-//   node collector/collect.js --event 2025-summer --assume-expired 過去回の一括取り込み
-//   node collector/collect.js --event 2026-summer --dry-run        候補時刻を出すだけ
-//
-// git commit / push はワークフロー側の責務。ここはファイル出力までで完結させる。
+// 毎時ランキングを収集する。
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -32,7 +23,6 @@ import { ParseError, resolveHourlyParser } from './parsers/index.js';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const HISTORY_BASE_URL = 'https://data.sds.nicovideo.jp/static/vocacolle-ranking-history';
 
-/** 集計期間の終了から この期間 を過ぎてなお HTTP 404 なら expired として確定する。 */
 const EXPIRE_AFTER_MS = 14 * 24 * 60 * 60 * 1000;
 
 const USAGE = `使い方: node collector/collect.js [オプション]
@@ -94,11 +84,7 @@ function selectTargets(events, options, nowEpoch) {
   );
 }
 
-/**
- * 部門ごとの候補時刻を求める。
- * 候補 = 収集範囲の全時刻 − collected − unavailable。
- * 収集範囲 = collect.hourFrom 〜 min(collect.hourUntil, 取得できる最新時刻)。
- */
+/** 部門ごとの取得候補を作る。 */
 function planEvent(event, nowEpoch, maxRequests) {
   const limit = maxRequests ?? event.collect.maxRequestsPerRun;
   const latestFetchable = latestFetchableHourKey(nowEpoch);
@@ -116,7 +102,6 @@ function planEvent(event, nowEpoch, maxRequests) {
     };
   });
 
-  // 部門をまたいで古い順に並べ、maxRequestsPerRun をすべての部門で分け合う。
   const queue = [];
   divisions.forEach((entry, divisionIndex) => {
     for (const hourKey of entry.candidates) queue.push({ entry, divisionIndex, hourKey });
@@ -136,7 +121,7 @@ function planEvent(event, nowEpoch, maxRequests) {
   };
 }
 
-/** 連続する時刻をまとめて表示する。欠けている箇所がそのまま見えるようにする。 */
+/** 連続する時刻をまとめる。 */
 function compressHourKeys(hourKeys) {
   const groups = [];
   for (const hourKey of hourKeys) {
@@ -198,7 +183,7 @@ function logAttempt(eventId, { at, division, hourKey, httpStatus, result, ...ext
   });
 }
 
-/** HTTP 404 を expired として確定させる時刻。集計期間は公式値を優先する。 */
+/** HTTP 404をexpiredと判断する時刻を返す。 */
 function expireCutoffEpoch(event, state) {
   const endDateTime = state.aggregationPeriod?.endDateTime;
   const endEpoch = endDateTime
@@ -207,14 +192,8 @@ function expireCutoffEpoch(event, state) {
   return endEpoch + EXPIRE_AFTER_MS;
 }
 
-/**
- * HTTP 404 の分類。ファイルが存在しない理由は 3 つあり、本文からは区別できない。
- * @returns {'out-of-period'|'expired'|null} null は not-published（状態として保存しない）
- */
+/** HTTP 404を分類する。 */
 function classifyNotFound(event, state, hourKey, nowEpoch, assumeExpired) {
-  // 公式の集計開始より前の時刻は、そのランキング自体がまだ存在しない = 期間外。
-  // 保持期限切れと確実に区別できるのはこの条件だけなので先に判定する。
-  // ここを expired にすると「保持期限で失われた」と誤読され、保持期間の判断材料が壊れる。
   const startDateTime = state.aggregationPeriod?.startDateTime;
   if (startDateTime) {
     const label = `${state.division}: aggregationPeriod.startDateTime`;
@@ -262,8 +241,6 @@ async function collectEvent(event, options, nowEpoch, plan) {
       continue;
     }
 
-    // HTTP 404 の分類は公式の集計期間が分かってからでないと決められないため、
-    // この実行の取得がすべて終わるまで判定を保留する（取得順に結果を左右させない）。
     if (response.status === 404) {
       notFound.push({ entry: item.entry, hourKey, at: epochToIso(Date.now()) });
       continue;
@@ -304,7 +281,6 @@ async function collectEvent(event, options, nowEpoch, plan) {
       continue;
     }
 
-    // HTTP 200 でも本文が 404 の状態がある。集計期間外として確定させる。
     if (parsed.status === 'out-of-period') {
       store.addUnavailable(state, hourKey, 'out-of-period');
       counter.unavailable += 1;
@@ -313,7 +289,6 @@ async function collectEvent(event, options, nowEpoch, plan) {
       continue;
     }
 
-    // 別の開催回のデータが混入することを防ぐ。
     if (!parsed.ranking.tag.includes(event.eventTag)) {
       store.writeRawIfAbsent(
         store.rawAnomalyPath(ROOT, event.eventId, 'tag-mismatch', division, `${hourKey}.json.gz`),
@@ -380,7 +355,6 @@ async function collectEvent(event, options, nowEpoch, plan) {
     }
   }
 
-  // 保留していた HTTP 404 を、この実行で判明した集計期間をもとに分類する。
   for (const item of notFound) {
     const { division, state } = item.entry;
     const { hourKey } = item;
@@ -389,7 +363,6 @@ async function collectEvent(event, options, nowEpoch, plan) {
     const reason = classifyNotFound(event, state, hourKey, nowEpoch, options.assumeExpired);
 
     if (reason === null) {
-      // not-published。状態として保存せず、次回の実行で再試行する。
       counter.notPublished += 1;
       console.log(`${label} not-published`);
       continue;
@@ -430,7 +403,6 @@ export function summarizeEvent(summary) {
     notPublished += counter.notPublished;
     error += counter.error;
   }
-  // 時刻キーはゼロ詰めなので辞書順がそのまま時刻順になる。
   return { saved, hours: [...hours].sort(), unavailable, notPublished, error };
 }
 
@@ -439,8 +411,6 @@ export function buildCommitMessage(summaries) {
   for (const summary of summaries) {
     const { hours, unavailable } = summarizeEvent(summary);
     const chunks = [];
-    // どの部門が何件かより、どの時刻が増えたかが後から見て役に立つ。
-    // 部門ごとの内訳は差分そのものに出るので、ここでは全部門をまとめる。
     if (hours.length > 0) chunks.push(compressHourKeys(hours).join(', '));
     if (unavailable > 0) chunks.push(`${unavailable} unavailable`);
     if (chunks.length > 0) {
@@ -500,7 +470,6 @@ async function main() {
     return;
   }
 
-  // data/events.json は event.json から生成する。
   if (!options.dryRun && store.writeEventsJson(ROOT, events)) {
     console.log('data/events.json を更新した');
   }
@@ -529,10 +498,7 @@ async function main() {
     fs.writeFileSync(options.commitMessageOut, `${buildCommitMessage(summaries)}\n`, 'utf8');
   }
 
-  // 想定の構造で読めなかった場合は失敗させる（静かに欠測させない）。
   if (summaries.some((summary) => summary.parseFailed)) process.exitCode = 1;
 }
 
-// 直接実行されたときだけ走らせる。import しても main() が動かないようにして、
-// コミットメッセージの組み立てを外から検査できるようにする。
 if (import.meta.main) await main();

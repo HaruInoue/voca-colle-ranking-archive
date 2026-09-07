@@ -1,15 +1,14 @@
-// HTTP 取得。直列・1 リクエストごとに間隔を空ける・連絡先付きの User-Agent。
-// 5xx とタイムアウトだけ指数バックオフでリトライし、それ以外は呼び出し側に判定を任せる。
+// HTTPテキストを取得する。
 
 const USER_AGENT =
   'voca-colle-ranking-archive/1.0 (+https://github.com/HaruInoue/voca-colle-ranking-archive)';
 
 const MIN_INTERVAL_MS = 1000;
 const TIMEOUT_MS = 20000;
-const MAX_ATTEMPTS = 4; // 初回 + リトライ 3 回
+const MAX_ATTEMPTS = 4;
 const BACKOFF_BASE_MS = 2000;
 
-/** 取得できなかった（= 次回の実行で再試行すべき）ことを表す。 */
+/** 再試行可能な取得失敗。 */
 export class FetchError extends Error {
   constructor(message, status = null) {
     super(message);
@@ -20,7 +19,6 @@ export class FetchError extends Error {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// モジュール全体で 1 つ。直列前提なので、これだけで間隔が保たれる。
 let lastRequestAt = 0;
 
 async function waitForSlot() {
@@ -29,11 +27,7 @@ async function waitForSlot() {
   lastRequestAt = Date.now();
 }
 
-/**
- * 本文をテキストとして取得する。毎時履歴（JSON）と最終ランキング（HTML）で共通に使う。
- * @returns {Promise<{ status: number, text: string }>}
- * @throws {FetchError} 5xx / タイムアウト / ネットワークエラーがリトライしても解消しない場合
- */
+/** 本文をテキストとして取得する。 */
 export async function fetchText(url) {
   let lastError = null;
 
@@ -49,11 +43,8 @@ export async function fetchText(url) {
         redirect: 'follow',
         signal: AbortSignal.timeout(TIMEOUT_MS),
       });
-      // 本文の読み出しも中断・切断で失敗する。ここを try の外に出すと
-      // FetchError ではない例外が漏れ、呼び出し側の再試行に乗らない。
       text = await response.text();
     } catch (cause) {
-      // タイムアウトとネットワークエラーはリトライ対象。
       lastError = new FetchError(`取得に失敗: ${cause.message ?? cause}`);
       continue;
     }

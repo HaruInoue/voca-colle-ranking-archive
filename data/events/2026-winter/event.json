@@ -16,5 +16,14 @@
     "archiveUrlTemplate": "https://vocaloid-collection.jp/2026-winter/ranking/{division}/",
     "submissionFrom": "2026-02-20T19:00:00+09:00",
     "submissionUntil": "2026-02-23T17:00:00+09:00"
+  },
+  "website": {
+    "notices": [
+      {
+        "title": "ブレインロットについて",
+        "body": "最終ランキング2位のブレインロットについて、ボカコレ参加時の動画は削除され2026/07/11に再投稿されています。<br>動画IDが当時の取得データと最終ランキングで一致していないため一部上手く表示されないことがあります。",
+        "division": "top100"
+      }
+    ]
   }
 }

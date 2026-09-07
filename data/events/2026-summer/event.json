@@ -16,5 +16,13 @@
     "archiveUrlTemplate": "https://vocaloid-collection.jp/ranking/{division}/",
     "submissionFrom": "2026-08-21T19:00:00+09:00",
     "submissionUntil": "2026-08-24T17:00:00+09:00"
+  },
+  "website": {
+    "notices": [
+      {
+        "title": "ランキング除外について",
+        "body": "2026夏では公式のランキングから除外された動画が複数存在しますが、当サイトが取得した毎時ランキングデータからは除外されていません。<br>そのため、公式サイトに表示されていた毎時ランキングとは順位が一致していない可能性があります。"
+      }
+    ]
   }
 }
