@@ -34,7 +34,6 @@ const {
   noindex = false,
 } = Astro.props as Props;
 const pageTitle = title ? `${title} | ボカコレランキングアーカイブ` : 'ボカコレランキングアーカイブ';
-const ogTitle = title || 'ボカコレランキングアーカイブ';
 const ogDescription = description ?? '各時刻のボカコレランキングを保存した非公式アーカイブ。';
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const themeColor = eventTheme(eventId).accent;
@@ -55,7 +54,7 @@ const ogImageAltText = ogImageAlt ?? (ogImage ? undefined : 'ボカコレラン�
     <meta name="theme-color" content={themeColor} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="ボカコレランキングアーカイブ" />
-    <meta property="og:title" content={ogTitle} />
+    <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={ogDescription} />
     {!noindex && <meta property="og:url" content={canonicalUrl} />}
     {/* summary_large_image はサムネイルが主役になり、ニコニコ動画への直リンクと見分けがつかない */}
