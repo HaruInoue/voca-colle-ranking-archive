@@ -19,19 +19,44 @@ const { notices, showDivision = false } = Astro.props as Props;
   notices.length > 0 && (
     <aside class="notices" aria-label="この開催回についての注記">
       {notices.map((notice) => (
-        <article class="notice">
-          <h2 class="notice-title">
-            {notice.title}
-            {showDivision && notice.division && (
-              <span class="notice-scope">{divisionLabel(notice.division)}部門</span>
-            )}
-          </h2>
+        <details class="notice" open>
+          <summary class="notice-head">
+            <span class="disclosure-caret" aria-hidden="true" />
+            <h2 class="notice-title">
+              {notice.title}
+              {showDivision && notice.division && (
+                <span class="notice-scope">{divisionLabel(notice.division)}部門</span>
+              )}
+            </h2>
+          </summary>
           <div class="notice-body" set:html={notice.body} />
-        </article>
+        </details>
       ))}
     </aside>
   )
 }
+
+<script is:inline>
+  (() => {
+    const box = document.querySelector('.notices');
+    if (!box) return;
+    const items = box.querySelectorAll('.notice');
+
+    try {
+      if (localStorage.getItem('notices') === 'closed') {
+        for (const item of items) item.open = false;
+      }
+    } catch {}
+
+    for (const item of items) {
+      item.addEventListener('toggle', () => {
+        try {
+          localStorage.setItem('notices', item.open ? 'open' : 'closed');
+        } catch {}
+      });
+    }
+  })();
+</script>
 
 <style>
   .notices {
@@ -45,10 +70,32 @@ const { notices, showDivision = false } = Astro.props as Props;
     border-radius: var(--radius-2);
     background: var(--surface);
     box-shadow: var(--shadow-2);
+  }
+
+  .notice-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     padding: var(--space-3) var(--space-4);
+    border-radius: 0 var(--radius-2) var(--radius-2) 0;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .notice-head::-webkit-details-marker {
+    display: none;
+  }
+
+  .notice-head:hover {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .notice[open] .notice-head {
+    border-radius: 0 var(--radius-2) 0 0;
   }
 
   .notice-title {
+    margin: 0;
     font-size: 0.9375rem;
     display: flex;
     flex-wrap: wrap;
@@ -66,6 +113,7 @@ const { notices, showDivision = false } = Astro.props as Props;
   }
 
   .notice-body {
+    padding: 0 var(--space-4) var(--space-3);
     font-size: 0.9375rem;
   }
 

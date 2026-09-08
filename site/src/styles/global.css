@@ -405,6 +405,30 @@ th.numeric {
   border-color: var(--accent);
 }
 
+/* ---- 開閉の三角 ---- */
+
+.disclosure-caret {
+  flex: 0 0 auto;
+  width: 0.5rem;
+  height: 0.7rem;
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 14'%3E%3Cpath d='M1.4 0 0 1.4 5.2 7 0 12.6 1.4 14 8 7z'/%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  transition: rotate 0.15s ease;
+}
+
+details[open] > summary .disclosure-caret {
+  rotate: 90deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .disclosure-caret {
+    transition: none;
+  }
+}
+
 /* ---- サイトヘッダー ---- */
 
 .site-header {
