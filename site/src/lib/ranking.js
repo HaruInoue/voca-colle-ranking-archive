@@ -1,5 +1,7 @@
 /** 表示用のランキング導出規則。 */
 
+import { hourKeyToPlotSeconds, isoToPlotSeconds } from './format.js';
+
 export const METRIC_KEYS = ['view', 'comment', 'mylist', 'like'];
 
 export const METRIC_LABELS = {
@@ -60,6 +62,19 @@ export function resolveHourWindow(availableHourKeys, requestedHour, windowSize) 
     hourKeys: availableHourKeys.slice(startIndex, endIndex + 1),
     rightEdge: availableHourKeys[endIndex],
   };
+}
+
+/** 集計期間の外にある時刻キーを返す。 */
+export function outOfPeriodHourKeys(hourKeys, aggregationPeriod) {
+  const from = isoToPlotSeconds(aggregationPeriod?.startDateTime);
+  const until = isoToPlotSeconds(aggregationPeriod?.endDateTime);
+  if (from === null && until === null) return new Set();
+  return new Set(
+    hourKeys.filter((hourKey) => {
+      const at = hourKeyToPlotSeconds(hourKey);
+      return (from !== null && at < from) || (until !== null && at > until);
+    })
+  );
 }
 
 /** 1曲の部門別推移を作る。 */

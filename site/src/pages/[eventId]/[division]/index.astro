@@ -13,7 +13,7 @@ import {
   loadFinal,
   availableHourKeys,
 } from '@/lib/data.js';
-import { divisionLabel, resolveHourWindow } from '@/lib/ranking.js';
+import { divisionLabel, resolveHourWindow, outOfPeriodHourKeys } from '@/lib/ranking.js';
 import { columnBodyHtml, columnShellHtml } from '@/lib/render-column.js';
 import { noticesForDivisionPage } from '@/lib/notices.js';
 import { eventHref, columnFragmentHref } from '@/lib/urls.js';
@@ -45,7 +45,9 @@ function previousSnapshotOf(hourKey) {
   return loadSnapshot(eventId, division, hourKeys[position - 1]);
 }
 
-const hourColumns = hourKeys.map((hourKey) =>
+const outOfPeriod = outOfPeriodHourKeys(hourKeys, index?.aggregationPeriod);
+
+const hourColumns = hourKeys.map((hourKey, position) =>
   columnShellHtml(
     hourKey,
     prerendered.has(hourKey)
@@ -55,7 +57,12 @@ const hourColumns = hourKeys.map((hourKey) =>
           videos,
           eventId,
         })
-      : null
+      : null,
+    {
+      outOfPeriod: outOfPeriod.has(hourKey),
+      periodEdge:
+        position > 0 && outOfPeriod.has(hourKey) !== outOfPeriod.has(hourKeys[position - 1]),
+    }
   )
 );
 
@@ -104,7 +111,20 @@ const clientConfig = {
     <div class="ranking-controls">
       <div class="shell-aligned">
         <DivisionTabs eventId={eventId} current={division} />
-        <HourNavigator hourKeys={hourKeys} rightEdge={latestHour} hasFinal={Boolean(final)} />
+        {
+          outOfPeriod.size > 0 && (
+            <p class="period-legend">
+              <span class="period-legend-band" aria-hidden="true" />
+              網掛けは公式の集計期間外
+            </p>
+          )
+        }
+        <HourNavigator
+          hourKeys={hourKeys}
+          rightEdge={latestHour}
+          hasFinal={Boolean(final)}
+          outOfPeriod={outOfPeriod}
+        />
       </div>
     </div>
 
@@ -169,6 +189,22 @@ const clientConfig = {
 
   .ranking-controls :global(.hour-nav) {
     margin-left: auto;
+  }
+
+  .period-legend {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    color: var(--muted-text);
+    font-size: 0.75rem;
+  }
+
+  .period-legend-band {
+    width: 1.5rem;
+    height: 0.875rem;
+    border-right: 1px dashed var(--band-outside-edge);
+    background: var(--band-outside);
   }
 
   .header-meta {
@@ -310,6 +346,26 @@ const clientConfig = {
 
   .strip :global(.rank-col-final) {
     background: var(--surface-raised);
+  }
+
+  .strip :global(.rank-col-outside) {
+    background: var(--band-outside);
+  }
+
+  .strip :global(.rank-col-period-edge) {
+    border-left: 1px dashed var(--band-outside-edge);
+  }
+
+  .strip :global(.rank-col-outside .col-top) {
+    background: var(--band-outside);
+    border-bottom-color: var(--border-strong);
+  }
+
+  .strip :global(.col-outside) {
+    margin-left: auto;
+    color: var(--muted-text);
+    font-size: 0.6875rem;
+    font-weight: 400;
   }
 
   .strip :global(.col-top) {

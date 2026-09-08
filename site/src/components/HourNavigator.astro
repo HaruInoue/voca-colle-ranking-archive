@@ -5,10 +5,14 @@ interface Props {
   hourKeys: string[];
   rightEdge: string;
   hasFinal: boolean;
+  outOfPeriod?: Set<string>;
 }
 
-const { hourKeys, rightEdge, hasFinal } = Astro.props as Props;
-const options = hourKeys.map((hourKey) => ({ hourKey, label: parseHourKey(hourKey).full }));
+const { hourKeys, rightEdge, hasFinal, outOfPeriod } = Astro.props as Props;
+const options = hourKeys.map((hourKey) => ({
+  hourKey,
+  label: `${parseHourKey(hourKey).full}${outOfPeriod?.has(hourKey) ? '（期間外）' : ''}`,
+}));
 
 // スクリプトが付く前に押されても 1 時刻ぶんだけ動くようにする。端は自分自身に留める
 const edgeIndex = hourKeys.indexOf(rightEdge);
@@ -63,6 +67,7 @@ const nextHour = hourKeys[Math.min(hourKeys.length - 1, edgeIndex + 1)];
     display: flex;
     align-items: center;
     gap: var(--space-2);
+    max-width: 100%;
   }
 
   .hour-btn {
@@ -91,6 +96,7 @@ const nextHour = hourKeys[Math.min(hourKeys.length - 1, edgeIndex + 1)];
   }
 
   #hour-select {
+    min-width: 0;
     min-height: var(--control-square);
     padding: 0 var(--space-3);
     border: 1px solid var(--border-strong);

@@ -88,16 +88,20 @@ export function columnBodyHtml({ snapshot, previousSnapshot, videos, eventId, is
 }
 
 /** 列見出しを生成する。 */
-function headingHtml(columnId) {
+function headingHtml(columnId, outOfPeriod) {
   if (columnId === 'final') return '<span class="col-final">最終ランキング</span>';
   const { date, time } = parseHourKey(columnId);
   return `<span class="col-date">${escapeHtml(date)}</span><span class="col-time">${escapeHtml(
     time
-  )}</span>`;
+  )}</span>${outOfPeriod ? '<span class="col-outside">集計期間外</span>' : ''}`;
 }
 
 /** 列の枠を生成する。 */
-export function columnShellHtml(columnId, body = null) {
+export function columnShellHtml(
+  columnId,
+  body = null,
+  { outOfPeriod = false, periodEdge = false } = {}
+) {
   const isFinal = columnId === 'final';
   const safeId = escapeHtml(columnId);
   const loaded = body !== null;
@@ -106,9 +110,14 @@ export function columnShellHtml(columnId, body = null) {
     ? body
     : '<div class="col-skeleton" aria-hidden="true"></div><p class="visually-hidden">読み込み待ちです</p>';
 
-  return `<section class="rank-col${isFinal ? ' rank-col-final' : ''}" data-column="${safeId}" aria-labelledby="col-head-${safeId}">
+  const classNames = ['rank-col'];
+  if (isFinal) classNames.push('rank-col-final');
+  if (outOfPeriod) classNames.push('rank-col-outside');
+  if (periodEdge) classNames.push('rank-col-period-edge');
+
+  return `<section class="${classNames.join(' ')}" data-column="${safeId}" aria-labelledby="col-head-${safeId}">
 <div class="col-top">
-<h3 class="col-head" id="col-head-${safeId}" tabindex="-1">${headingHtml(columnId)}</h3>
+<h3 class="col-head" id="col-head-${safeId}" tabindex="-1">${headingHtml(columnId, outOfPeriod)}</h3>
 </div>
 <div class="col-body" data-state="${loaded ? 'loaded' : 'placeholder'}"${
     isFinal ? '' : ` data-hour="${safeId}"`

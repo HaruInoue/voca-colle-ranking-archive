@@ -21,6 +21,10 @@
   --ink-band: color-mix(in srgb, var(--accent) 35%, #221f2c);
   --on-ink-band: #f0eff6;
 
+  /* 集計期間外を示す網掛け */
+  --band-outside: color-mix(in srgb, var(--muted-text) 12%, var(--surface));
+  --band-outside-edge: color-mix(in srgb, var(--muted-text) 60%, var(--surface));
+
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -204,7 +208,7 @@ th.numeric {
 }
 
 .chart-band-color {
-  color: color-mix(in srgb, var(--muted-text) 12%, var(--surface));
+  color: var(--band-outside);
 }
 
 .chart-day-color {

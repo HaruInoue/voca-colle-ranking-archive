@@ -68,7 +68,7 @@ const tables = seriesList.map((series) => ({
           {hasOutsideTally && (
             <p class="chart-legend">
               <span class="chart-legend-band" aria-hidden="true" />
-              網掛けは公式の集計期間の外
+              網掛けは公式の集計期間外
             </p>
           )}
         </div>
@@ -230,8 +230,8 @@ const tables = seriesList.map((series) => ({
   .chart-legend-band {
     width: 1.5rem;
     height: 0.875rem;
-    border-right: 1px dashed color-mix(in srgb, var(--muted-text) 60%, transparent);
-    background: color-mix(in srgb, var(--muted-text) 12%, transparent);
+    border-right: 1px dashed var(--band-outside-edge);
+    background: var(--band-outside);
   }
 
   .chart {
@@ -336,8 +336,6 @@ const tables = seriesList.map((series) => ({
     overflow-x: auto;
   }
 
-  /* 列は内容の幅に合わせる。width: 100% だと、横スクロールが必要な狭い画面でも
-     余った幅が集計日時の列に回り、日時の右側だけが広く空く */
   table {
     border-collapse: collapse;
     width: max-content;

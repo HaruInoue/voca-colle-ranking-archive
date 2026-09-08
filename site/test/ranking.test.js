@@ -10,6 +10,7 @@ import {
   metricDiffs,
   divisionLabel,
   canonicalDivision,
+  outOfPeriodHourKeys,
 } from '../src/lib/ranking.js';
 import { noticesForEventPage, noticesForDivisionPage } from '../src/lib/notices.js';
 import {
@@ -245,4 +246,20 @@ test('曲名の HTML は必ずエスケープする', () => {
     escapeHtml('<script>alert("x")</script>&\'"'),
     '&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;&amp;&#39;&quot;'
   );
+});
+
+test('集計期間の外にある時刻キーだけを拾う', () => {
+  const hourKeys = ['2026-08-21-2300', '2026-08-22-0000', '2026-08-24-1700', '2026-08-24-1800'];
+  const period = {
+    startDateTime: '2026-08-22T00:00:00+09:00',
+    endDateTime: '2026-08-24T17:00:00+09:00',
+  };
+  assert.deepEqual(
+    [...outOfPeriodHourKeys(hourKeys, period)],
+    ['2026-08-21-2300', '2026-08-24-1800']
+  );
+});
+
+test('集計期間が分からない場合はどの時刻も期間外にしない', () => {
+  assert.equal(outOfPeriodHourKeys(['2026-08-22-0000'], undefined).size, 0);
 });
