@@ -2,7 +2,8 @@
 import '../styles/global.css';
 import SiteSearch from '@/components/SiteSearch.astro';
 import { siteHref } from '@/lib/urls.js';
-import { themeStyle } from '@/lib/theme.js';
+import { eventTheme, themeStyle } from '@/lib/theme.js';
+import { ogImageHref } from '@/lib/og-image.js';
 
 interface Crumb {
   label: string;
@@ -13,8 +14,11 @@ interface Props {
   title: string;
   description?: string;
   eventId?: string;
+  division?: string;
   crumbs?: Crumb[];
   wide?: boolean;
+  ogImage?: string;
+  ogImageAlt?: string;
   noindex?: boolean;
 }
 
@@ -22,11 +26,21 @@ const {
   title,
   description,
   eventId,
+  division,
   crumbs = [],
   wide = false,
+  ogImage,
+  ogImageAlt,
   noindex = false,
 } = Astro.props as Props;
 const pageTitle = title ? `${title} | ボカコレランキングアーカイブ` : 'ボカコレランキングアーカイブ';
+const ogTitle = title || 'ボカコレランキングアーカイブ';
+const ogDescription = description ?? '各時刻のボカコレランキングを保存した非公式アーカイブ。';
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const themeColor = eventTheme(eventId).accent;
+/* 個別の画像がないページには、そのページの見た目のスクリーンショットを充てる */
+const ogImageUrl = ogImage ?? ogImageHref(eventId, division);
+const ogImageAltText = ogImageAlt ?? (ogImage ? undefined : 'ボカコレランキングアーカイブの画面');
 ---
 
 <!doctype html>
@@ -37,6 +51,17 @@ const pageTitle = title ? `${title} | ボカコレランキングアーカイブ
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <link rel="canonical" href={canonicalUrl} />}
+    <meta name="theme-color" content={themeColor} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ボカコレランキングアーカイブ" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    {!noindex && <meta property="og:url" content={canonicalUrl} />}
+    {/* summary_large_image はサムネイルが主役になり、ニコニコ動画への直リンクと見分けがつかない */}
+    <meta name="twitter:card" content="summary" />
+    {ogImageUrl && <meta property="og:image" content={new URL(ogImageUrl, Astro.site)} />}
+    {ogImageUrl && ogImageAltText && <meta property="og:image:alt" content={ogImageAltText} />}
     <script is:inline>
       try {
         const theme = localStorage.getItem('color-scheme');
