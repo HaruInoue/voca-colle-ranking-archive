@@ -84,7 +84,7 @@ const clientConfig = {
   <div class="shell-aligned">
     <header class="division-header">
       <h1 class="event-title">
-        {event.title}<span class="visually-hidden"> {label}部門</span>
+        {event.title}<span class="division-name"> {label}部門</span>
       </h1>
       <dl class="header-meta">
         <div>
@@ -93,23 +93,23 @@ const clientConfig = {
         </div>
       </dl>
     </header>
+
+    <div class="notices-slot">
+      <EventNotices notices={notices} />
+    </div>
   </div>
 
-  {/* 操作の行と表を同じ親に入れる。sticky は親要素の高さの中でしか効かないため */}
   <div class="ranking-main">
-    <div class="ranking-controls shell-aligned">
-      <DivisionTabs eventId={eventId} current={division} />
-      <HourNavigator hourKeys={hourKeys} rightEdge={latestHour} hasFinal={Boolean(final)} />
-    </div>
-
-    <div class="notices-slot shell-aligned">
-      <EventNotices notices={notices} />
+    <div class="ranking-controls">
+      <div class="shell-aligned">
+        <DivisionTabs eventId={eventId} current={division} />
+        <HourNavigator hourKeys={hourKeys} rightEdge={latestHour} hasFinal={Boolean(final)} />
+      </div>
     </div>
 
     <h2 class="compare-title">時刻別ランキング比較</h2>
 
     <div class="strip-wrap">
-      <div class="strip-scrollbar" data-strip-scrollbar aria-hidden="true" hidden><div></div></div>
       <div class="strip" id="rank-strip" tabindex="0" role="group" aria-label={`${label}部門の時刻別ランキング`}>
         {domOrderedColumns.map((html) => <Fragment set:html={html} />)}
       </div>
@@ -126,6 +126,10 @@ const clientConfig = {
 <style>
   .division-header {
     margin-bottom: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
   }
 
   .event-title {
@@ -137,8 +141,25 @@ const clientConfig = {
     color: var(--accent-ink);
   }
 
+  .division-name {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--muted-text);
+  }
+
+  .ranking-main {
+    --pane-gap: 2rem;
+    height: calc(100svh - var(--pane-gap));
+    display: flex;
+    flex-direction: column;
+  }
+
   .ranking-controls {
     margin-top: var(--space-4);
+    padding: var(--space-2) 0;
+  }
+
+  .ranking-controls > .shell-aligned {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -149,19 +170,8 @@ const clientConfig = {
     margin-left: auto;
   }
 
-  /* 狭い幅では表が1万px超になり、時刻を変えるのに先頭まで戻ることになる */
-  @media (max-width: 640px) {
-    .ranking-controls {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      padding: var(--space-2) 0;
-      background: var(--ground);
-    }
-  }
-
   .header-meta {
-    margin: var(--space-1) 0 0;
+    margin: 0;
     display: flex;
     flex-wrap: wrap;
     gap: 0 var(--space-4);
@@ -198,6 +208,8 @@ const clientConfig = {
   /* ---- 時刻別ランキング比較 ---- */
 
   .strip-wrap {
+    flex: 1;
+    min-height: 0;
     margin-top: var(--space-3);
     border-radius: var(--radius-3);
     background: var(--surface);
@@ -207,38 +219,15 @@ const clientConfig = {
     --col-width: 15.5rem;
   }
 
-  .strip-scrollbar {
-    overflow-x: auto;
-    overflow-y: hidden;
-    border-bottom: 1px solid var(--border);
-    scrollbar-color: var(--border-strong) var(--surface-raised);
-  }
-
-  .strip-scrollbar > div {
-    height: 1px;
-  }
-
-  .strip-scrollbar::-webkit-scrollbar {
-    height: 12px;
-  }
-
-  .strip-scrollbar::-webkit-scrollbar-track {
-    background: var(--surface-raised);
-  }
-
-  .strip-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--border-strong);
-    border-radius: 6px;
-  }
-
   .strip {
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: hidden;
     gap: 1px;
     background: var(--border);
+    height: 100%;
+    overflow: auto;
+    overscroll-behavior-x: contain;
   }
 
   .strip:focus-visible {
@@ -246,18 +235,7 @@ const clientConfig = {
     outline-offset: -3px;
   }
 
-  @media (min-width: 641px) {
-    .strip {
-      /* 実測値をスクリプトが渡す。JS なしのときの控えめな既定値も置く */
-      max-height: var(--strip-max-height, calc(100vh - 9rem));
-      overflow: auto;
-      overscroll-behavior-x: contain;
-    }
-  }
-
   .strip :global(.rank-col) {
-    /* 時刻の移動でページが動いたとき、sticky な操作の行の裏に入らないようにする */
-    scroll-margin-top: var(--sticky-offset, 0px);
     flex: 0 0 var(--col-width);
     min-width: var(--col-width);
     background: var(--surface);
@@ -563,6 +541,16 @@ const clientConfig = {
   @media (max-width: 640px) {
     .strip-wrap {
       --col-width: min(20rem, 88vw);
+      margin-top: var(--space-2);
+    }
+
+    .ranking-main {
+      --pane-gap: 0.5rem;
+    }
+
+    .ranking-controls {
+      margin-top: var(--space-2);
+      padding: var(--space-1) 0;
     }
   }
 </style>

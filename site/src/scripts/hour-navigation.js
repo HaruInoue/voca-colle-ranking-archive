@@ -181,58 +181,6 @@ export function setupHourNavigation() {
     tracker.observe(body);
   }
 
-  function setupTopScrollbar() {
-    const bar = document.querySelector('[data-strip-scrollbar]');
-    const spacer = bar?.firstElementChild;
-    if (!bar || !spacer) return;
-
-    const maxScroll = () => strip.scrollWidth - strip.clientWidth;
-    let syncing = false;
-
-    function syncSizes() {
-      spacer.style.width = `${strip.scrollWidth + (bar.clientWidth - strip.clientWidth)}px`;
-      // 自分で動かした分を下の scroll ハンドラが表に書き戻さないよう塞ぐ
-      syncing = true;
-      bar.scrollLeft = maxScroll() + strip.scrollLeft;
-      requestAnimationFrame(() => {
-        syncing = false;
-      });
-    }
-
-    bar.hidden = false;
-    syncSizes();
-
-    bar.addEventListener(
-      'scroll',
-      () => {
-        if (syncing) return;
-        syncing = true;
-        strip.scrollLeft = bar.scrollLeft - maxScroll();
-        requestAnimationFrame(() => {
-          syncing = false;
-        });
-      },
-      { passive: true }
-    );
-
-    strip.addEventListener(
-      'scroll',
-      () => {
-        if (syncing) return;
-        syncing = true;
-        bar.scrollLeft = maxScroll() + strip.scrollLeft;
-        requestAnimationFrame(() => {
-          syncing = false;
-        });
-      },
-      { passive: true }
-    );
-
-    new ResizeObserver(() => syncSizes()).observe(strip);
-  }
-
-  setupTopScrollbar();
-
   let settleTimer = 0;
   function onScrollSettled() {
     clearTimeout(settleTimer);
@@ -280,22 +228,6 @@ export function setupHourNavigation() {
   select?.addEventListener('change', (event) => {
     scrollToHour(event.target.value, { focus: true });
   });
-
-  // 表の高さは「表の上端から画面下端まで」。上部の要素数や折り返しで変わるので実測して渡す
-  const stripWrap = strip.closest('.strip-wrap');
-  const controls = document.querySelector('.ranking-controls');
-
-  function syncStripMetrics() {
-    const top = Math.round(strip.getBoundingClientRect().top + window.scrollY);
-    stripWrap.style.setProperty('--strip-max-height', `calc(100dvh - ${top}px)`);
-
-    // 時刻を移動するとページも縦に動くので、操作の行に隠れないよう避ける幅を渡す
-    const sticky = controls && getComputedStyle(controls).position === 'sticky';
-    const offset = sticky ? Math.ceil(controls.getBoundingClientRect().height) : 0;
-    stripWrap.style.setProperty('--sticky-offset', `${offset}px`);
-  }
-  syncStripMetrics();
-  window.addEventListener('resize', syncStripMetrics);
 
   const requested = new URL(window.location.href).searchParams.get('hour');
   if (requested && hourKeys.includes(requested)) scrollToHour(requested);
