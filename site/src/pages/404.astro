@@ -1,0 +1,64 @@
+---
+import Base from '@/layouts/Base.astro';
+import { publishableEvents } from '@/lib/data.js';
+import { eventHref } from '@/lib/urls.js';
+import { themeStyle } from '@/lib/theme.js';
+
+const events = publishableEvents();
+---
+
+<Base title="ページが見つかりません" description="お探しのページは見つかりませんでした。" noindex>
+  <div class="notfound">
+    <h1>
+      <span class="display-en">404</span>
+      <span class="notfound-ja">ページが見つかりません</span>
+    </h1>
+    <p class="notfound-lead">
+      このURLにはランキングの記録がありません。<br>URLの入力間違いか、ページが移動または削除された可能性があります。
+    </p>
+  </div>
+
+  <ul class="notfound-links">
+    <li><a class="pill" href="#search-input">曲を検索する</a></li>
+    {
+      events.map((event) => (
+        <li style={themeStyle(event.eventId)}>
+          <a class="pill event-pill" href={eventHref(event.eventId)}>{event.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
+
+<style>
+  .notfound {
+    margin-bottom: var(--space-5);
+  }
+
+  .notfound-ja {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .notfound-lead {
+    margin: var(--space-2) 0 0;
+    font-size: 0.9375rem;
+    color: var(--muted-text);
+  }
+
+  .notfound-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* 開催回ごとに色が違うため、:root で解決済みの --accent-ink は使えない */
+  .event-pill {
+    color: light-dark(var(--accent-ink-light), var(--accent-ink-dark));
+  }
+</style>

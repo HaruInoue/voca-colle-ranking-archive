@@ -15,9 +15,17 @@ interface Props {
   eventId?: string;
   crumbs?: Crumb[];
   wide?: boolean;
+  noindex?: boolean;
 }
 
-const { title, description, eventId, crumbs = [], wide = false } = Astro.props as Props;
+const {
+  title,
+  description,
+  eventId,
+  crumbs = [],
+  wide = false,
+  noindex = false,
+} = Astro.props as Props;
 const pageTitle = title ? `${title} | ボカコレランキングアーカイブ` : 'ボカコレランキングアーカイブ';
 ---
 
@@ -28,6 +36,7 @@ const pageTitle = title ? `${title} | ボカコレランキングアーカイブ
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex" />}
     <script is:inline>
       try {
         const theme = localStorage.getItem('color-scheme');
