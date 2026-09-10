@@ -43,14 +43,18 @@ function rowHtml({ entry, delta, video, eventId, showDelta }) {
 
   const medalClass = entry.rank <= 3 ? ` rank-num-medal rank-num-${entry.rank}` : '';
 
+  const thumb = video.thumbnailUrl
+    ? `<img class="rank-thumb" src="${escapeHtml(video.thumbnailUrl)}" alt="${escapeHtml(
+        `${title} のサムネイル`
+      )}" loading="lazy" decoding="async" width="130" height="100">`
+    : '<span class="rank-thumb" aria-hidden="true"></span>';
+
   return `<li class="rank-row">
 <div class="rank-head"><span class="rank-num${medalClass}">${entry.rank}</span>${
     showDelta ? deltaHtml(delta) : ''
   }</div>
 <a class="rank-song" href="${escapeHtml(videoHref(eventId, entry.watchId))}">
-<img class="rank-thumb" src="${escapeHtml(video.thumbnailUrl)}" alt="${escapeHtml(
-    `${title} のサムネイル`
-  )}" loading="lazy" decoding="async" width="130" height="100">
+${thumb}
 <span class="rank-title">${escapeHtml(title)}</span>
 </a>
 <div class="rank-owner">${escapeHtml(video.owner?.name ?? '')}</div>
