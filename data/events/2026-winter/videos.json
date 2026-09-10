@@ -88,7 +88,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 253,
       "owner": { "type": "user", "id": "131132849", "name": "kafumi" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45861883/45861883.54149202.M",
+      "thumbnailUrl": null,
       "shortDescription": "3作目歌:カゼヒキコーラス：初音ミク、ゲキヤク作詞作曲絵ギターベース：kafumiX(twitter",
       "sourceHour": "2026-02-23-2300"
     },
@@ -313,7 +313,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 168,
       "owner": { "type": "user", "id": "121647798", "name": "Shiki_" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45862978/45862978.97559400.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45862978/45862978.39463193.M",
       "shortDescription": "「怪物は不死身になれない」Shiki_です、よろしく。不死身のバケモノ▷はアヴィ・ターナ、怪物◀はハ",
       "sourceHour": "2026-02-22-0800"
     },
@@ -475,7 +475,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 266,
       "owner": { "type": "user", "id": "36799138", "name": "JB" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45863301/45863301.41187214.M",
+      "thumbnailUrl": null,
       "shortDescription": "みんなの思う初音ミクを数字でコメントしてね①②③④⑤⑥⑦⑧⑨〜分からない人はお風呂の温度とかかこう！",
       "sourceHour": "final"
     },
@@ -520,7 +520,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 180,
       "owner": { "type": "user", "id": "125167690", "name": "nakana" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45863608/45863608.2747904.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45863608/45863608.65411462.M",
       "shortDescription": "【ボカコレ2026冬TOP100参加楽曲】『君が作ったものが見たいんだ』結局何を作るかより誰が作るか",
       "sourceHour": "2026-02-23-1000"
     },
@@ -763,7 +763,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 232,
       "owner": { "type": "user", "id": "15332418", "name": "まびこ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45873629/45873629.83197200.M",
+      "thumbnailUrl": null,
       "shortDescription": "「私だけの歌なんてきっと……」「あなたもそう思うでしょ？」「ねえ──」ボカコレ2026冬ルーキー参加",
       "sourceHour": "2026-02-23-0900"
     },
@@ -1015,7 +1015,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 195,
       "owner": { "type": "user", "id": "121088944", "name": "rotten D" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45888378/45888378.57314310.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45888378/45888378.82499838.M",
       "shortDescription": "ボカロ6作目です。半分実体験ですシゾフレニア（schizophrenia）統合失調症。シゾともいう。",
       "sourceHour": "2026-02-22-0600"
     },
@@ -1150,7 +1150,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 161,
       "owner": { "type": "user", "id": "141356555", "name": "ポチっとん" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45898936/45898936.34199387.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45898936/45898936.43577440.M",
       "shortDescription": "【ボカコレ2026冬ルーキー参加曲】はじめまして「ポチっとん」です。DTMを初めて1本目に作成した処",
       "sourceHour": "2026-02-23-0500"
     },
@@ -1258,7 +1258,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 158,
       "owner": { "type": "user", "id": "123832209", "name": "氷餌" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45904927/45904927.20133682.M",
+      "thumbnailUrl": null,
       "shortDescription": "最近のX使いずらいですよね…分かります～Credit～原曲 夏山よつぎ(feat.初音ミク)http",
       "sourceHour": "2026-02-23-2200"
     },
@@ -1564,7 +1564,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 399,
       "owner": { "type": "user", "id": "138065405", "name": "川原遥翔" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45918432/45918432.25835330.M",
+      "thumbnailUrl": null,
       "shortDescription": "｢きっと何度も壊れるから初めから壊してずっと良く見せるから」川原です「人はすぐに壊れる」と道徳は云い",
       "sourceHour": "2026-02-21-2300"
     },
@@ -1807,7 +1807,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 180,
       "owner": { "type": "user", "id": "132550875", "name": "Bontinel" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45930707/45930707.68641722.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45930707/45930707.5750959.M",
       "shortDescription": "はじめまして、Bontinelです。 ワッフルっておいしいですよね。そんな感じの曲です。 良かったら",
       "sourceHour": "2026-02-23-0600"
     },
@@ -2293,7 +2293,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 192,
       "owner": { "type": "user", "id": "137387396", "name": "吉田楓" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45942632/45942632.65797932.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45942632/45942632.86514215.M",
       "shortDescription": "\"BE WILD...\"とコメントを残してくれると嬉しいです。!!ボカコレルーキー2026冬参加曲!",
       "sourceHour": "final"
     },
@@ -2320,7 +2320,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 174,
       "owner": { "type": "user", "id": "122830139", "name": "タクト / Takuto" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45943981/45943981.40455386.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45943981/45943981.81656013.M",
       "shortDescription": "水温 - Suion歌：初音ミク曲：タクトhttps://x.com/takut0323動画：Kar",
       "sourceHour": "2026-02-23-2300"
     },
@@ -2797,7 +2797,7 @@
       "registeredAt": "2026-02-21T21:00:00+09:00",
       "duration": 153,
       "owner": { "type": "user", "id": "30116456", "name": "ONE WORLD(よっぴ）" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45950882/45950882.73676631.M",
+      "thumbnailUrl": null,
       "shortDescription": "約束（Yakusoku）Remix2026/ONE WORLD feat. Otomachi Una",
       "sourceHour": "2026-02-22-2000"
     },
@@ -2941,7 +2941,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 205,
       "owner": { "type": "user", "id": "88960493", "name": "マノミノリ MinoriMano" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45952071/45952071.10621045.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45952071/45952071.42980421.M",
       "shortDescription": "『edge』という曲です。Song / Lyrics / Arrangement / Video :",
       "sourceHour": "2026-02-22-0500"
     },
@@ -3445,7 +3445,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 206,
       "owner": { "type": "user", "id": "129685859", "name": "inumanju" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45956360/45956360.62168543.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45956360/45956360.15972528.M",
       "shortDescription": "案外変わんないなあってmusic&movie: inumanjuvocal: ナースロボ_タイプTT",
       "sourceHour": "2026-02-23-0300"
     },
@@ -3787,7 +3787,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 211,
       "owner": { "type": "user", "id": "136164003", "name": "SUIBUN" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45958807/45958807.18213794.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45958807/45958807.24600471.M",
       "shortDescription": "『目がかすむほど、シオンが眩しく見えた』■ボカコレ2026冬ルーキーランキング参加曲です。『The ",
       "sourceHour": "2026-02-23-0800"
     },
@@ -4021,7 +4021,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 120,
       "owner": { "type": "user", "id": "132046323", "name": "夜桐蒼 / yokiri soh" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45959940/45959940.21647773.M",
+      "thumbnailUrl": null,
       "shortDescription": "6作目Memory and the Heart / Kazehiki, NerseRobot_Typ",
       "sourceHour": "2026-02-23-0400"
     },
@@ -4930,7 +4930,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 195,
       "owner": { "type": "user", "id": "562483", "name": "香乃（郁羅）" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45963533/45963533.94951931.M",
+      "thumbnailUrl": null,
       "shortDescription": "ラストルーキーです！！最推し音源のNOA君と、コーラス隊に猫村いろはさんとSOLARIAさんに来ても",
       "sourceHour": "2026-02-22-1200"
     },
@@ -5389,7 +5389,7 @@
       "registeredAt": "2026-02-20T19:01:16+09:00",
       "duration": 173,
       "owner": { "type": "user", "id": "128698526", "name": "むじく" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45964939/45964939.97949535.M",
+      "thumbnailUrl": null,
       "shortDescription": "作詞作曲編曲イラスト-むじく幽霊の手記ghost noteあなたの瞳を見ていた夜風が少し冷たい私の言",
       "sourceHour": "2026-02-22-1600"
     },
@@ -5416,7 +5416,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 233,
       "owner": { "type": "user", "id": "132601370", "name": "ヴァゲット" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45964998/45964998.10093791.M",
+      "thumbnailUrl": null,
       "shortDescription": "わぁ～！！！！！！！！□何も見えないヴァゲットと申します。醜い刺激を書きました。□歌/初音ミク、ヴァ",
       "sourceHour": "2026-02-21-0900"
     },
@@ -6073,7 +6073,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 143,
       "owner": { "type": "user", "id": "143231407", "name": "ヰ海夜舟" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45966632/45966632.6455324.M",
+      "thumbnailUrl": null,
       "shortDescription": "「あなたが⚫︎したのに」はじめまして。初投稿です。優しくしてください、曲は優しくないけれど。音楽、イ",
       "sourceHour": "2026-02-21-0500"
     },
@@ -6109,7 +6109,7 @@
       "registeredAt": "2026-02-21T01:03:04+09:00",
       "duration": 246,
       "owner": { "type": "user", "id": "129978050", "name": "おねロリ導師Yanagi" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45966761/45966761.18038458.M",
+      "thumbnailUrl": null,
       "shortDescription": "ロケットサイダー作詞：ナユタン星人作曲：ナユタン星人編曲：ナユタン星人唄：初音ミクhttps://w",
       "sourceHour": "2026-02-22-2000"
     },
@@ -6667,7 +6667,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 226,
       "owner": { "type": "user", "id": "136816332", "name": "メタルマン" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45967742/45967742.48878595.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45967742/45967742.1283468.M",
       "shortDescription": "触れられない鼓動に、呼吸を預ける夜。数字の向こうで、まだ倒れていない誰か。起きてる人、いる？voca",
       "sourceHour": "2026-02-23-0600"
     },
@@ -6766,7 +6766,7 @@
       "registeredAt": "2026-02-21T00:01:00+09:00",
       "duration": 142,
       "owner": { "type": "user", "id": "90373591", "name": "わかのP" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45967911/45967911.49347604.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45967911/45967911.40850762.M",
       "shortDescription": "投稿者/わかのP曲名/ほにゃららキャスターfeat.音街ウナ■ボカコレ2026冬TOP100ランキン",
       "sourceHour": "final"
     },
@@ -7018,7 +7018,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 251,
       "owner": { "type": "user", "id": "131744860", "name": "TC’s WORKS" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45968123/45968123.80328633.M",
+      "thumbnailUrl": null,
       "shortDescription": "ヤーマン三不粘！🇯🇲コメントしていいよ↓シャバドゥビダバ三不粘〜♪==============【ご本",
       "sourceHour": "2026-02-23-2300"
     },
@@ -7045,7 +7045,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 198,
       "owner": { "type": "user", "id": "96813451", "name": "カニカマ以下" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45968148/45968148.38885086.M",
+      "thumbnailUrl": null,
       "shortDescription": "お疲れ様です、カニカマ以下と申します。鈍感系ラブソングのつもりで作りました。歌　重音テト曲・動画　カ",
       "sourceHour": "2026-02-21-2000"
     },
@@ -7873,7 +7873,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 194,
       "owner": { "type": "user", "id": "143296570", "name": "Haruka-ze" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45969544/45969544.69378027.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45969544/45969544.59271715.M",
       "shortDescription": "初めまして、Haruka-zeと申します！この曲が初投稿になります。■ボカコレ2026冬ルーキーラン",
       "sourceHour": "2026-02-23-2300"
     },
@@ -8404,7 +8404,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 144,
       "owner": { "type": "user", "id": "134494485", "name": "iofy" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970063/45970063.18894221.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970063/45970063.7308201.M",
       "shortDescription": "歌唱▷初音ミク曲、映像▷iofy https://x.com/iofy_8285コマンド「shika",
       "sourceHour": "2026-02-23-2000"
     },
@@ -8503,7 +8503,7 @@
       "registeredAt": "2026-02-20T19:03:03+09:00",
       "duration": 174,
       "owner": { "type": "user", "id": "141192912", "name": "toriha" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970231/45970231.42928905.M",
+      "thumbnailUrl": null,
       "shortDescription": "Λの水槽(ラムダのすいそう)歌 : 鏡音リンその他 : toriha■ボカコレ2026冬ルーキーラン",
       "sourceHour": "2026-02-23-2000"
     },
@@ -8557,7 +8557,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 202,
       "owner": { "type": "user", "id": "141305219", "name": "Memor-ea" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970284/45970284.86904240.M",
+      "thumbnailUrl": null,
       "shortDescription": "歌　重音テトそれ以外　Memor-ea（メモリア）夜中二時半　フォローした瞬間なんか画面変わったんや",
       "sourceHour": "2026-02-23-2100"
     },
@@ -8575,7 +8575,7 @@
       "registeredAt": "2026-02-20T19:05:00+09:00",
       "duration": 172,
       "owner": { "type": "user", "id": "138781110", "name": "MAJIRIKE" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970296/45970296.24462888.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970296/45970296.3322693.M",
       "shortDescription": "Streaming : https://linkco.re/ruUPNUcsYouTube : ht",
       "sourceHour": "2026-02-22-0300"
     },
@@ -8692,7 +8692,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 374,
       "owner": { "type": "user", "id": "123943100", "name": "おぼろ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970403/45970403.6051255.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970403/45970403.66169281.M",
       "shortDescription": "午年頑張りましょう！■ボカコレ2026冬TOP100ランキング参加曲です。『The VOCALOID",
       "sourceHour": "2026-02-22-0100"
     },
@@ -8908,7 +8908,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 201,
       "owner": { "type": "user", "id": "24692699", "name": "HyroakySnooky" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970637/45970637.35989633.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970637/45970637.5812372.M",
       "shortDescription": "ボカコレ2026冬ルーキー参加曲です。お聴きいただき、ご覧いただきありがとうございます！気に入ってい",
       "sourceHour": "2026-02-21-2200"
     },
@@ -9097,7 +9097,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 94,
       "owner": { "type": "user", "id": "56773768", "name": "夕夕 茜" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970770/45970770.10949250.M",
+      "thumbnailUrl": null,
       "shortDescription": "「 禍々しき春を迎え撃つ 」初投稿です。よろしくお願いします。和ロックこそ至高◆曲 絵 映像 夕夕茜",
       "sourceHour": "2026-02-23-1800"
     },
@@ -9169,7 +9169,7 @@
       "registeredAt": "2026-02-20T19:00:44+09:00",
       "duration": 131,
       "owner": { "type": "user", "id": "138489843", "name": "♫☆toneclusterr☆♫" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970832/45970832.11198054.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970832/45970832.51980111.M",
       "shortDescription": "歌 : 重音テト(UTAU)音楽 : toneclusterr動画 : toneclusterrMM",
       "sourceHour": "2026-02-23-1900"
     },
@@ -9223,7 +9223,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 227,
       "owner": { "type": "user", "id": "121319177", "name": "reinou" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970860/45970860.79977287.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970860/45970860.66137919.M",
       "shortDescription": "reinouです。久々のボカコレです、ずっと書きたかったお話です。最低で最悪なぼくらいいね欄からおま",
       "sourceHour": "2026-02-21-2100"
     },
@@ -9403,7 +9403,7 @@
       "registeredAt": "2026-02-20T19:00:58+09:00",
       "duration": 161,
       "owner": { "type": "user", "id": "139275474", "name": "noctam" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45970964/45970964.77075518.M",
+      "thumbnailUrl": null,
       "shortDescription": "沖縄そば歌：唄音ウタその他：noctamnoctamです 沖縄そば作目沖縄そば　　　　　　沖縄そば投",
       "sourceHour": "2026-02-23-0700"
     },
@@ -9493,7 +9493,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 211,
       "owner": { "type": "user", "id": "127812938", "name": "Mused/ミューズド" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971003/45971003.75217005.M",
+      "thumbnailUrl": null,
       "shortDescription": "制作上の手違いでMVの完成が少しの間遅延しております。申し訳ございません。しかし私は同時に、私がこの",
       "sourceHour": "2026-02-23-2300"
     },
@@ -9520,7 +9520,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 125,
       "owner": { "type": "user", "id": "132125786", "name": "東京真中" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971012/45971012.85309137.M",
+      "thumbnailUrl": null,
       "shortDescription": "糖なんて比じゃない......CREDITSSoundMusic, Lyrics, Arrangem",
       "sourceHour": "2026-02-23-2300"
     },
@@ -9592,7 +9592,7 @@
       "registeredAt": "2026-02-20T19:00:00+09:00",
       "duration": 154,
       "owner": { "type": "user", "id": "132070961", "name": "ミナ・ウタイタナル" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971037/45971037.3885097.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971037/45971037.25700938.M",
       "shortDescription": "憧れと臆病さの間で揺れるテトさんの閉塞感満載の独り言ソングです！いいね・マイリス・コメントお待ちして",
       "sourceHour": "2026-02-23-1300"
     },
@@ -9682,7 +9682,7 @@
       "registeredAt": "2026-02-20T19:04:12+09:00",
       "duration": 77,
       "owner": { "type": "user", "id": "116883456", "name": "田中まんじ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971113/45971113.82581201.M",
+      "thumbnailUrl": null,
       "shortDescription": "初めまして、田中まんじです。病的独我論(びょうてきどくがろん)という曲です。曲動画:田中まんじ: h",
       "sourceHour": "2026-02-23-2000"
     },
@@ -9727,7 +9727,7 @@
       "registeredAt": "2026-02-20T19:03:06+09:00",
       "duration": 123,
       "owner": { "type": "user", "id": "143320768", "name": "えふ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971175/45971175.40331719.M",
+      "thumbnailUrl": null,
       "shortDescription": "病んじゃいそうにゃん＞＜kawaii × VocaTECH高評価よろしくお願いします！歌:初音ミク曲",
       "sourceHour": "2026-02-21-0500"
     },
@@ -9835,7 +9835,7 @@
       "registeredAt": "2026-02-20T19:09:04+09:00",
       "duration": 137,
       "owner": { "type": "user", "id": "3250368", "name": "森砂季（現代川柳ボカロP）" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971256/45971256.90160378.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971256/45971256.25235401.M",
       "shortDescription": "投稿者名・森砂季（もり さき）タイトルの読み・エッちり【歌詞】エチエチ エッ地理エチエチ エッ地理エ",
       "sourceHour": "2026-02-23-0500"
     },
@@ -9862,7 +9862,7 @@
       "registeredAt": "2026-02-20T19:10:07+09:00",
       "duration": 107,
       "owner": { "type": "user", "id": "141626356", "name": "ISOBEAGE" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971272/45971272.35185810.M",
+      "thumbnailUrl": null,
       "shortDescription": "作詞作曲：さくイラスト：窪園なぬか歌：鏡音リン【歌詞】まんざらでもない態度で飼い主が鎖を締め付けて撫",
       "sourceHour": "2026-02-22-1000"
     },
@@ -10006,7 +10006,7 @@
       "registeredAt": "2026-02-20T19:37:04+09:00",
       "duration": 169,
       "owner": { "type": "user", "id": "141262369", "name": "暴飲暴食P" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971503/45971503.35027512.M",
+      "thumbnailUrl": null,
       "shortDescription": "暴飲暴食P_うそつきマカロンfeat.重音テトいいね、マイリス、コメント、拡散よろしくお願いします！",
       "sourceHour": "2026-02-23-2300"
     },
@@ -10132,7 +10132,7 @@
       "registeredAt": "2026-02-20T19:41:04+09:00",
       "duration": 217,
       "owner": { "type": "user", "id": "132498372", "name": "涼風抄" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971672/45971672.82260424.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45971672/45971672.5289664.M",
       "shortDescription": "ボカコレ2026冬ルーキー参加曲です！今回は暗い曲になりますが「いいね、マイリス、コメント」をしてく",
       "sourceHour": "2026-02-21-1000"
     },
@@ -11185,7 +11185,7 @@
       "registeredAt": "2026-02-20T23:02:04+09:00",
       "duration": 257,
       "owner": { "type": "user", "id": "141502887", "name": "Adam" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45972977/45972977.65522458.M",
+      "thumbnailUrl": null,
       "shortDescription": "曲名　べべルギア歌　　初音ミク曲　　Adam■ボカコレ2026冬ルーキーランキング参加曲です。『Th",
       "sourceHour": "2026-02-23-2300"
     },
@@ -11302,7 +11302,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 142,
       "owner": { "type": "user", "id": "121345102", "name": "OUTLOUD" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45973058/45973058.90663733.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45973058/45973058.14400249.M",
       "shortDescription": "オアダイ語り: 男性1 (VOICEPEAK)曲／映像: OUTLOUD歌詞:「＿ or die」と",
       "sourceHour": "2026-02-23-2000"
     },
@@ -11392,7 +11392,7 @@
       "registeredAt": "2026-02-20T23:22:29+09:00",
       "duration": 243,
       "owner": { "type": "user", "id": "138197039", "name": "モノクロP" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45973109/45973109.13295806.M",
+      "thumbnailUrl": null,
       "shortDescription": "初めまして!私は人格コンストラクトAndroidモデル『MIKU』! えっこれ?バーボンウイスキーに",
       "sourceHour": "2026-02-21-0600"
     },
@@ -12184,7 +12184,7 @@
       "registeredAt": "2026-02-21T00:00:00+09:00",
       "duration": 180,
       "owner": { "type": "user", "id": "66296951", "name": "椎乃味醂" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45973617/45973617.72578408.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45973617/45973617.17882703.M",
       "shortDescription": "椎乃味醂です。　mylist/59627983　Twitter https://twitter.co",
       "sourceHour": "final"
     },
@@ -12292,7 +12292,7 @@
       "registeredAt": "2026-02-21T00:09:11+09:00",
       "duration": 257,
       "owner": { "type": "user", "id": "120822636", "name": "ぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45973678/45973678.3372074.M",
+      "thumbnailUrl": null,
       "shortDescription": "music/illust/moviehttps://x.com/N____________u mix",
       "sourceHour": "final"
     },
@@ -12589,7 +12589,7 @@
       "registeredAt": "2026-02-21T00:24:04+09:00",
       "duration": 216,
       "owner": { "type": "user", "id": "129516103", "name": "都Miyako" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45973898/45973898.47154365.M",
+      "thumbnailUrl": null,
       "shortDescription": "ただ東へ！remixというか、coverというか…お正月ぐらいにふと思い立って制作を進めていました。",
       "sourceHour": "2026-02-23-2000"
     },
@@ -12643,7 +12643,7 @@
       "registeredAt": "2026-02-21T00:39:04+09:00",
       "duration": 166,
       "owner": { "type": "user", "id": "142914067", "name": "≺big≻糸冬≺/big≻" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45973931/45973931.15621014.M",
+      "thumbnailUrl": null,
       "shortDescription": "🌟💫✨⭐️光のないまま轢き殺してーーーー！！！！！！！！🌟💫✨⭐️🚗💨 💨🥰💯💯💯💖💕💓💘😍原曲😍💘",
       "sourceHour": "2026-02-23-2200"
     },
@@ -12760,7 +12760,7 @@
       "registeredAt": "2026-02-21T00:46:07+09:00",
       "duration": 242,
       "owner": { "type": "user", "id": "123419134", "name": "ハチスカp" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45974024/45974024.85843582.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45974024/45974024.67191359.M",
       "shortDescription": "お久しぶりです。ハチスカです。訳あってアイドル曲が大好きなので、アイドルを夢見る少女の曲を作りました",
       "sourceHour": "2026-02-23-0600"
     },
@@ -12769,7 +12769,7 @@
       "registeredAt": "2026-02-21T00:45:04+09:00",
       "duration": 174,
       "owner": { "type": "user", "id": "125275140", "name": "Coral Pig" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45974028/45974028.90554438.M",
+      "thumbnailUrl": null,
       "shortDescription": "真実を確かめようがないこの世界でヒーローになりたい気持ちは真実である。後藤ひとり生誕祭。Produc",
       "sourceHour": "2026-02-22-0400"
     },
@@ -12895,7 +12895,7 @@
       "registeredAt": "2026-02-21T01:12:04+09:00",
       "duration": 285,
       "owner": { "type": "user", "id": "128516714", "name": "El_xx" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45974181/45974181.59458436.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45974181/45974181.85426028.M",
       "shortDescription": "■ボカコレ2026冬REMIXランキング参加曲です。『The VOCALOID Collection",
       "sourceHour": "2026-02-21-0800"
     },
@@ -13228,7 +13228,7 @@
       "registeredAt": "2026-02-21T04:02:08+09:00",
       "duration": 232,
       "owner": { "type": "user", "id": "143239419", "name": "yohey" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45974579/45974579.81572174.M",
+      "thumbnailUrl": null,
       "shortDescription": "今回、初めての投稿です至らぬ点があるとは思いますがよろしくお願いします。■ボカコレ2026冬ルーキー",
       "sourceHour": "2026-02-21-0600"
     },
@@ -13255,7 +13255,7 @@
       "registeredAt": "2026-02-21T03:32:04+09:00",
       "duration": 161,
       "owner": { "type": "user", "id": "140513477", "name": "芥actA" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45974608/45974608.86890017.M",
+      "thumbnailUrl": null,
       "shortDescription": "芥です！DECO*27さんのモニタリングをピアノでリミックスさせて頂きました！！(バラード風ってやつ",
       "sourceHour": "2026-02-22-0700"
     },
@@ -13309,7 +13309,7 @@
       "registeredAt": "2026-02-21T04:31:04+09:00",
       "duration": 122,
       "owner": { "type": "user", "id": "134186767", "name": "泪雨" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45974731/45974731.80005925.M",
+      "thumbnailUrl": null,
       "shortDescription": "gen=きょ曲；ァネイロ(xanぉhttps://www.nicovideo.jp/watch/sm",
       "sourceHour": "2026-02-21-0700"
     },
@@ -13606,7 +13606,7 @@
       "registeredAt": "2026-02-21T09:48:03+09:00",
       "duration": 265,
       "owner": { "type": "user", "id": "134054350", "name": "人妻団地" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45975266/45975266.71112979.M",
+      "thumbnailUrl": null,
       "shortDescription": "Original: https://www.nicovideo.jp/watch/sm4431785",
       "sourceHour": "2026-02-21-1200"
     },
@@ -13777,7 +13777,7 @@
       "registeredAt": "2026-02-21T12:43:03+09:00",
       "duration": 190,
       "owner": { "type": "user", "id": "141354548", "name": "oliveoiler" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45975812/45975812.75868517.M",
+      "thumbnailUrl": null,
       "shortDescription": "原曲：乙女解剖 / DECO*27 様https://www.nicovideo.jp/watch/",
       "sourceHour": "2026-02-21-1300"
     },
@@ -13903,7 +13903,7 @@
       "registeredAt": "2026-02-21T21:00:00+09:00",
       "duration": 191,
       "owner": { "type": "user", "id": "121735867", "name": "IkaTenDon" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45976011/45976011.15765109.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45976011/45976011.11154074.M",
       "shortDescription": "sm44409858原曲・オフボーカル音源：MIMI    user/42004123     ht",
       "sourceHour": "2026-02-22-0900"
     },
@@ -14065,7 +14065,7 @@
       "registeredAt": "2026-02-21T15:00:05+09:00",
       "duration": 94,
       "owner": { "type": "user", "id": "118409072", "name": "17歳もずく好きJKリミキサー" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45976425/45976425.15624345.M",
+      "thumbnailUrl": null,
       "shortDescription": "モニタリング REMIX",
       "sourceHour": "2026-02-23-1700"
     },
@@ -14254,7 +14254,7 @@
       "registeredAt": "2026-02-21T16:56:06+09:00",
       "duration": 138,
       "owner": { "type": "user", "id": "137573159", "name": "ワイオト" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45976825/45976825.99254479.M",
+      "thumbnailUrl": null,
       "shortDescription": "てんぱりんぐ❖ガール二作目です歌唱　夏色 花梨(SV)作曲・編曲・作詞・MV・料理・食事　ワイオトS",
       "sourceHour": "2026-02-21-1800"
     },
@@ -14461,7 +14461,7 @@
       "registeredAt": "2026-02-21T18:17:04+09:00",
       "duration": 148,
       "owner": { "type": "user", "id": "137259689", "name": "けいれい" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45977190/45977190.79940570.M",
+      "thumbnailUrl": null,
       "shortDescription": "今日作りました。明日もremix上がるかも(作りたいだけ)[本家様]ドゥーマー/東京真中https:",
       "sourceHour": "2026-02-22-1200"
     },
@@ -14569,7 +14569,7 @@
       "registeredAt": "2026-02-21T20:00:00+09:00",
       "duration": 174,
       "owner": { "type": "user", "id": "68044045", "name": "picco" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45977407/45977407.14046155.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45977407/45977407.2875225.M",
       "shortDescription": "─ くって*ねて*あそべ！ ─獣謳無尽 (ｼﾞｭｳｵｳﾑｼﾞﾝ) - picco(ﾋﾟｯｺ)コメント",
       "sourceHour": "final"
     },
@@ -14641,7 +14641,7 @@
       "registeredAt": "2026-02-21T19:35:04+09:00",
       "duration": 188,
       "owner": { "type": "user", "id": "81560000", "name": "ヱマサキ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45977457/45977457.54329379.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45977457/45977457.83220167.M",
       "shortDescription": "「憂鬱の先へ」ボカコレ2026冬 TOP100参加楽曲ですよろしくお願いします。『病みごろし / 初",
       "sourceHour": "2026-02-22-0800"
     },
@@ -14686,7 +14686,7 @@
       "registeredAt": "2026-02-21T20:00:06+09:00",
       "duration": 132,
       "owner": { "type": "user", "id": "132715889", "name": "そる" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45977533/45977533.86091188.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45977533/45977533.63097683.M",
       "shortDescription": "■ボカコレ2026冬ルーキーランキング参加曲です。『The VOCALOID Collection（",
       "sourceHour": "2026-02-21-2100"
     },
@@ -15217,7 +15217,7 @@
       "registeredAt": "2026-02-22T00:35:04+09:00",
       "duration": 79,
       "owner": { "type": "user", "id": "141787698", "name": "N1kk4" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45978906/45978906.43613938.M",
+      "thumbnailUrl": null,
       "shortDescription": "N1kK4 (@n1kk4_nikka2) / X初めましてN1kk4です。咲くし 作曲 映像 すべ",
       "sourceHour": "2026-02-22-0600"
     },
@@ -15226,7 +15226,7 @@
       "registeredAt": "2026-02-22T00:53:04+09:00",
       "duration": 143,
       "owner": { "type": "user", "id": "129376057", "name": "ピンチーロコ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45978924/45978924.33304990.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45978924/45978924.13999437.M",
       "shortDescription": "第五作目です！僭越ながら私生活が本当の本当に忙しくてボカコレ当日から作り始めました、、、死に物狂いの",
       "sourceHour": "2026-02-23-2300"
     },
@@ -15262,7 +15262,7 @@
       "registeredAt": "2026-02-22T01:30:05+09:00",
       "duration": 200,
       "owner": { "type": "user", "id": "95330101", "name": "アダチイツキ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45979004/45979004.16844866.M",
+      "thumbnailUrl": null,
       "shortDescription": "■ボカコレ2026冬ルーキーランキング参加曲です。『The VOCALOID Collection（",
       "sourceHour": "2026-02-22-0400"
     },
@@ -15586,7 +15586,7 @@
       "registeredAt": "2026-02-22T10:02:03+09:00",
       "duration": 172,
       "owner": { "type": "user", "id": "142584064", "name": "Ana6" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45979991/45979991.8406518.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45979991/45979991.20731014.M",
       "shortDescription": "こんにちは。Ana6(アナログ)といいます。今回、木の実(きのみ)はデビュー作となります。ボカコレ2",
       "sourceHour": "2026-02-22-1200"
     },
@@ -15964,7 +15964,7 @@
       "registeredAt": "2026-02-22T19:00:00+09:00",
       "duration": 223,
       "owner": { "type": "user", "id": "91562823", "name": ".°｡しゅわしゅわ｡°." },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45981357/45981357.56185091.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45981357/45981357.29428110.M",
       "shortDescription": "初めまして！お久しぶりです！Shuwa4U0です！今回は大好きAqu3raさんのロンリーユニバースを",
       "sourceHour": "2026-02-23-1000"
     },
@@ -16099,7 +16099,7 @@
       "registeredAt": "2026-02-22T19:20:04+09:00",
       "duration": 184,
       "owner": { "type": "user", "id": "137021066", "name": "青宮むく" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45981857/45981857.18544081.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45981857/45981857.86905082.M",
       "shortDescription": "『 lonely 』歌：重音テトSV作詞・作曲・絵：青宮むく https://x.com/MukuA",
       "sourceHour": "2026-02-23-0200"
     },
@@ -16270,7 +16270,7 @@
       "registeredAt": "2026-02-22T22:01:04+09:00",
       "duration": 65,
       "owner": { "type": "user", "id": "139433443", "name": "衰退リキッドストループ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45982454/45982454.63709039.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレなんとか滑り込む初投稿曲である「妄言 in the A.M.」っていう曲を切り刻んで作り直し",
       "sourceHour": "2026-02-23-0600"
     },
@@ -16540,7 +16540,7 @@
       "registeredAt": "2026-02-23T00:03:03+09:00",
       "duration": 255,
       "owner": { "type": "user", "id": "134101905", "name": "ライスカブラブ（はいはいず）" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45983230/45983230.98364319.M",
+      "thumbnailUrl": null,
       "shortDescription": "いまさらですが参加させてくださいフルバージョンです",
       "sourceHour": "2026-02-23-0900"
     },
@@ -16927,7 +16927,7 @@
       "registeredAt": "2026-02-23T04:54:03+09:00",
       "duration": 185,
       "owner": { "type": "user", "id": "96746123", "name": "Syun" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45983895/45983895.89824404.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45983895/45983895.23822770.M",
       "shortDescription": "🐟１作目。『すべて、無意味なこと。』■ボカコレ2026冬ルーキーランキング参加曲です。『The VO",
       "sourceHour": "2026-02-23-0900"
     },
@@ -17134,7 +17134,7 @@
       "registeredAt": "2026-02-23T09:45:04+09:00",
       "duration": 173,
       "owner": { "type": "user", "id": "134101905", "name": "ライスカブラブ（はいはいず）" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45984298/45984298.5912449.M",
+      "thumbnailUrl": null,
       "shortDescription": "なんかつくったいつもながらの遅刻組です最近は身内の火葬にも遅刻しましたまいったフルバージョン■ボカコ",
       "sourceHour": "2026-02-23-1100"
     },
@@ -17197,7 +17197,7 @@
       "registeredAt": "2026-02-23T10:32:04+09:00",
       "duration": 58,
       "owner": { "type": "user", "id": "119479607", "name": "六浪" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45984387/45984387.81167030.M",
+      "thumbnailUrl": null,
       "shortDescription": "婚夫砺玖珠戸露です。大遅刻チャンネル■ボカコレ2026冬REMIXランキング参加曲です。『The V",
       "sourceHour": "2026-02-23-2100"
     },
@@ -17251,7 +17251,7 @@
       "registeredAt": "2026-02-23T12:00:00+09:00",
       "duration": 194,
       "owner": { "type": "user", "id": "123625144", "name": "ぬるまゆ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45984654/45984654.69841949.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45984654/45984654.95639438.M",
       "shortDescription": "Vocal ：鏡音レンMusic：ぬるまゆ https://x.com/nullmayu_mylis",
       "sourceHour": "2026-02-23-1800"
     },
@@ -17287,7 +17287,7 @@
       "registeredAt": "2026-02-23T12:20:04+09:00",
       "duration": 60,
       "owner": { "type": "user", "id": "143356197", "name": "寒暖差" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45984762/45984762.51047177.M",
+      "thumbnailUrl": null,
       "shortDescription": "自省「ランキングなんて関係ない、exで出す」みんなの中位より誰かの一番とか、大層なこと抜かしてそれで",
       "sourceHour": "2026-02-23-1400"
     },
@@ -17314,7 +17314,7 @@
       "registeredAt": "2026-02-23T12:57:03+09:00",
       "duration": 75,
       "owner": { "type": "user", "id": "134940480", "name": "あかべこP" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45984906/45984906.12702879.M",
+      "thumbnailUrl": null,
       "shortDescription": "ゲーム「ティンクルスターナイツ」のルリエルをイメージした曲を作りました！普段はYouTubeやXの方",
       "sourceHour": "2026-02-23-1400"
     },
@@ -17341,7 +17341,7 @@
       "registeredAt": "2026-02-23T13:24:04+09:00",
       "duration": 130,
       "owner": { "type": "user", "id": "141138768", "name": "夜多花詞/Yotabanashi" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45985017/45985017.18879059.M",
+      "thumbnailUrl": null,
       "shortDescription": "投稿予定の曲が気に入らず急遽3〜4日で作り直したものですそのため死ぬほど雑かと思われます…（）【歌詞",
       "sourceHour": "2026-02-23-2200"
     },
@@ -17503,7 +17503,7 @@
       "registeredAt": "2026-02-23T15:33:04+09:00",
       "duration": 146,
       "owner": { "type": "user", "id": "47066324", "name": "pikuminmaru" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45985638/45985638.30727320.M",
+      "thumbnailUrl": null,
       "shortDescription": "My heart does not beat for this life of mine...VOC",
       "sourceHour": "2026-02-23-2000"
     },
@@ -17602,7 +17602,7 @@
       "registeredAt": "2026-02-23T16:36:04+09:00",
       "duration": 122,
       "owner": { "type": "user", "id": "134040177", "name": "河鍋 享楽(かわなべきょうらく)" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45985912/45985912.37606914.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45985912/45985912.67405385.M",
       "shortDescription": "昨日の夕方にフラグが勃っ…立った🌰ボカコレ2026冬REMIXおよび脱法股間投稿祭 参加曲原曲→ s",
       "sourceHour": "2026-02-23-2200"
     },
@@ -17746,7 +17746,7 @@
       "registeredAt": "2026-02-23T16:59:04+09:00",
       "duration": 179,
       "owner": { "type": "user", "id": "5586807", "name": "カラノゼ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45986082/45986082.86754310.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45986082/45986082.28480201.M",
       "shortDescription": "超すべりこみ、ボカコレ2026冬ルーキー参加曲です！投稿確認まで手が震えてました。計画性が無いままル",
       "sourceHour": "2026-02-23-1900"
     },

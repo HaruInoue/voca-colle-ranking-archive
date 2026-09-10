@@ -250,7 +250,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 410,
       "owner": { "type": "user", "id": "138065405", "name": "川原遥翔" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218227/45218227.76612740.M",
+      "thumbnailUrl": null,
       "shortDescription": "こんばんは、少し長いと感じましたか？私たちは知識を得ると同時に、何か大切なものを失いました私の場合そ",
       "sourceHour": "2025-08-23-1900"
     },
@@ -340,7 +340,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 154,
       "owner": { "type": "user", "id": "130062493", "name": "rEikh" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218257/45218257.20315408.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218257/45218257.93636171.M",
       "shortDescription": "お久しぶりです。音楽をやります。-------------------Composer, rEikh",
       "sourceHour": "2025-08-24-2300"
     },
@@ -403,7 +403,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 154,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218277/45218277.74506819.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲です！原曲の持つ“キライ”という強い感情を、あえて“噛み合わない音”で表現し",
       "sourceHour": "2025-08-25-1300"
     },
@@ -430,7 +430,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 153,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218322/45218322.2896941.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲よろしくお願いいたします。作編曲 CrimsonNote（クリムゾンノート）",
       "sourceHour": "2025-08-25-1600"
     },
@@ -457,7 +457,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 243,
       "owner": { "type": "user", "id": "140892446", "name": "kazu" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218353/45218353.36998351.M",
+      "thumbnailUrl": null,
       "shortDescription": "投稿者名：kazu（かず）　タイトル：えがおのちからこの動画はブルーアーカイブの二次創作ガイドライン",
       "sourceHour": "final"
     },
@@ -466,7 +466,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 164,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218391/45218391.94831331.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲よろしくお願いいたします。作編曲 CrimsonNote（クリムゾンノート）",
       "sourceHour": "2025-08-25-0500"
     },
@@ -484,7 +484,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 166,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218399/45218399.6816254.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲憑いているのアレンジです！よろしくお願いいたします。作編曲 CrimsonN",
       "sourceHour": "2025-08-25-1300"
     },
@@ -493,7 +493,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 126,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218408/45218408.80320108.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲ニャルラトのアレンジです！よろしくお願いいたします。作編曲 CrimsonN",
       "sourceHour": "2025-08-24-0900"
     },
@@ -502,7 +502,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 187,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218427/45218427.44900033.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲おじさん構文のアレンジです！よろしくお願いいたします。作編曲 Crimson",
       "sourceHour": "2025-08-25-1300"
     },
@@ -511,7 +511,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 149,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45218438/45218438.25359312.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲クローンクローンのアレンジです！よろしくお願いいたします。作編曲 Crims",
       "sourceHour": "2025-08-24-0900"
     },
@@ -709,7 +709,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 125,
       "owner": { "type": "user", "id": "131296019", "name": "suini" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45220871/45220871.77772610.M",
+      "thumbnailUrl": null,
       "shortDescription": "最終93位でした ありがとうございます初音ミクが好きなボカロｐです！ ボカコレ2025夏ルーキー参加",
       "sourceHour": "final"
     },
@@ -1114,7 +1114,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 289,
       "owner": { "type": "user", "id": "138065405", "name": "川原遥翔" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45244900/45244900.35780879.M",
+      "thumbnailUrl": null,
       "shortDescription": "おはよう、現世からの逸脱 　一見して複雑に映る事象も、その深層に目を凝らせば、精緻なルールの連なりに",
       "sourceHour": "2025-08-25-1800"
     },
@@ -1123,7 +1123,7 @@
       "registeredAt": "2025-08-23T18:00:00+09:00",
       "duration": 286,
       "owner": { "type": "user", "id": "138065405", "name": "川原遥翔" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45245203/45245203.88687027.M",
+      "thumbnailUrl": null,
       "shortDescription": "こんにちは、素敵な曲をリミックスします-------------------------------",
       "sourceHour": "2025-08-25-2200"
     },
@@ -1159,7 +1159,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 236,
       "owner": { "type": "user", "id": "123931485", "name": "はるーえ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45246975/45246975.71570377.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45246975/45246975.3097498.M",
       "shortDescription": "Listen&Download https://linkco.re/zfcntVGU愛対称論(アイタ",
       "sourceHour": "2025-08-25-0600"
     },
@@ -1483,7 +1483,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 209,
       "owner": { "type": "user", "id": "119203298", "name": "レラー" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45266264/45266264.45144427.M",
+      "thumbnailUrl": null,
       "shortDescription": "使用楽曲リスト概要欄に書こうとしたら3000文字くらい文字数オーバーしたんでtxt見てください。ht",
       "sourceHour": "2025-08-25-2200"
     },
@@ -1987,7 +1987,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 140,
       "owner": { "type": "user", "id": "139628969", "name": "Katamimi" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45285181/45285181.8772767.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45285181/45285181.9212225.M",
       "shortDescription": "カガミノナカ / 初音ミクinst https://drive.google.com/drive/f",
       "sourceHour": "2025-08-25-0600"
     },
@@ -2122,7 +2122,7 @@
       "registeredAt": "2025-08-25T16:59:00+09:00",
       "duration": 21,
       "owner": { "type": "user", "id": "119203298", "name": "レラー" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45288020/45288020.20198959.M",
+      "thumbnailUrl": null,
       "shortDescription": "外のヒト",
       "sourceHour": "2025-08-25-2000"
     },
@@ -2131,7 +2131,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 105,
       "owner": { "type": "user", "id": "58522041", "name": "ken3da4" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45288110/45288110.57375492.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45288110/45288110.49630345.M",
       "shortDescription": "ボカコレ2025夏ルーキー参加曲です--------------------------------",
       "sourceHour": "2025-08-25-2300"
     },
@@ -2149,7 +2149,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 190,
       "owner": { "type": "user", "id": "118409072", "name": "かきP" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45288641/45288641.36516491.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカロ界の名曲中の名曲「千本桜」をリミックスさせていただきました。極悪暴力系インダストリアルサウンド",
       "sourceHour": "final"
     },
@@ -2221,7 +2221,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 195,
       "owner": { "type": "user", "id": "123338852", "name": "雨草樹季" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45290272/45290272.53403774.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45290272/45290272.43727829.M",
       "shortDescription": "「ミミカムジカ」作詞・作曲・絵・MV：雨草樹季歌・エレキギター：v flower今回の主人公は、ドク",
       "sourceHour": "2025-08-25-1000"
     },
@@ -4444,7 +4444,7 @@
       "registeredAt": "2025-08-22T19:01:13+09:00",
       "duration": 187,
       "owner": { "type": "user", "id": "132541366", "name": "てこ!" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45310400/45310400.92262855.M",
+      "thumbnailUrl": null,
       "shortDescription": "てこ！です２回目の初投稿ですエラー:スクリプトファイルが見つからないか破損しています。ゲームを再イン",
       "sourceHour": "2025-08-25-0500"
     },
@@ -4831,7 +4831,7 @@
       "registeredAt": "2025-08-22T19:02:04+09:00",
       "duration": 128,
       "owner": { "type": "user", "id": "135955147", "name": "ハムスター" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45311851/45311851.62552810.M",
+      "thumbnailUrl": null,
       "shortDescription": "作詞・作曲・編曲：ハムスター絵：みりりんか　（ https://x.com/miumiusa_032",
       "sourceHour": "2025-08-25-1200"
     },
@@ -5074,7 +5074,7 @@
       "registeredAt": "2025-08-22T19:07:04+09:00",
       "duration": 180,
       "owner": { "type": "user", "id": "128498193", "name": "転生者予備軍" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45312797/45312797.11148701.M",
+      "thumbnailUrl": null,
       "shortDescription": "#1音街ウナ(V4)・東北きりたん(NEUTRINO・VOICEVOX)転生者予備軍(https:/",
       "sourceHour": "2025-08-25-2100"
     },
@@ -5128,7 +5128,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 205,
       "owner": { "type": "user", "id": "32533087", "name": "わふぐら" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45313004/45313004.59752482.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45313004/45313004.79060931.M",
       "shortDescription": "あの日に置いてきた青春を、しなかった選択を赦せるように。初めまして、わふぐらと申します。作詞作曲 :",
       "sourceHour": "2025-08-24-2100"
     },
@@ -5155,7 +5155,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 166,
       "owner": { "type": "user", "id": "138813934", "name": "yuku" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45313065/45313065.82778617.M",
+      "thumbnailUrl": null,
       "shortDescription": "こんにちはyukuです。ボカコレ楽しみましょう！！！vocal:初音ミクmusic & video ",
       "sourceHour": "2025-08-24-0500"
     },
@@ -5758,7 +5758,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 130,
       "owner": { "type": "user", "id": "139757186", "name": "シオリユメさん" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45314799/45314799.1688198.M",
+      "thumbnailUrl": null,
       "shortDescription": "あの違和感は間違いらしいです。シオリユメさんと申します！いいねとフォローもポチッとお願いします！Mu",
       "sourceHour": "2025-08-25-1100"
     },
@@ -5866,7 +5866,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 178,
       "owner": { "type": "user", "id": "131117843", "name": "d0tc0mmie" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45315215/45315215.97988309.M",
+      "thumbnailUrl": null,
       "shortDescription": "信号のそばで一緒に楽しもう絵: ゆい https://x.com/V0450yuEWy27143曲/",
       "sourceHour": "2025-08-23-1700"
     },
@@ -5902,7 +5902,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 279,
       "owner": { "type": "user", "id": "132578204", "name": "すいみん" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45315301/45315301.33132830.M",
+      "thumbnailUrl": null,
       "shortDescription": "Music & Words すいみん Twitter：https://twitter.com/04s",
       "sourceHour": "2025-08-24-0600"
     },
@@ -5974,7 +5974,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 240,
       "owner": { "type": "user", "id": "126196457", "name": "園端石" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45315458/45315458.52433493.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45315458/45315458.20656018.M",
       "shortDescription": "園端石です。8作目です。歌唱にはアリス≒ドグラ・マグラさん制作のUTAU-Evi を使用させていただ",
       "sourceHour": "2025-08-25-1300"
     },
@@ -6181,7 +6181,7 @@
       "registeredAt": "2025-08-23T06:05:04+09:00",
       "duration": 162,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45316039/45316039.28468104.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲です！よろしくお願いいたします。作編曲 CrimsonNote（クリムゾンノ",
       "sourceHour": "2025-08-25-2000"
     },
@@ -6217,7 +6217,7 @@
       "registeredAt": "2025-08-23T06:05:04+09:00",
       "duration": 120,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45316090/45316090.70951471.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲です！よろしくお願いいたします。作編曲 CrimsonNote（クリムゾンノ",
       "sourceHour": "2025-08-25-1900"
     },
@@ -6388,7 +6388,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 145,
       "owner": { "type": "user", "id": "134001820", "name": "風音（Kazane)" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45316629/45316629.93904190.M",
+      "thumbnailUrl": null,
       "shortDescription": "何度リピっても主が喜びます！■ボカコレ2025夏ルーキーランキング参加曲です。『The VOCALO",
       "sourceHour": "2025-08-24-1300"
     },
@@ -6415,7 +6415,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 362,
       "owner": { "type": "user", "id": "141332072", "name": "大井一矢【オオイカズヤ】" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45316730/45316730.83769449.M",
+      "thumbnailUrl": null,
       "shortDescription": "■ボカコレ2025夏ルーキーランキング参加曲です。オオイカズヤです、たくさんの作品の中から見ていただ",
       "sourceHour": "2025-08-24-0700"
     },
@@ -6730,7 +6730,7 @@
       "registeredAt": "2025-08-23T06:04:03+09:00",
       "duration": 269,
       "owner": { "type": "user", "id": "135970756", "name": "CrimsonNote" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45317170/45317170.32319087.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレREMIX参加曲です！よろしくお願いいたします。作編曲 CrimsonNote（クリムゾンノ",
       "sourceHour": "2025-08-25-0900"
     },
@@ -7036,7 +7036,7 @@
       "registeredAt": "2025-08-22T19:05:00+09:00",
       "duration": 211,
       "owner": { "type": "user", "id": "140336363", "name": "Narasaka." },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45317555/45317555.52529666.M",
+      "thumbnailUrl": null,
       "shortDescription": "作詞 Narasaka.作曲 Narasaka.イラスト 星宮しづ 様動画編集 Narasaka.歌",
       "sourceHour": "2025-08-25-1400"
     },
@@ -7234,7 +7234,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 159,
       "owner": { "type": "user", "id": "131909401", "name": "TK" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45317787/45317787.71186844.M",
+      "thumbnailUrl": null,
       "shortDescription": "ラストルーキーのTKと申します。どうぞよろしくお願いします。有限、或イハ / 花隈千冬&ナースロボ_",
       "sourceHour": "2025-08-25-2200"
     },
@@ -7693,7 +7693,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 208,
       "owner": { "type": "user", "id": "129880199", "name": "いとせ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45318503/45318503.99597875.M",
+      "thumbnailUrl": null,
       "shortDescription": "■ボカコレ2025夏REMIXランキング参加曲です。『The VOCALOID Collection",
       "sourceHour": "2025-08-25-2200"
     },
@@ -8296,7 +8296,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 300,
       "owner": { "type": "user", "id": "117222709", "name": "霄 (みぞれ)" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45319456/45319456.25356227.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45319456/45319456.40006368.M",
       "shortDescription": "想い出が黄昏に溶けて逝く▌vox　裏命▌piano　composition, arrangement",
       "sourceHour": "2025-08-23-0100"
     },
@@ -8620,7 +8620,7 @@
       "registeredAt": "2025-08-22T19:02:04+09:00",
       "duration": 214,
       "owner": { "type": "user", "id": "140236103", "name": "HardWood" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45320085/45320085.88368858.M",
+      "thumbnailUrl": null,
       "shortDescription": "■Vocal｜VY1■Music｜HardWood■Illustration｜HardWoodSNS",
       "sourceHour": "2025-08-25-1700"
     },
@@ -8773,7 +8773,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 138,
       "owner": { "type": "user", "id": "95870895", "name": "また切ない世界を生きる" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45320239/45320239.66995150.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45320239/45320239.80759000.M",
       "shortDescription": "「あのマジックショー」には種も仕掛けもあるのですよガハハ曲：また切ない世界を生きる【mylist/6",
       "sourceHour": "2025-08-25-1700"
     },
@@ -9115,7 +9115,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 212,
       "owner": { "type": "user", "id": "123397660", "name": "Raiwo" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45320600/45320600.58309942.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45320600/45320600.77878520.M",
       "shortDescription": "―――目が覚めた。さっきまで見ていた夢は忘れてしまった。ボカコレだよね！サークル『夜間同好会』のコン",
       "sourceHour": "2025-08-25-0700"
     },
@@ -9817,7 +9817,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 159,
       "owner": { "type": "user", "id": "116363838", "name": "実はまくらです。" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321298/45321298.59907330.M",
+      "thumbnailUrl": null,
       "shortDescription": "はじめましてこんにちは。実はまくらです。と申します。夏ボカコレ参戦！様々な方の力をお借りして数倍パワ",
       "sourceHour": "2025-08-25-1900"
     },
@@ -9835,7 +9835,7 @@
       "registeredAt": "2025-08-22T19:02:11+09:00",
       "duration": 189,
       "owner": { "type": "user", "id": "131249143", "name": "自問自答//Gif" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321304/45321304.2025766.M",
+      "thumbnailUrl": null,
       "shortDescription": "■ボカコレ2025夏ルーキーランキング参加曲です。『The VOCALOID Collection（",
       "sourceHour": "2025-08-24-0700"
     },
@@ -9880,7 +9880,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 180,
       "owner": { "type": "user", "id": "59052448", "name": "モノトソ。（ものとん）" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321337/45321337.17800723.M",
+      "thumbnailUrl": null,
       "shortDescription": "２作目です。偽善。ファジーなギバーvocal:初音ミクlyrics,Music,Arrangemen",
       "sourceHour": "2025-08-25-1100"
     },
@@ -9979,7 +9979,7 @@
       "registeredAt": "2025-08-22T19:02:08+09:00",
       "duration": 136,
       "owner": { "type": "user", "id": "139106875", "name": "Chenomio" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321404/45321404.54270215.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321404/45321404.74538939.M",
       "shortDescription": "Chenomio『ボカロPには手をだすな！ feat.重音テト』ボカロへの愛とリスペクトを歌った曲で",
       "sourceHour": "2025-08-23-0200"
     },
@@ -10033,7 +10033,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 151,
       "owner": { "type": "user", "id": "36523598", "name": "ひとりかんぱにぃ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321432/45321432.90665709.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321432/45321432.94165855.M",
       "shortDescription": "🍨\\\\\\31回目の8月31日///🍨どうも、「CMボカロP」を勝手にやってます、ひとりかんぱにぃと申",
       "sourceHour": "2025-08-25-0700"
     },
@@ -10042,7 +10042,7 @@
       "registeredAt": "2025-08-22T19:01:11+09:00",
       "duration": 297,
       "owner": { "type": "user", "id": "139931290", "name": "☆くらげ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321437/45321437.23179803.M",
+      "thumbnailUrl": null,
       "shortDescription": "これは夏の終り。初投稿です、よろしくお願いします。Music: ☆くらげ https://x.com",
       "sourceHour": "2025-08-25-1500"
     },
@@ -10078,7 +10078,7 @@
       "registeredAt": "2025-08-22T19:01:04+09:00",
       "duration": 98,
       "owner": { "type": "user", "id": "138231922", "name": "ウエノスケ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321457/45321457.48023067.M",
+      "thumbnailUrl": null,
       "shortDescription": "曲名は「そうぞうにーぜろにーごー」と読みます！！あの！！！！全力で音楽しました！！！！！！！！！！応",
       "sourceHour": "2025-08-25-2100"
     },
@@ -10231,7 +10231,7 @@
       "registeredAt": "2025-08-22T19:01:06+09:00",
       "duration": 244,
       "owner": { "type": "user", "id": "136454750", "name": "crossing the OCB" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321620/45321620.96290079.M",
+      "thumbnailUrl": null,
       "shortDescription": "初参加です＾＾しっとりしたバラードです。大ラスのサビ2回半音上げました^_^http://www.y",
       "sourceHour": "2025-08-25-1200"
     },
@@ -10240,7 +10240,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 213,
       "owner": { "type": "user", "id": "24692699", "name": "HyroakySnooky" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321626/45321626.29538842.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321626/45321626.69915333.M",
       "shortDescription": "いいね！とマイリストお願いします！🙏『太陽と入道雲 feat. Mai』（たいようとにゅうどうぐも　",
       "sourceHour": "2025-08-24-1500"
     },
@@ -10312,7 +10312,7 @@
       "registeredAt": "2025-08-22T19:00:00+09:00",
       "duration": 289,
       "owner": { "type": "user", "id": "140915962", "name": "試作47" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321668/45321668.65143031.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321668/45321668.5005734.M",
       "shortDescription": "考察コメ待ってます……！うた 足立レイほか 試作47三作目です！家出少女と歌ロボットのお話ですーーー",
       "sourceHour": "2025-08-25-1300"
     },
@@ -10573,7 +10573,7 @@
       "registeredAt": "2025-08-22T19:08:06+09:00",
       "duration": 188,
       "owner": { "type": "user", "id": "141095326", "name": "alt.monoheart" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321823/45321823.24120529.M",
+      "thumbnailUrl": null,
       "shortDescription": "■ボカコレ2025夏ルーキーランキング参加曲です。『The VOCALOID Collection（",
       "sourceHour": "2025-08-25-1800"
     },
@@ -10699,7 +10699,7 @@
       "registeredAt": "2025-08-22T19:22:07+09:00",
       "duration": 199,
       "owner": { "type": "user", "id": "138834685", "name": "わがし。" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45321994/45321994.72408610.M",
+      "thumbnailUrl": null,
       "shortDescription": "絵：こでびる X（Twitter） https://x.com/kodebiru2作詞 / 作曲 /",
       "sourceHour": "2025-08-24-1600"
     },
@@ -10771,7 +10771,7 @@
       "registeredAt": "2025-08-22T19:25:04+09:00",
       "duration": 308,
       "owner": { "type": "user", "id": "136038387", "name": "早見瑠" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322048/45322048.2884828.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322048/45322048.26670139.M",
       "shortDescription": "全部足りないや歌詞先生私何か足りない？昔から2の次次々回されいっつも1人でいたんだよ実の子じゃない私",
       "sourceHour": "2025-08-25-2200"
     },
@@ -10843,7 +10843,7 @@
       "registeredAt": "2025-08-23T00:01:04+09:00",
       "duration": 177,
       "owner": { "type": "user", "id": "60028782", "name": "アルティマ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322104/45322104.55094960.M",
+      "thumbnailUrl": null,
       "shortDescription": "こんなにかっこいい曲😎🏹のremix🎧ができておじさん嬉しいナ🤩💖🤩remix・動画 : アルティマ",
       "sourceHour": "2025-08-25-1500"
     },
@@ -10897,7 +10897,7 @@
       "registeredAt": "2025-08-22T19:38:05+09:00",
       "duration": 275,
       "owner": { "type": "user", "id": "121424202", "name": "ugane" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322173/45322173.88023480.M",
+      "thumbnailUrl": null,
       "shortDescription": "いつかの夕の街 4作目になります、なにとぞー！！vocal：知声 × カゼヒキ（chorus：洛天依",
       "sourceHour": "2025-08-25-2300"
     },
@@ -10987,7 +10987,7 @@
       "registeredAt": "2025-08-22T19:44:04+09:00",
       "duration": 84,
       "owner": { "type": "user", "id": "141162968", "name": "ゐ仮" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322237/45322237.67058018.M",
+      "thumbnailUrl": null,
       "shortDescription": "初めまして、ゐ仮（いかり）と申します。初登校、初創作ですが何卒よろしくおねがいします。独り事 (ひと",
       "sourceHour": "2025-08-25-2000"
     },
@@ -11185,7 +11185,7 @@
       "registeredAt": "2025-08-22T20:22:04+09:00",
       "duration": 152,
       "owner": { "type": "user", "id": "137291464", "name": "うにざめ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322438/45322438.30856597.M",
+      "thumbnailUrl": null,
       "shortDescription": "うにざめと申します初投稿です夏！いぇす！パッション！！→→よろしくお願いしますお歌 / 初音ミクNT",
       "sourceHour": "2025-08-24-0400"
     },
@@ -11248,7 +11248,7 @@
       "registeredAt": "2025-08-22T20:02:06+09:00",
       "duration": 229,
       "owner": { "type": "user", "id": "138835218", "name": "ちゃまなつ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322534/45322534.39253322.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322534/45322534.13976860.M",
       "shortDescription": "（歌モノは）2曲目ですリコーダーと鍵盤ハーモニカはカッコイイ！をコンセプトに、リコーダー多重録音だか",
       "sourceHour": "2025-08-25-2300"
     },
@@ -11320,7 +11320,7 @@
       "registeredAt": "2025-08-22T20:56:04+09:00",
       "duration": 165,
       "owner": { "type": "user", "id": "138819383", "name": "こぬ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322631/45322631.90286776.M",
+      "thumbnailUrl": null,
       "shortDescription": "病み気味ボカロPとテトさんの物語を書きました音楽に救いを求める少女のお話テトさん側のお話⇒嘘つきVO",
       "sourceHour": "2025-08-23-2200"
     },
@@ -11473,7 +11473,7 @@
       "registeredAt": "2025-08-23T00:02:07+09:00",
       "duration": 292,
       "owner": { "type": "user", "id": "117299387", "name": "Hex-T / へくすと" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322773/45322773.98303249.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322773/45322773.16635514.M",
       "shortDescription": "音圧のデカめな耳コピアレンジです。音と動画の練習で作りました。1.25倍速とかも気持ちいいかも界隈曲",
       "sourceHour": "2025-08-24-0600"
     },
@@ -11635,7 +11635,7 @@
       "registeredAt": "2025-08-23T00:00:49+09:00",
       "duration": 139,
       "owner": { "type": "user", "id": "140105658", "name": "メイドユーズ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45322984/45322984.14178068.M",
+      "thumbnailUrl": null,
       "shortDescription": "ミクをなでなでするよ(断定)うにお願いします。ルーキーにも出てます！よろしくお願いします🙏→sm45",
       "sourceHour": "2025-08-23-1800"
     },
@@ -11743,7 +11743,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 122,
       "owner": { "type": "user", "id": "128633980", "name": "quxono" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323179/45323179.8126214.M",
+      "thumbnailUrl": null,
       "shortDescription": "くおのです本家様黒うさPhttps://x.com/kurousa_no?s=21原曲sm15630",
       "sourceHour": "2025-08-23-0600"
     },
@@ -11932,7 +11932,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 185,
       "owner": { "type": "user", "id": "128633980", "name": "quxono" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323369/45323369.97200910.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323369/45323369.1904835.M",
       "shortDescription": "くおのです◻︎Vocal :音街ウナSV◻︎ 他 :quxono https://twitter.c",
       "sourceHour": "2025-08-25-0600"
     },
@@ -11941,7 +11941,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 175,
       "owner": { "type": "user", "id": "129299805", "name": "あどじゃむ / adjam" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323375/45323375.22568264.M",
+      "thumbnailUrl": null,
       "shortDescription": "まずは、ごめんなさい原曲：https://nico.ms/sm42585649?ref=other_",
       "sourceHour": "2025-08-25-2300"
     },
@@ -12022,7 +12022,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 209,
       "owner": { "type": "user", "id": "28178261", "name": "appy" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323475/45323475.36436898.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323475/45323475.54225647.M",
       "shortDescription": "こら～～～～～～！！！！！！！！！！！！！！！！！！！！！早く寝なさ～～～～～～～～～～～～～～～～",
       "sourceHour": "2025-08-25-2200"
     },
@@ -12058,7 +12058,7 @@
       "registeredAt": "2025-08-23T08:55:03+09:00",
       "duration": 155,
       "owner": { "type": "user", "id": "141138768", "name": "夜多花詞/Yotabanashi" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323541/45323541.70161080.M",
+      "thumbnailUrl": null,
       "shortDescription": "■ボカコレ2025夏REMIXランキング参加曲です。『The VOCALOID Collection",
       "sourceHour": "2025-08-23-1000"
     },
@@ -12085,7 +12085,7 @@
       "registeredAt": "2025-08-23T18:01:11+09:00",
       "duration": 117,
       "owner": { "type": "user", "id": "133035400", "name": "空崎書房(麦芽糖)" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323548/45323548.35377339.M",
+      "thumbnailUrl": null,
       "shortDescription": "空崎書房です。人間観察してますか？素敵な本家様↓↓↓↓↓↓↓↓↓↓↓↓sm42585649↑↑↑↑↑",
       "sourceHour": "2025-08-25-0300"
     },
@@ -12175,7 +12175,7 @@
       "registeredAt": "2025-08-23T00:01:04+09:00",
       "duration": 216,
       "owner": { "type": "user", "id": "138504631", "name": "nanka" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323616/45323616.51538536.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323616/45323616.13961226.M",
       "shortDescription": "♥️撃ち抜いてく脳内Shot♥️❏ボカコレ2025夏TOP100ランキング参加作品❏Title：Mo",
       "sourceHour": "2025-08-25-1000"
     },
@@ -12220,7 +12220,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 178,
       "owner": { "type": "user", "id": "118189827", "name": "NoR@Ulysses" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323733/45323733.17253878.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45323733/45323733.59054258.M",
       "shortDescription": "\"あーしら\"が、最強なんだヨ♡@強くてkawaE_Music黎明敗残兵♡あーしら / feat. 初",
       "sourceHour": "2025-08-24-1800"
     },
@@ -12670,7 +12670,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 262,
       "owner": { "type": "user", "id": "119267773", "name": "空藍めいと" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324048/45324048.30082772.M",
+      "thumbnailUrl": null,
       "shortDescription": "『祝祭の合図、魂を解放せよ』どうも空藍めいとですこの曲は私の創りたいように創りましたどんな世界にした",
       "sourceHour": "2025-08-25-1900"
     },
@@ -12733,7 +12733,7 @@
       "registeredAt": "2025-08-22T23:45:04+09:00",
       "duration": 179,
       "owner": { "type": "user", "id": "140287230", "name": "白霧柊子" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324101/45324101.20062824.M",
+      "thumbnailUrl": null,
       "shortDescription": "痕石/Grave作詞:白霧柊子作曲:白霧柊子MV:白霧柊子イラスト:林檎 / Apple https",
       "sourceHour": "2025-08-23-0600"
     },
@@ -12877,7 +12877,7 @@
       "registeredAt": "2025-08-23T00:15:06+09:00",
       "duration": 224,
       "owner": { "type": "user", "id": "60269905", "name": "Hotaru / ほたる" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324188/45324188.35187941.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324188/45324188.85295281.M",
       "shortDescription": "Music&Movie: Hotaru X: https://twitter.com/sound_o",
       "sourceHour": "2025-08-25-1900"
     },
@@ -12949,7 +12949,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 181,
       "owner": { "type": "user", "id": "96069691", "name": "ほいっぷ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324227/45324227.1980083.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324227/45324227.54655629.M",
       "shortDescription": "全部 : ほいっぷ( https://x.com/whipwhip23 )いいねとリスインよろしくで",
       "sourceHour": "2025-08-25-2300"
     },
@@ -13120,7 +13120,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 123,
       "owner": { "type": "user", "id": "120244442", "name": "いちやそば" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324316/45324316.30508623.M",
+      "thumbnailUrl": null,
       "shortDescription": "そう例えば、意味のひっかかりで疑るようなマネをして知らないあなたの影を見るみたいな夜滑空　水面を滑空",
       "sourceHour": "2025-08-25-0600"
     },
@@ -13183,7 +13183,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 125,
       "owner": { "type": "user", "id": "129974951", "name": "あＰ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324348/45324348.4363118.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324348/45324348.12994119.M",
       "shortDescription": "あかつき-暁-  『お前を信じて未来へ賭けろ』 勢いで疾走感あるストレ－トなロックをやりましたvoc",
       "sourceHour": "2025-08-23-0500"
     },
@@ -13318,7 +13318,7 @@
       "registeredAt": "2025-08-23T00:00:00+09:00",
       "duration": 244,
       "owner": { "type": "user", "id": "125159449", "name": "ウェイウェイ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324425/45324425.89507225.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324425/45324425.70105591.M",
       "shortDescription": "20作目です。国語の教科書で取り上げられるような物語ってやたら印象に残りますよね。そんな夏の暑さも海",
       "sourceHour": "2025-08-25-1300"
     },
@@ -13507,7 +13507,7 @@
       "registeredAt": "2025-08-23T00:12:03+09:00",
       "duration": 115,
       "owner": { "type": "user", "id": "133040697", "name": "べコーンきうゅり" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324570/45324570.93507220.M",
+      "thumbnailUrl": null,
       "shortDescription": "初リミックスです！べコーンです！今回はMIMIさんの「ポシェット」という楽曲をリミックスさせていただ",
       "sourceHour": "2025-08-24-0900"
     },
@@ -13669,7 +13669,7 @@
       "registeredAt": "2025-08-23T00:18:04+09:00",
       "duration": 355,
       "owner": { "type": "user", "id": "118263939", "name": "川﨑ノーチラス" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324654/45324654.50758318.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324654/45324654.76893202.M",
       "shortDescription": "■ボカコレ2025夏TOP100ランキング参加曲です。『The VOCALOID Collectio",
       "sourceHour": "2025-08-25-2200"
     },
@@ -13732,7 +13732,7 @@
       "registeredAt": "2025-08-23T00:20:06+09:00",
       "duration": 213,
       "owner": { "type": "user", "id": "132865157", "name": "T.M.Vocaloid" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324715/45324715.14312106.M",
+      "thumbnailUrl": null,
       "shortDescription": "日にち間違えていたので再投稿です！ボカコレ2025夏ルーキー参加曲です！是非聞いてください！",
       "sourceHour": "2025-08-23-0600"
     },
@@ -13831,7 +13831,7 @@
       "registeredAt": "2025-08-23T01:01:03+09:00",
       "duration": 135,
       "owner": { "type": "user", "id": "138821788", "name": "OctoP" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324798/45324798.29710847.M",
+      "thumbnailUrl": null,
       "shortDescription": "原曲https://www.nicovideo.jp/watch/so43335661Remix　O",
       "sourceHour": "2025-08-24-2300"
     },
@@ -13921,7 +13921,7 @@
       "registeredAt": "2025-08-23T00:49:03+09:00",
       "duration": 130,
       "owner": { "type": "user", "id": "76072675", "name": "たそ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324865/45324865.16239886.M",
+      "thumbnailUrl": null,
       "shortDescription": "あなたのコメントやいいねで報われます！いっぱい聴いてほしい :)作業用BGMにもどうぞ(｀´）原曲様",
       "sourceHour": "2025-08-25-0200"
     },
@@ -13939,7 +13939,7 @@
       "registeredAt": "2025-08-23T01:02:03+09:00",
       "duration": 180,
       "owner": { "type": "user", "id": "66296951", "name": "椎乃味醂" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324905/45324905.27758182.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324905/45324905.62097914.M",
       "shortDescription": "椎乃味醂です。　mylist/59627983　Twitter https://twitter.co",
       "sourceHour": "final"
     },
@@ -13984,7 +13984,7 @@
       "registeredAt": "2025-08-23T01:05:04+09:00",
       "duration": 205,
       "owner": { "type": "user", "id": "141340941", "name": "なめ9じ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45324935/45324935.88757765.M",
+      "thumbnailUrl": null,
       "shortDescription": "初参加作品。ボカコレ2025夏参加曲",
       "sourceHour": "2025-08-23-0700"
     },
@@ -14056,7 +14056,7 @@
       "registeredAt": "2025-08-23T02:21:06+09:00",
       "duration": 318,
       "owner": { "type": "user", "id": "123016147", "name": "The SongKeeper" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45325040/45325040.52296459.M",
+      "thumbnailUrl": null,
       "shortDescription": "the video's unfinished but I literally don't care ",
       "sourceHour": "2025-08-24-1800"
     },
@@ -14281,7 +14281,7 @@
       "registeredAt": "2025-08-23T04:02:05+09:00",
       "duration": 174,
       "owner": { "type": "user", "id": "141359729", "name": "酩酊" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45325349/45325349.57656416.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45325349/45325349.51624278.M",
       "shortDescription": "夏の曲を作りました。よろしくお願いします。音楽 / 映像 : 酩酊歌 : 初音ミクxhttps://",
       "sourceHour": "2025-08-23-0700"
     },
@@ -14308,7 +14308,7 @@
       "registeredAt": "2025-08-23T03:47:04+09:00",
       "duration": 254,
       "owner": { "type": "user", "id": "140930251", "name": "matsuzaki" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45325364/45325364.39424688.M",
+      "thumbnailUrl": null,
       "shortDescription": "松崎と申します！ボカコレというものにどうしても参加したくて、作詞作曲に試みるのは初めてですが処女作と",
       "sourceHour": "2025-08-23-0500"
     },
@@ -14443,7 +14443,7 @@
       "registeredAt": "2025-08-23T06:12:04+09:00",
       "duration": 159,
       "owner": { "type": "user", "id": "134906963", "name": "不街" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45325524/45325524.51433767.M",
+      "thumbnailUrl": null,
       "shortDescription": "俯く影はしあわせな世界生まれた言葉私だけの言葉見つめる声が形になって誰かのことを許さないからみんなと",
       "sourceHour": "2025-08-24-0600"
     },
@@ -14749,7 +14749,7 @@
       "registeredAt": "2025-08-23T11:06:03+09:00",
       "duration": 113,
       "owner": { "type": "user", "id": "137259689", "name": "けいれい" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45326112/45326112.71731839.M",
+      "thumbnailUrl": null,
       "shortDescription": "作曲歴約三ヶ月の日本人です(マジ)曲作って力尽きました初参加です(当然)[原曲]外のヒト/原口沙輔h",
       "sourceHour": "2025-08-24-0600"
     },
@@ -14785,7 +14785,7 @@
       "registeredAt": "2025-08-23T11:13:03+09:00",
       "duration": 184,
       "owner": { "type": "user", "id": "140438606", "name": "Aya" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45326163/45326163.30193798.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレ2025summer Remix参加曲本家様：原口沙輔https://x.com/sasuk",
       "sourceHour": "2025-08-25-1100"
     },
@@ -15001,7 +15001,7 @@
       "registeredAt": "2025-08-23T14:43:04+09:00",
       "duration": 201,
       "owner": { "type": "user", "id": "134482716", "name": "白もも" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45326690/45326690.16698423.M",
+      "thumbnailUrl": null,
       "shortDescription": "■ボカコレ2025夏REMIXランキング参加曲です。『The VOCALOID Collection",
       "sourceHour": "2025-08-24-2200"
     },
@@ -15118,7 +15118,7 @@
       "registeredAt": "2025-08-23T15:21:05+09:00",
       "duration": 55,
       "owner": { "type": "user", "id": "124524485", "name": "こちら、欄干PAです。" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45326902/45326902.78940936.M",
+      "thumbnailUrl": null,
       "shortDescription": "100%とかany%とかあるけど50%とは...勝手に作った50%以上攻略するRTAのこと。初投稿(",
       "sourceHour": "2025-08-24-2200"
     },
@@ -15271,7 +15271,7 @@
       "registeredAt": "2025-08-23T17:24:04+09:00",
       "duration": 282,
       "owner": { "type": "user", "id": "129978050", "name": "Yanagi" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45327395/45327395.58247626.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカロ原曲とするか解釈が分かれる曲なので問題があれば辞退すると思います曲：ナユタン星人歌：花隈千冬r",
       "sourceHour": "2025-08-24-2200"
     },
@@ -15343,7 +15343,7 @@
       "registeredAt": "2025-08-23T17:46:03+09:00",
       "duration": 70,
       "owner": { "type": "user", "id": "137259689", "name": "けいれい" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45327531/45327531.72558198.M",
+      "thumbnailUrl": null,
       "shortDescription": "二つ目です。映像？知らないよ。そんなもの。[原曲]オーバーライド/吉田夜世https://www.n",
       "sourceHour": "2025-08-24-2200"
     },
@@ -15415,7 +15415,7 @@
       "registeredAt": "2025-08-23T18:09:04+09:00",
       "duration": 238,
       "owner": { "type": "user", "id": "118057872", "name": "385" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45327671/45327671.2611501.M",
+      "thumbnailUrl": null,
       "shortDescription": "言葉と影がぞわぞわlyrics / music 385vocal 無個声ゾウX(旧Twitter) ",
       "sourceHour": "2025-08-24-0400"
     },
@@ -15451,7 +15451,7 @@
       "registeredAt": "2025-08-23T18:30:04+09:00",
       "duration": 174,
       "owner": { "type": "user", "id": "141262369", "name": "暴飲暴食P" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45327780/45327780.32655798.M",
+      "thumbnailUrl": null,
       "shortDescription": "暴飲暴食P‐サークルクラッシャー麻辣たん feat. 重音テトいいね、マイリス、コメント、拡散よろし",
       "sourceHour": "2025-08-25-0600"
     },
@@ -15559,7 +15559,7 @@
       "registeredAt": "2025-08-23T21:00:00+09:00",
       "duration": 259,
       "owner": { "type": "user", "id": "138895854", "name": "飛行逃避コート" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45328108/45328108.10884911.M",
+      "thumbnailUrl": null,
       "shortDescription": "The VOCALOID Collection2025夏 ルーキー参加曲 『Thermally Br",
       "sourceHour": "2025-08-24-0900"
     },
@@ -15658,7 +15658,7 @@
       "registeredAt": "2025-08-23T20:11:03+09:00",
       "duration": 176,
       "owner": { "type": "user", "id": "60632074", "name": "響色[ひびきいろ]" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45328284/45328284.34618506.M",
+      "thumbnailUrl": null,
       "shortDescription": "3曲咲き乱れるマッシュアップです◇本家様sm39334235sm29910955sm36668789",
       "sourceHour": "2025-08-25-2300"
     },
@@ -15901,7 +15901,7 @@
       "registeredAt": "2025-08-23T22:09:04+09:00",
       "duration": 176,
       "owner": { "type": "user", "id": "128516631", "name": "新日本開発機構" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45328835/45328835.77091547.M",
+      "thumbnailUrl": null,
       "shortDescription": "ˈmaɪndɪˌskeɪp",
       "sourceHour": "2025-08-24-0900"
     },
@@ -15919,7 +15919,7 @@
       "registeredAt": "2025-08-23T22:31:03+09:00",
       "duration": 193,
       "owner": { "type": "user", "id": "140438606", "name": "Aya" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45328892/45328892.51596802.M",
+      "thumbnailUrl": null,
       "shortDescription": "ボカコレ2025 summer 参加曲です　権利的な問題などありましたら、教えていただきたいです。ン",
       "sourceHour": "2025-08-25-1100"
     },
@@ -15955,7 +15955,7 @@
       "registeredAt": "2025-08-23T22:59:04+09:00",
       "duration": 186,
       "owner": { "type": "user", "id": "35234321", "name": "味醂いろは" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45329048/45329048.27725040.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45329048/45329048.25460856.M",
       "shortDescription": "\" Lovin’ Lover 本音はまだ言えないな ”デュエット曲を花梨ちゃんとYumaくんに歌って",
       "sourceHour": "2025-08-24-0900"
     },
@@ -16072,7 +16072,7 @@
       "registeredAt": "2025-08-24T00:25:03+09:00",
       "duration": 134,
       "owner": { "type": "user", "id": "134880638", "name": "兎大智者" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45329226/45329226.24484090.M",
+      "thumbnailUrl": null,
       "shortDescription": "初めまして。Vocaloid×Phonetics、可能性ある？こんなA cappellaを作ってみた",
       "sourceHour": "2025-08-24-0800"
     },
@@ -16261,7 +16261,7 @@
       "registeredAt": "2025-08-24T01:11:03+09:00",
       "duration": 139,
       "owner": { "type": "user", "id": "138173239", "name": "Wolfen" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45329478/45329478.28748885.M",
+      "thumbnailUrl": null,
       "shortDescription": "怪物舞踏会(Monster Ball)「挙句の果てのモンスター」 -----------------",
       "sourceHour": "2025-08-25-0600"
     },
@@ -16288,7 +16288,7 @@
       "registeredAt": "2025-08-24T01:57:03+09:00",
       "duration": 115,
       "owner": { "type": "user", "id": "24938176", "name": "stabilizer" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45329593/45329593.38646070.M",
+      "thumbnailUrl": null,
       "shortDescription": "※エンコミスで音楽が途切れたりしてます！！故障じゃないので安心してください！！ボカコレ終了後に直しま",
       "sourceHour": "2025-08-25-2300"
     },
@@ -16612,7 +16612,7 @@
       "registeredAt": "2025-08-24T10:45:04+09:00",
       "duration": 80,
       "owner": { "type": "user", "id": "137259689", "name": "けいれい" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45330507/45330507.99506118.M",
+      "thumbnailUrl": null,
       "shortDescription": "三つ目です。制作時間は一時間半くらいです。映像なんてねぇよ[原曲]お返事まだカナ？おじさん構文！/吉",
       "sourceHour": "2025-08-25-0400"
     },
@@ -16711,7 +16711,7 @@
       "registeredAt": "2025-08-24T12:15:00+09:00",
       "duration": 239,
       "owner": { "type": "user", "id": "120518828", "name": "■37" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45330726/45330726.3833073.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45330726/45330726.35702818.M",
       "shortDescription": "🁡歌唱：雨衣、IA語り：ナースロボ＿タイプＴ（COEIROINK）音楽/絵/アニメーション/3DCG",
       "sourceHour": "2025-08-25-2300"
     },
@@ -16729,7 +16729,7 @@
       "registeredAt": "2025-08-24T12:30:04+09:00",
       "duration": 184,
       "owner": { "type": "user", "id": "139088144", "name": "海が見たい" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45330758/45330758.12076945.M",
+      "thumbnailUrl": null,
       "shortDescription": "やすらかなねむりMusic＆Movie:海が見たいボカコレ初参加です。よしなに。X:https://",
       "sourceHour": "2025-08-24-1400"
     },
@@ -16765,7 +16765,7 @@
       "registeredAt": "2025-08-24T18:00:00+09:00",
       "duration": 185,
       "owner": { "type": "user", "id": "128484856", "name": "yoki" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45330838/45330838.17761882.M",
+      "thumbnailUrl": null,
       "shortDescription": "atlas自己肯定感の難しさや生きづらさを繊細かつ力強く曲にしました。ボカコレ2025 ルーキー参加",
       "sourceHour": "2025-08-25-1100"
     },
@@ -16846,7 +16846,7 @@
       "registeredAt": "2025-08-24T15:36:04+09:00",
       "duration": 61,
       "owner": { "type": "user", "id": "119479607", "name": "六浪" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45331327/45331327.12053317.M",
+      "thumbnailUrl": null,
       "shortDescription": "初投稿でふ。ほうきぼしさんの曲をリミックスさせていただきました。BassHouse。原曲：https",
       "sourceHour": "2025-08-25-1000"
     },
@@ -17071,7 +17071,7 @@
       "registeredAt": "2025-08-24T17:55:04+09:00",
       "duration": 129,
       "owner": { "type": "user", "id": "137259689", "name": "けいれい" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45332023/45332023.99554386.M",
+      "thumbnailUrl": null,
       "shortDescription": "四つ目です。たくさん作ってますね〜。制作時間は一時間半くらい。映像は勿論ありません[原曲]モニタリン",
       "sourceHour": "2025-08-25-0600"
     },
@@ -17080,7 +17080,7 @@
       "registeredAt": "2025-08-24T18:29:04+09:00",
       "duration": 205,
       "owner": { "type": "user", "id": "141367895", "name": "illshy" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45332041/45332041.75254369.M",
+      "thumbnailUrl": null,
       "shortDescription": "はじめまして。▼原曲『サイハテ（reprise）』sm44711883vocal 初音ミクmusic",
       "sourceHour": "2025-08-25-1100"
     },
@@ -17134,7 +17134,7 @@
       "registeredAt": "2025-08-24T18:58:04+09:00",
       "duration": 176,
       "owner": { "type": "user", "id": "132137266", "name": "suzuya3710" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45332205/45332205.12555789.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45332205/45332205.58069027.M",
       "shortDescription": "バルピネ / Vivid Lila feat.ナツメイツキVocal：ナツメイツキ（Synthesi",
       "sourceHour": "2025-08-25-1800"
     },
@@ -17296,7 +17296,7 @@
       "registeredAt": "2025-08-24T20:03:03+09:00",
       "duration": 145,
       "owner": { "type": "user", "id": "138821788", "name": "OctoP" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45332607/45332607.96783557.M",
+      "thumbnailUrl": null,
       "shortDescription": "投稿から一日でRemixを作るのはだめだろだめではないかなすみませんでした原曲青栗鼠　memeしい/",
       "sourceHour": "2025-08-25-1900"
     },
@@ -17386,7 +17386,7 @@
       "registeredAt": "2025-08-24T21:05:04+09:00",
       "duration": 87,
       "owner": { "type": "user", "id": "139229123", "name": "尾形自然" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45332945/45332945.80499316.M",
+      "thumbnailUrl": null,
       "shortDescription": "⑥踊ってない朝もないかも！",
       "sourceHour": "2025-08-24-2200"
     },
@@ -17431,7 +17431,7 @@
       "registeredAt": "2025-08-24T21:32:04+09:00",
       "duration": 215,
       "owner": { "type": "user", "id": "120570657", "name": "はちゃりあ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45333043/45333043.35764027.M",
+      "thumbnailUrl": null,
       "shortDescription": "夏っぽくリミックスしましたいえぬさん、好きだ＿原曲(いえぬ)→https://www.nicovid",
       "sourceHour": "2025-08-25-2300"
     },
@@ -17602,7 +17602,7 @@
       "registeredAt": "2025-08-24T22:52:03+09:00",
       "duration": 153,
       "owner": { "type": "user", "id": "140428807", "name": "Rele" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45333542/45333542.5683642.M",
+      "thumbnailUrl": null,
       "shortDescription": "■ボカコレ2025夏ルーキーランキング参加曲です。『The VOCALOID Collection（",
       "sourceHour": "2025-08-25-0500"
     },
@@ -17701,7 +17701,7 @@
       "registeredAt": "2025-08-24T23:28:04+09:00",
       "duration": 118,
       "owner": { "type": "user", "id": "141378423", "name": "ヒステリクラブ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45333669/45333669.7735165.M",
+      "thumbnailUrl": null,
       "shortDescription": "はじめまして、ヒステリクラブと言います滑り込みで投稿しました輝くのに遅いのなんてないぜ曲 / 映像 ",
       "sourceHour": "2025-08-25-1000"
     },
@@ -17755,7 +17755,7 @@
       "registeredAt": "2025-08-25T00:01:04+09:00",
       "duration": 94,
       "owner": { "type": "user", "id": "128682237", "name": "あまねく庭" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45333782/45333782.63630711.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45333782/45333782.24930922.M",
       "shortDescription": "お久しぶりです。生き物に希望を！！という曲です、多分。全てレン君が救ってくれます、おそらく。実写PV",
       "sourceHour": "2025-08-25-0200"
     },
@@ -17872,7 +17872,7 @@
       "registeredAt": "2025-08-25T00:24:05+09:00",
       "duration": 91,
       "owner": { "type": "user", "id": "141385820", "name": "TakANE" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45333949/45333949.45476090.M",
+      "thumbnailUrl": null,
       "shortDescription": "はじめまして。TakANEと申します。初投稿です。作曲初めて1ヶ月でなんとか頑張って作った曲です。当",
       "sourceHour": "2025-08-25-0500"
     },
@@ -17935,7 +17935,7 @@
       "registeredAt": "2025-08-25T01:02:04+09:00",
       "duration": 146,
       "owner": { "type": "user", "id": "120020737", "name": "ばーめん" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45334118/45334118.91952895.M",
+      "thumbnailUrl": null,
       "shortDescription": "遅刻の上塗りX→https://x.com/chshuchngzhzh1",
       "sourceHour": "2025-08-25-0400"
     },
@@ -18187,7 +18187,7 @@
       "registeredAt": "2025-08-25T07:00:00+09:00",
       "duration": 73,
       "owner": { "type": "user", "id": "130073722", "name": "不響和音" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45334671/45334671.16244124.M",
+      "thumbnailUrl": null,
       "shortDescription": "初めまして、不響和音と申します。5作目(不名誉)です。山本さん、この度は誠に申し訳ございません原案:",
       "sourceHour": "2025-08-25-2200"
     },
@@ -18205,7 +18205,7 @@
       "registeredAt": "2025-08-25T06:38:03+09:00",
       "duration": 199,
       "owner": { "type": "user", "id": "141230075", "name": "伊吹とらを" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45334686/45334686.20217854.M",
+      "thumbnailUrl": null,
       "shortDescription": "とらをです。ボカコレです。",
       "sourceHour": "2025-08-25-0900"
     },
@@ -18250,7 +18250,7 @@
       "registeredAt": "2025-08-25T07:44:04+09:00",
       "duration": 102,
       "owner": { "type": "user", "id": "5586807", "name": "カラノゼ" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45334778/45334778.16566713.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45334778/45334778.5307527.M",
       "shortDescription": "どうも、カラノゼです。初めましての人は初めまして。滑り込みボカコレ2025夏です、よろしくお願いしま",
       "sourceHour": "2025-08-25-0800"
     },
@@ -18466,7 +18466,7 @@
       "registeredAt": "2025-08-25T15:00:00+09:00",
       "duration": 274,
       "owner": { "type": "user", "id": "98632289", "name": "れっすい" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45335464/45335464.27843791.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45335464/45335464.70016985.M",
       "shortDescription": "どうも。れっすいと申します。大好きな楽曲をアレンジして、テトさんに歌ってもらいました。原曲・白紙 v",
       "sourceHour": "2025-08-25-1900"
     },
@@ -18619,7 +18619,7 @@
       "registeredAt": "2025-08-25T16:10:04+09:00",
       "duration": 185,
       "owner": { "type": "user", "id": "57571385", "name": "Stellar" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45336018/45336018.35910665.M",
+      "thumbnailUrl": null,
       "shortDescription": "注：この動画は仮投稿です　時間があったら動画とか差し替えたりするかもです。Original ユレ弧 ",
       "sourceHour": "2025-08-25-2000"
     },
@@ -18682,7 +18682,7 @@
       "registeredAt": "2025-08-25T16:46:04+09:00",
       "duration": 137,
       "owner": { "type": "user", "id": "86719443", "name": "紅掛みく" },
-      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45336145/45336145.29371404.M",
+      "thumbnailUrl": "https://nicovideo.cdn.nimg.jp/thumbnails/45336145/45336145.45591051.M",
       "shortDescription": "「見向きもされずとも、 あなたの信じる美しさが無くなるわけではないでしょう」UTAU・ACE自音源「",
       "sourceHour": "2025-08-25-2200"
     },
