@@ -60,3 +60,25 @@ export async function fetchText(url) {
   throw lastError ?? new FetchError('取得に失敗');
 }
 
+/** ステータスコードだけをHEADで調べる。取得できなければ null を返す。 */
+export async function fetchStatus(url) {
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+    if (attempt > 1) await sleep(BACKOFF_BASE_MS * 2 ** (attempt - 2));
+
+    let status;
+    try {
+      const response = await fetch(url, {
+        method: 'HEAD',
+        headers: { 'user-agent': USER_AGENT, accept: '*/*' },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+      status = response.status;
+    } catch {
+      continue;
+    }
+
+    if (status < 500) return status;
+  }
+  return null;
+}

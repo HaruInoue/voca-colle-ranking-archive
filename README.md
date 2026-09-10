@@ -22,7 +22,7 @@
 Node.js は `.nvmrc` の版（現在 24.19.0）。`collector/` と `site/` はそれぞれ独立した
 npm パッケージで、リポジトリ直下にパッケージは無い。
 
-### collector（依存0・`npm install` 不要）
+### collector（依存0）
 
 ```
 node collector/collect.js                                     # 開催中の収集（Actions と同じ挙動）
@@ -30,6 +30,7 @@ node collector/collect.js --event <eventId> --dry-run         # 候補時刻を�
 node collector/collect.js --event <eventId> --assume-expired  # 過去回の一括取り込み
 node collector/finalize.js --event <eventId>                  # 最終ランキングの取得（手動）
 node collector/reparse.js --dry-run                           # raw/ からの再解析（パーサの回帰確認）
+node collector/refresh-thumbnails.js --dry-run                # 404 になったサムネイルURLの確認
 ```
 
 各コマンドは `--help` で使い方を表示する。新しい開催回を追加するには`data/events/<eventId>/event.json` を作成する。
