@@ -77,8 +77,8 @@ export function outOfPeriodHourKeys(hourKeys, aggregationPeriod) {
   );
 }
 
-/** 1曲の部門別推移を作る。 */
-export function buildVideoSeries(hourKeys, entriesByHour, watchId) {
+/** 1曲の部門別推移を作る。最高順位とランクイン回数は公式の集計期間内だけで数える。 */
+export function buildVideoSeries(hourKeys, entriesByHour, watchId, outOfPeriod = new Set()) {
   const points = hourKeys.map((hourKey) => {
     const entry = entriesByHour.get(hourKey)?.get(watchId);
     return {
@@ -91,13 +91,16 @@ export function buildVideoSeries(hourKeys, entriesByHour, watchId) {
     };
   });
   const ranked = points.filter((point) => point.rank !== null);
-  const bestRank = ranked.length ? Math.min(...ranked.map((point) => point.rank)) : null;
+  const rankedInPeriod = ranked.filter((point) => !outOfPeriod.has(point.hourKey));
+  const bestRank = rankedInPeriod.length
+    ? Math.min(...rankedInPeriod.map((point) => point.rank))
+    : null;
   return {
     points,
     bestRank,
-    bestRankHourKey: ranked.findLast((point) => point.rank === bestRank)?.hourKey ?? null,
+    bestRankHourKey: rankedInPeriod.findLast((point) => point.rank === bestRank)?.hourKey ?? null,
     lastRankedHourKey: ranked.at(-1)?.hourKey ?? null,
-    rankedHourCount: ranked.length,
+    rankedHourCount: rankedInPeriod.length,
   };
 }
 

@@ -8,8 +8,10 @@ interface Props {
 }
 
 const { eventId, seriesList } = Astro.props as Props;
+const hasOutOfPeriod = seriesList.some((series) => series.outOfPeriodHourCount > 0);
 ---
 
+<div class="rank-summary">
   <ul class="best-ranks">
     {
       seriesList.map((series) => (
@@ -66,7 +68,16 @@ const { eventId, seriesList } = Astro.props as Props;
     }
   </ul>
 
+  {hasOutOfPeriod && <p class="period-note">※ 公式の集計期間外の毎時ランキングは含みません</p>}
+</div>
+
 <style>
+  .period-note {
+    margin: var(--space-2) 0 0;
+    color: var(--muted-text);
+    font-size: 0.75rem;
+  }
+
   .best-ranks {
     list-style: none;
     margin: 0;

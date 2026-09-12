@@ -111,6 +111,27 @@ test('同率の最高順位が複数あるときは最も新しい時刻を採�
   assert.equal(series.lastRankedHourKey, 'h4');
 });
 
+test('集計期間外の時刻は最高順位とランクイン回数から除く', () => {
+  const entriesByHour = new Map([
+    ['h1', new Map([['sm1', { rank: 8 }]])],
+    ['h2', new Map([['sm1', { rank: 2 }]])],
+  ]);
+  const series = buildVideoSeries(['h1', 'h2'], entriesByHour, 'sm1', new Set(['h2']));
+  assert.equal(series.bestRank, 8);
+  assert.equal(series.bestRankHourKey, 'h1');
+  assert.equal(series.rankedHourCount, 1);
+  assert.equal(series.lastRankedHourKey, 'h2');
+});
+
+test('集計期間外にしかランクインしていない場合の最高順位は null になる', () => {
+  const entriesByHour = new Map([['h1', new Map([['sm1', { rank: 4 }]])]]);
+  const series = buildVideoSeries(['h1'], entriesByHour, 'sm1', new Set(['h1']));
+  assert.equal(series.bestRank, null);
+  assert.equal(series.bestRankHourKey, null);
+  assert.equal(series.rankedHourCount, 0);
+  assert.equal(series.lastRankedHourKey, 'h1');
+});
+
 test('一度もランクインしていない部門では最高順位の時刻が null になる', () => {
   const series = buildVideoSeries(['h1'], new Map([['h1', new Map()]]), 'sm1');
   assert.equal(series.bestRank, null);

@@ -1,5 +1,11 @@
-import { publishableDivisions, availableHourKeys, loadSnapshot, loadFinal } from './data.js';
-import { toEntries, buildVideoSeries, metricDiffs } from './ranking.js';
+import {
+  publishableDivisions,
+  availableHourKeys,
+  loadHourlyIndex,
+  loadSnapshot,
+  loadFinal,
+} from './data.js';
+import { toEntries, buildVideoSeries, metricDiffs, outOfPeriodHourKeys } from './ranking.js';
 
 /** 曲詳細ページ用の索引。 */
 
@@ -17,7 +23,9 @@ function buildIndex(eventId) {
     const finalEntries = final
       ? new Map(toEntries(final).map((entry) => [entry.watchId, entry]))
       : null;
-    return { division, hourKeys, entriesByHour, finalEntries };
+    const aggregationPeriod = loadHourlyIndex(eventId, division)?.aggregationPeriod;
+    const outOfPeriod = outOfPeriodHourKeys(hourKeys, aggregationPeriod);
+    return { division, hourKeys, entriesByHour, finalEntries, outOfPeriod };
   });
 
   const watchIds = new Set();
@@ -45,16 +53,17 @@ export function rankedWatchIds(eventId) {
 export function videoDivisionSeries(eventId, watchId) {
   return eventSnapshotIndex(eventId)
     .divisions.map((item) => {
-      const series = buildVideoSeries(item.hourKeys, item.entriesByHour, watchId);
+      const series = buildVideoSeries(item.hourKeys, item.entriesByHour, watchId, item.outOfPeriod);
       const finalEntry = item.finalEntries?.get(watchId) ?? null;
-      if (series.rankedHourCount === 0 && !finalEntry) return null;
+      if (series.lastRankedHourKey === null && !finalEntry) return null;
       return {
         division: item.division,
         ...series,
         diffs: metricDiffs(series.points),
         finalEntry,
         finalPublished: item.finalEntries !== null,
-        totalHourCount: item.hourKeys.length,
+        totalHourCount: item.hourKeys.length - item.outOfPeriod.size,
+        outOfPeriodHourCount: item.outOfPeriod.size,
       };
     })
     .filter(Boolean);
