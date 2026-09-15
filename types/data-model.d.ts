@@ -1,4 +1,4 @@
-// data/ 配下の JSON の形。docs/03-data-model.md が定義元。
+// data/ 配下の JSON の形。
 
 /** "YYYY-MM-DD-HH00"（JST、分は常に 00）。 */
 export type HourKey = string;
@@ -157,7 +157,7 @@ export interface CollectionLogLine {
 }
 
 /**
- * 毎時履歴パーサ (sds-history-v1) の戻り値。
+ * 毎時履歴パーサ (sds-history) の戻り値。
  * 集計期間外のときだけ ranking を取得できないため、status で判別する。
  */
 export type HourlyParseResult =
@@ -174,7 +174,7 @@ export type HourlyParseResult =
       videos: Record<WatchId, Video>;
     };
 
-/** 最終ランキングパーサ (archive-page-v1) の戻り値。 */
+/** 最終ランキングパーサ (archive-page) の戻り値。 */
 export interface FinalParseResult {
   pageId: string | null;
   entries: RankingEntry[];

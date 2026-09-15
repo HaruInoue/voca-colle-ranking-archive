@@ -24,10 +24,7 @@
 Node.js は `.nvmrc` の版（現在 24.19.0）。`collector/` と `site/` はそれぞれ独立した
 npm パッケージで、リポジトリ直下にパッケージは無い。
 
-コードは TypeScript。Node が `.ts` の型注釈を取り除いて直接実行するため、ビルドは要らない。
-型検査だけ `typescript` を使う（各パッケージの devDependencies）。
-
-### collector（実行時依存0）
+### collector
 
 ```
 node collector/collect.ts                                     # 開催中の収集（Actions と同じ挙動）
