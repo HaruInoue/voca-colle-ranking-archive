@@ -5,14 +5,22 @@
   "engines": {
     "node": ">=24.19.0"
   },
+  "imports": {
+    "#*": "./src/*"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "typecheck": "astro check",
     "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
     "astro": "^7.3.1",
     "uplot": "^1.6.32"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
   }
 }
