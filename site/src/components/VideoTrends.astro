@@ -1,15 +1,17 @@
 ---
-import { divisionLabel, METRIC_KEYS, METRIC_LABELS } from '@/lib/ranking.js';
+import { divisionLabel, METRIC_KEYS, METRIC_LABELS } from '#lib/ranking.ts';
 import {
   parseHourKey,
   formatNumber,
   formatSignedNumber,
   hourKeyToPlotSeconds,
   isoToPlotSeconds,
-} from '@/lib/format.js';
+} from '#lib/format.ts';
+
+import type { DivisionSeries } from '#lib/video-series.ts';
 
 interface Props {
-  seriesList: any[];
+  seriesList: DivisionSeries[];
   eventFinal?: { submissionFrom?: string; submissionUntil?: string };
 }
 
@@ -34,7 +36,7 @@ const tally = {
 };
 const hasOutsideTally = chartData.some(
   (series) =>
-    (tally.until !== null && series.x.at(-1) > tally.until) ||
+    (tally.until !== null && (series.x.at(-1) ?? -Infinity) > tally.until) ||
     (tally.from !== null && series.x[0] < tally.from)
 );
 
@@ -139,9 +141,9 @@ const tables = seriesList.map((series) => ({
                 <tfoot>
                   <tr>
                     <th scope="row">最終ランキング（全期間集計）</th>
-                    <td class="numeric">{series.finalEntry.rank}</td>
+                    <td class="numeric">{series.finalEntry!.rank}</td>
                     {METRIC_KEYS.map((key) => [
-                      <td class="numeric">{formatNumber(series.finalEntry[key])}</td>,
+                      <td class="numeric">{formatNumber(series.finalEntry![key])}</td>,
                       <td class="diff-cell" />,
                     ])}
                   </tr>

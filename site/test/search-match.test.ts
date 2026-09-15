@@ -1,9 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { MAX_SUGGESTIONS, normalize, parseQuery, prepareRows, searchVideos } from '../src/lib/search-match.js';
+import { MAX_SUGGESTIONS, normalize, parseQuery, prepareRows, searchVideos } from '#lib/search-match.ts';
 
-const index = {
+import type { SearchIndex } from '#lib/search-index.ts';
+
+const index: SearchIndex = {
   events: {},
   videos: [
     ['sm1001', 'メルト', 'ryo', '2025-summer'],
@@ -16,7 +18,8 @@ const index = {
   ],
 };
 const rows = prepareRows(index);
-const titlesOf = (result) => result.hits.map((hit) => hit.title);
+const titlesOf = (result: ReturnType<typeof searchVideos>): string[] =>
+  result.hits.map((hit) => hit.title);
 
 test('normalize は全角英数と大文字小文字の差を吸収する', () => {
   assert.equal(normalize('ＯＤＤＳ'), 'odds');

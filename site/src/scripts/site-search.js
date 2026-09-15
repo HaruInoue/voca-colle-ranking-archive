@@ -1,4 +1,4 @@
-import { MAX_SUGGESTIONS, prepareRows, searchVideos } from '@/lib/search-match.js';
+import { MAX_SUGGESTIONS, prepareRows, searchVideos } from '#lib/search-match.ts';
 
 /** ヘッダーの動画検索。候補リストは combobox として組み立てる。 */
 export function setupSiteSearch() {

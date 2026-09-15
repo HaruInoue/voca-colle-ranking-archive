@@ -4,8 +4,8 @@ import {
   loadVideos,
   loadSnapshot,
   availableHourKeys,
-} from '@/lib/data.js';
-import { columnBodyHtml } from '@/lib/render-column.js';
+} from '#lib/data.ts';
+import { columnBodyHtml } from '#lib/render-column.ts';
 
 export function getStaticPaths() {
   return publishableEvents().flatMap((event) =>

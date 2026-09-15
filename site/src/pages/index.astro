@@ -1,16 +1,16 @@
 ---
 import Base from '@/layouts/Base.astro';
-import { publishableEvents, publishableDivisions, loadHourlyIndex } from '@/lib/data.js';
-import { divisionLabel } from '@/lib/ranking.js';
-import { divisionHref, eventHref } from '@/lib/urls.js';
-import { eventTheme } from '@/lib/theme.js';
-import { formatPeriod } from '@/lib/format.js';
+import { publishableEvents, publishableDivisions, loadHourlyIndex } from '#lib/data.ts';
+import { divisionLabel } from '#lib/ranking.ts';
+import { divisionHref, eventHref } from '#lib/urls.ts';
+import { eventTheme } from '#lib/theme.ts';
+import { formatPeriod } from '#lib/format.ts';
 
 const events = publishableEvents().map((summary) => {
   const divisions = publishableDivisions(summary.eventId);
   const periods = divisions
     .map((division) => loadHourlyIndex(summary.eventId, division)?.aggregationPeriod)
-    .filter(Boolean);
+    .filter((period) => period !== undefined);
   const theme = eventTheme(summary.eventId);
   return {
     ...summary,

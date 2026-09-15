@@ -11,24 +11,30 @@ import {
   divisionLabel,
   canonicalDivision,
   outOfPeriodHourKeys,
-} from '../src/lib/ranking.js';
-import { noticesForEventPage, noticesForDivisionPage } from '../src/lib/notices.js';
+} from '#lib/ranking.ts';
+import { noticesForEventPage, noticesForDivisionPage } from '#lib/notices.ts';
 import {
   parseHourKey,
   formatIsoDateTime,
   hourKeyToPlotSeconds,
   isoToPlotSeconds,
   niceCeil,
-} from '../src/lib/format.js';
-import { escapeHtml } from '../src/lib/render-column.js';
+} from '#lib/format.ts';
+import { escapeHtml } from '#lib/render-column.ts';
 
-const snapshot = {
+import type { EventFile, HourKey, Snapshot, WatchId } from '@data-model';
+import type { RankRow, SeriesPoint } from '#lib/ranking.ts';
+
+/** テストは検証に必要な項目だけを持つ最小限のフィクスチャを使う。 */
+const fixture = <T,>(value: unknown): T => value as T;
+
+const snapshot = fixture<Snapshot>({
   columns: ['rank', 'watchId', 'view', 'comment', 'mylist', 'like'],
   entries: [
     [1, 'sm1', 100, 10, 5, 20],
     [2, 'sm2', 90, 9, 4, 18],
   ],
-};
+});
 
 test('列指向の entries を列名で引ける形に変換する', () => {
   assert.deepEqual(toEntries(snapshot), [
@@ -106,7 +112,11 @@ test('同率の最高順位が複数あるときは最も新しい時刻を採�
     ['h3', new Map([['sm1', { rank: 1 }]])],
     ['h4', new Map([['sm1', { rank: 9 }]])],
   ]);
-  const series = buildVideoSeries(['h1', 'h2', 'h3', 'h4'], entriesByHour, 'sm1');
+  const series = buildVideoSeries(
+    ['h1', 'h2', 'h3', 'h4'],
+    fixture<Map<HourKey, Map<WatchId, RankRow>>>(entriesByHour),
+    'sm1',
+  );
   assert.equal(series.bestRankHourKey, 'h3');
   assert.equal(series.lastRankedHourKey, 'h4');
 });
@@ -116,7 +126,12 @@ test('集計期間外の時刻は最高順位とランクイン回数から除�
     ['h1', new Map([['sm1', { rank: 8 }]])],
     ['h2', new Map([['sm1', { rank: 2 }]])],
   ]);
-  const series = buildVideoSeries(['h1', 'h2'], entriesByHour, 'sm1', new Set(['h2']));
+  const series = buildVideoSeries(
+    ['h1', 'h2'],
+    fixture<Map<HourKey, Map<WatchId, RankRow>>>(entriesByHour),
+    'sm1',
+    new Set(['h2']),
+  );
   assert.equal(series.bestRank, 8);
   assert.equal(series.bestRankHourKey, 'h1');
   assert.equal(series.rankedHourCount, 1);
@@ -125,7 +140,12 @@ test('集計期間外の時刻は最高順位とランクイン回数から除�
 
 test('集計期間外にしかランクインしていない場合の最高順位は null になる', () => {
   const entriesByHour = new Map([['h1', new Map([['sm1', { rank: 4 }]])]]);
-  const series = buildVideoSeries(['h1'], entriesByHour, 'sm1', new Set(['h1']));
+  const series = buildVideoSeries(
+    ['h1'],
+    fixture<Map<HourKey, Map<WatchId, RankRow>>>(entriesByHour),
+    'sm1',
+    new Set(['h1']),
+  );
   assert.equal(series.bestRank, null);
   assert.equal(series.bestRankHourKey, null);
   assert.equal(series.rankedHourCount, 0);
@@ -133,7 +153,7 @@ test('集計期間外にしかランクインしていない場合の最高順�
 });
 
 test('一度もランクインしていない部門では最高順位の時刻が null になる', () => {
-  const series = buildVideoSeries(['h1'], new Map([['h1', new Map()]]), 'sm1');
+  const series = buildVideoSeries(['h1'], new Map([['h1', new Map<WatchId, RankRow>()]]), 'sm1');
   assert.equal(series.bestRank, null);
   assert.equal(series.bestRankHourKey, null);
   assert.equal(series.lastRankedHourKey, null);
@@ -173,7 +193,7 @@ test('指標の差分は比較できる点がある場合だけ計算し、値�
     { rank: null, view: null, comment: null, mylist: null, like: null },
     { rank: 1, view: 30, comment: 3, mylist: 2, like: 5 },
   ];
-  const diffs = metricDiffs(points);
+  const diffs = metricDiffs(fixture<SeriesPoint[]>(points));
   assert.equal(diffs[0].view, null, '最初の点には差分が無い');
   assert.equal(diffs[1].view, null, 'データのない時刻には差分を作らない');
   assert.equal(diffs[2].view, 20, '直前に比較できる点との差を計算する');
@@ -184,14 +204,14 @@ test('部門の表示名は未知の部門でも識別子をそのまま返す',
   assert.equal(divisionLabel('newcomer2027'), 'newcomer2027');
 });
 
-const eventWithNotices = {
+const eventWithNotices = fixture<EventFile>({
   website: {
     notices: [
       { title: '全体の注記', body: '<p>全体</p>' },
       { title: '部門の注記', body: '<p>部門</p>', division: 'top100' },
     ],
   },
-};
+});
 
 test('開催回ページには全ての注記を表示する', () => {
   assert.equal(noticesForEventPage(eventWithNotices).length, 2);
@@ -209,8 +229,8 @@ test('部門ページには全体の注記とその部門の注記を表示す�
 });
 
 test('注記が無い開催回では空を返す', () => {
-  assert.deepEqual(noticesForEventPage({}), []);
-  assert.deepEqual(noticesForDivisionPage({}, 'top100'), []);
+  assert.deepEqual(noticesForEventPage(fixture<EventFile>({})), []);
+  assert.deepEqual(noticesForDivisionPage(fixture<EventFile>({}), 'top100'), []);
 });
 
 test('時刻キーはローカル時刻へ変換せず文字列として整形する', () => {
@@ -274,6 +294,7 @@ test('集計期間の外にある時刻キーだけを拾う', () => {
   const period = {
     startDateTime: '2026-08-22T00:00:00+09:00',
     endDateTime: '2026-08-24T17:00:00+09:00',
+    source: 'official' as const,
   };
   assert.deepEqual(
     [...outOfPeriodHourKeys(hourKeys, period)],

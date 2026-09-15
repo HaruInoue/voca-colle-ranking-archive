@@ -1,9 +1,9 @@
 ---
 import '@/styles/global.css';
 import SiteSearch from '@/components/SiteSearch.astro';
-import { siteHref } from '@/lib/urls.js';
-import { eventTheme, themeStyle } from '@/lib/theme.js';
-import { ogImageHref } from '@/lib/og-image.js';
+import { siteHref } from '#lib/urls.ts';
+import { eventTheme, themeStyle } from '#lib/theme.ts';
+import { ogImageHref } from '#lib/og-image.ts';
 
 interface Crumb {
   label: string;
@@ -151,6 +151,7 @@ const ogImageAltText = ogImageAlt ?? (ogImage ? undefined : 'ボカコレラン�
       }
 
       function updateThemeToggle() {
+        if (!(themeToggle instanceof HTMLElement)) return;
         const nextTheme = resolvedTheme() === 'dark' ? 'light' : 'dark';
         const label = `${nextTheme === 'dark' ? 'ダーク' : 'ライト'}テーマに切り替え`;
         themeToggle.setAttribute('aria-label', label);
@@ -158,7 +159,7 @@ const ogImageAltText = ogImageAlt ?? (ogImage ? undefined : 'ボカコレラン�
       }
 
       updateThemeToggle();
-      themeToggle.addEventListener('click', () => {
+      themeToggle?.addEventListener('click', () => {
         const nextTheme = resolvedTheme() === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.colorScheme = nextTheme;
         try {

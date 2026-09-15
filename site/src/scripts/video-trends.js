@@ -1,7 +1,7 @@
 import uPlot from 'uplot';
 import 'uplot/dist/uPlot.min.css';
-import { METRIC_LABELS } from '@/lib/ranking.js';
-import { niceCeil } from '@/lib/format.js';
+import { METRIC_LABELS } from '#lib/ranking.ts';
+import { niceCeil } from '#lib/format.ts';
 
 /** 曲詳細ページの推移グラフを初期化する。 */
 const RANK_RANGE = [1, 100];

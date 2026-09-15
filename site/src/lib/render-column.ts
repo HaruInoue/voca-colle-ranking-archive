@@ -1,10 +1,13 @@
-import { parseHourKey, formatNumber } from './format.js';
-import { METRIC_KEYS, METRIC_LABELS, toEntries, rankDelta, rankMapOf } from './ranking.js';
-import { videoHref } from './urls.js';
+import { parseHourKey, formatNumber } from '#lib/format.ts';
+import { METRIC_KEYS, METRIC_LABELS, toEntries, rankDelta, rankMapOf } from '#lib/ranking.ts';
+import { videoHref } from '#lib/urls.ts';
+
+import type { EventId, FinalRanking, HourKey, Snapshot, Video, WatchId } from '@data-model';
+import type { RankDelta, RankRow } from '#lib/ranking.ts';
 
 /** 時刻列のHTMLを生成する。 */
 
-export function escapeHtml(value) {
+export function escapeHtml(value: unknown): string {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -13,7 +16,7 @@ export function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
-const DELTA_PRESENTATION = {
+const DELTA_PRESENTATION: Record<RankDelta['kind'], { className: string; text: string; label: string }> = {
   none: { className: 'delta-none', text: '-', label: '比較できる前の時刻がありません' },
   rankin: { className: 'delta-rankin', text: 'Rank in', label: '前の時刻は100位圏外' },
   same: { className: 'delta-same', text: '→ 0', label: '順位変わらず' },
@@ -21,10 +24,12 @@ const DELTA_PRESENTATION = {
   down: { className: 'delta-down', text: '▼', label: '順位下降' },
 };
 
-function deltaHtml(delta) {
+function deltaHtml(delta: RankDelta): string {
   const presentation = DELTA_PRESENTATION[delta.kind];
   const text =
-    delta.kind === 'up' || delta.kind === 'down' ? `${presentation.text} ${delta.value}` : presentation.text;
+    delta.kind === 'up' || delta.kind === 'down'
+      ? `${presentation.text} ${delta.value}`
+      : presentation.text;
   return `<span class="delta ${presentation.className}"><span aria-hidden="true">${escapeHtml(
     text
   )}</span><span class="visually-hidden">${escapeHtml(presentation.label)}${
@@ -32,7 +37,19 @@ function deltaHtml(delta) {
   }</span></span>`;
 }
 
-function rowHtml({ entry, delta, video, eventId, showDelta }) {
+function rowHtml({
+  entry,
+  delta,
+  video,
+  eventId,
+  showDelta,
+}: {
+  entry: RankRow;
+  delta: RankDelta;
+  video: Video;
+  eventId: EventId;
+  showDelta: boolean;
+}): string {
   const title = video.title;
   const metrics = METRIC_KEYS.map(
     (key) =>
@@ -63,7 +80,19 @@ ${thumb}
 }
 
 /** 列の本文を生成する。 */
-export function columnBodyHtml({ snapshot, previousSnapshot, videos, eventId, isFinal = false }) {
+export function columnBodyHtml({
+  snapshot,
+  previousSnapshot,
+  videos,
+  eventId,
+  isFinal = false,
+}: {
+  snapshot: Snapshot | FinalRanking;
+  previousSnapshot?: Snapshot | null;
+  videos: Record<WatchId, Video>;
+  eventId: EventId;
+  isFinal?: boolean;
+}): string {
   const entries = toEntries(snapshot);
   const showDelta = !isFinal;
   const previousRanks = previousSnapshot ? rankMapOf(toEntries(previousSnapshot)) : null;
@@ -74,7 +103,7 @@ export function columnBodyHtml({ snapshot, previousSnapshot, videos, eventId, is
       if (!video) {
         throw new Error(
           `曲情報が見つかりません: ${eventId} / ${snapshot.division} / ${
-            snapshot.hourKey ?? 'final'
+            'hourKey' in snapshot ? snapshot.hourKey : 'final'
           } の ${entry.watchId}`
         );
       }
@@ -92,7 +121,7 @@ export function columnBodyHtml({ snapshot, previousSnapshot, videos, eventId, is
 }
 
 /** 列見出しを生成する。 */
-function headingHtml(columnId, outOfPeriod) {
+function headingHtml(columnId: HourKey | 'final', outOfPeriod: boolean): string {
   if (columnId === 'final') return '<span class="col-final">最終ランキング</span>';
   const { date, time } = parseHourKey(columnId);
   return `<span class="col-date">${escapeHtml(date)}</span><span class="col-time">${escapeHtml(
@@ -102,10 +131,10 @@ function headingHtml(columnId, outOfPeriod) {
 
 /** 列の枠を生成する。 */
 export function columnShellHtml(
-  columnId,
-  body = null,
-  { outOfPeriod = false, periodEdge = false } = {}
-) {
+  columnId: HourKey | 'final',
+  body: string | null = null,
+  { outOfPeriod = false, periodEdge = false }: { outOfPeriod?: boolean; periodEdge?: boolean } = {}
+): string {
   const isFinal = columnId === 'final';
   const safeId = escapeHtml(columnId);
   const loaded = body !== null;

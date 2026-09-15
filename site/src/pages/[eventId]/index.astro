@@ -6,11 +6,11 @@ import {
   publishableDivisions,
   loadEvent,
   loadHourlyIndex,
-} from '@/lib/data.js';
-import { divisionLabel } from '@/lib/ranking.js';
-import { divisionHref } from '@/lib/urls.js';
-import { noticesForEventPage } from '@/lib/notices.js';
-import { formatAggregationPeriod } from '@/lib/format.js';
+} from '#lib/data.ts';
+import { divisionLabel } from '#lib/ranking.ts';
+import { divisionHref } from '#lib/urls.ts';
+import { noticesForEventPage } from '#lib/notices.ts';
+import { formatAggregationPeriod } from '#lib/format.ts';
 
 export function getStaticPaths() {
   return publishableEvents().map((event) => ({ params: { eventId: event.eventId } }));

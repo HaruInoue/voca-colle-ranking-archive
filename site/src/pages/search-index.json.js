@@ -1,4 +1,4 @@
-import { buildSearchIndex } from '@/lib/search-index.js';
+import { buildSearchIndex } from '#lib/search-index.ts';
 
 /** 検索索引。 */
 export function GET() {

@@ -1,6 +1,19 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import type {
+  Division,
+  EventFile,
+  EventId,
+  EventSummary,
+  FinalRanking,
+  HourKey,
+  HourlyIndex,
+  Snapshot,
+  Video,
+  WatchId,
+} from '@data-model';
+
 /** ビルド時に data/ を直接読む。 */
 
 const SUPPORTED_SCHEMA_VERSION = 1;
@@ -20,12 +33,12 @@ function findDataDir() {
 
 const DATA_DIR = findDataDir();
 
-const cache = new Map();
+const cache = new Map<string, unknown>();
 
-function readJson(relPath) {
+function readJson<T extends { schemaVersion: number }>(relPath: string): T {
   const full = path.join(DATA_DIR, relPath);
   const raw = fs.readFileSync(full, 'utf8');
-  const parsed = JSON.parse(raw);
+  const parsed = JSON.parse(raw) as T;
   if (parsed.schemaVersion !== SUPPORTED_SCHEMA_VERSION) {
     throw new Error(
       `未対応の schemaVersion です: ${relPath} は ${parsed.schemaVersion}、対応版は ${SUPPORTED_SCHEMA_VERSION}`
@@ -34,18 +47,18 @@ function readJson(relPath) {
   return parsed;
 }
 
-function cached(key, produce) {
+function cached<T>(key: string, produce: () => T): T {
   if (!cache.has(key)) cache.set(key, produce());
-  return cache.get(key);
+  return cache.get(key) as T;
 }
 
-export function loadEvents() {
-  return cached('events', () => readJson('events.json').events);
+export function loadEvents(): EventSummary[] {
+  return cached('events', () => readJson<{ schemaVersion: number; events: EventSummary[] }>('events.json').events);
 }
 
-export function loadEvent(eventId) {
+export function loadEvent(eventId: EventId): EventFile {
   return cached(`event:${eventId}`, () => {
-    const event = readJson(path.join('events', eventId, 'event.json'));
+    const event = readJson<EventFile>(path.join('events', eventId, 'event.json'));
     if (event.eventId !== eventId) {
       throw new Error(`event.json の eventId が不一致です: ディレクトリ ${eventId} / 内容 ${event.eventId}`);
     }
@@ -53,28 +66,36 @@ export function loadEvent(eventId) {
   });
 }
 
-export function loadVideos(eventId) {
-  return cached(`videos:${eventId}`, () => readJson(path.join('events', eventId, 'videos.json')).videos);
+export function loadVideos(eventId: EventId): Record<WatchId, Video> {
+  return cached(
+    `videos:${eventId}`,
+    () =>
+      readJson<{ schemaVersion: number; videos: Record<WatchId, Video> }>(
+        path.join('events', eventId, 'videos.json'),
+      ).videos,
+  );
 }
 
-export function loadHourlyIndex(eventId, division) {
+export function loadHourlyIndex(eventId: EventId, division: Division): HourlyIndex | null {
   return cached(`index:${eventId}:${division}`, () => {
     const relPath = path.join('events', eventId, 'hourly', division, 'index.json');
     if (!fs.existsSync(path.join(DATA_DIR, relPath))) return null;
-    return readJson(relPath);
+    return readJson<HourlyIndex>(relPath);
   });
 }
 
 /** 保存済みの時刻キーを古い順で返す。 */
-export function availableHourKeys(eventId, division) {
+export function availableHourKeys(eventId: EventId, division: Division): HourKey[] {
   const index = loadHourlyIndex(eventId, division);
   if (!index) return [];
   return index.collected.map((entry) => entry.hourKey).sort();
 }
 
-export function loadSnapshot(eventId, division, hourKey) {
+export function loadSnapshot(eventId: EventId, division: Division, hourKey: HourKey): Snapshot {
   return cached(`snapshot:${eventId}:${division}:${hourKey}`, () => {
-    const snapshot = readJson(path.join('events', eventId, 'hourly', division, `${hourKey}.json`));
+    const snapshot = readJson<Snapshot>(
+      path.join('events', eventId, 'hourly', division, `${hourKey}.json`),
+    );
     if (snapshot.hourKey !== hourKey) {
       throw new Error(
         `スナップショットの hourKey が不一致です: ${eventId}/${division}/${hourKey}.json の内容は ${snapshot.hourKey}`
@@ -89,16 +110,16 @@ export function loadSnapshot(eventId, division, hourKey) {
   });
 }
 
-export function loadFinal(eventId, division) {
+export function loadFinal(eventId: EventId, division: Division): FinalRanking | null {
   return cached(`final:${eventId}:${division}`, () => {
     const relPath = path.join('events', eventId, 'final', `${division}.json`);
     if (!fs.existsSync(path.join(DATA_DIR, relPath))) return null;
-    return readJson(relPath);
+    return readJson<FinalRanking>(relPath);
   });
 }
 
 /** 公開可能な開催回を返す。 */
-export function publishableEvents() {
+export function publishableEvents(): EventSummary[] {
   return loadEvents().filter((summary) => {
     const event = loadEvent(summary.eventId);
     return event.divisions.some((division) => availableHourKeys(summary.eventId, division).length > 0);
@@ -106,7 +127,7 @@ export function publishableEvents() {
 }
 
 /** 公開可能な部門を返す。 */
-export function publishableDivisions(eventId) {
+export function publishableDivisions(eventId: EventId): Division[] {
   const event = loadEvent(eventId);
   return event.divisions.filter((division) => availableHourKeys(eventId, division).length > 0);
 }

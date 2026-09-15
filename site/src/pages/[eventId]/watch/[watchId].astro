@@ -4,11 +4,11 @@ import NicovideoPlayer from '@/components/NicovideoPlayer.astro';
 import ExternalVideoLinks from '@/components/ExternalVideoLinks.astro';
 import VideoRankSummary from '@/components/VideoRankSummary.astro';
 import VideoTrends from '@/components/VideoTrends.astro';
-import { publishableEvents, loadEvent, loadVideos } from '@/lib/data.js';
-import { rankedWatchIds, videoDivisionSeries } from '@/lib/video-series.js';
-import { canonicalDivision, divisionLabel } from '@/lib/ranking.js';
-import { divisionHref, eventHref, ownerUrl } from '@/lib/urls.js';
-import { formatIsoDateTime, formatDuration } from '@/lib/format.js';
+import { publishableEvents, loadEvent, loadVideos } from '#lib/data.ts';
+import { rankedWatchIds, videoDivisionSeries } from '#lib/video-series.ts';
+import { canonicalDivision, divisionLabel } from '#lib/ranking.ts';
+import { divisionHref, eventHref, ownerUrl } from '#lib/urls.ts';
+import { formatIsoDateTime, formatDuration } from '#lib/format.ts';
 
 export function getStaticPaths() {
   return publishableEvents().flatMap((event) =>

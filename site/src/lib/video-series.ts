@@ -4,17 +4,42 @@ import {
   loadHourlyIndex,
   loadSnapshot,
   loadFinal,
-} from './data.js';
-import { toEntries, buildVideoSeries, metricDiffs, outOfPeriodHourKeys } from './ranking.js';
+} from '#lib/data.ts';
+import { toEntries, buildVideoSeries, metricDiffs, outOfPeriodHourKeys } from '#lib/ranking.ts';
+
+import type { MetricKey, Division, EventId, HourKey, WatchId } from '@data-model';
+import type { RankRow, VideoSeries } from '#lib/ranking.ts';
 
 /** 曲詳細ページ用の索引。 */
 
-const cache = new Map();
+export interface DivisionIndex {
+  division: Division;
+  hourKeys: HourKey[];
+  entriesByHour: Map<HourKey, Map<WatchId, RankRow>>;
+  finalEntries: Map<WatchId, RankRow> | null;
+  outOfPeriod: Set<HourKey>;
+}
 
-function buildIndex(eventId) {
-  const divisions = publishableDivisions(eventId).map((division) => {
+export interface EventIndex {
+  divisions: DivisionIndex[];
+  watchIds: Set<WatchId>;
+}
+
+export type DivisionSeries = VideoSeries & {
+  division: Division;
+  diffs: Record<MetricKey, number | null>[];
+  finalEntry: RankRow | null;
+  finalPublished: boolean;
+  totalHourCount: number;
+  outOfPeriodHourCount: number;
+};
+
+const cache = new Map<EventId, EventIndex>();
+
+function buildIndex(eventId: EventId): EventIndex {
+  const divisions: DivisionIndex[] = publishableDivisions(eventId).map((division) => {
     const hourKeys = availableHourKeys(eventId, division);
-    const entriesByHour = new Map();
+    const entriesByHour = new Map<HourKey, Map<WatchId, RankRow>>();
     for (const hourKey of hourKeys) {
       const entries = toEntries(loadSnapshot(eventId, division, hourKey));
       entriesByHour.set(hourKey, new Map(entries.map((entry) => [entry.watchId, entry])));
@@ -28,7 +53,7 @@ function buildIndex(eventId) {
     return { division, hourKeys, entriesByHour, finalEntries, outOfPeriod };
   });
 
-  const watchIds = new Set();
+  const watchIds = new Set<WatchId>();
   for (const item of divisions) {
     for (const entries of item.entriesByHour.values()) {
       for (const watchId of entries.keys()) watchIds.add(watchId);
@@ -39,18 +64,18 @@ function buildIndex(eventId) {
   return { divisions, watchIds };
 }
 
-export function eventSnapshotIndex(eventId) {
+export function eventSnapshotIndex(eventId: EventId): EventIndex {
   if (!cache.has(eventId)) cache.set(eventId, buildIndex(eventId));
-  return cache.get(eventId);
+  return cache.get(eventId) as EventIndex;
 }
 
 /** ランキングに登場した動画IDを返す。 */
-export function rankedWatchIds(eventId) {
+export function rankedWatchIds(eventId: EventId): WatchId[] {
   return [...eventSnapshotIndex(eventId).watchIds];
 }
 
 /** 1曲の部門ごとの推移を返す。 */
-export function videoDivisionSeries(eventId, watchId) {
+export function videoDivisionSeries(eventId: EventId, watchId: WatchId): DivisionSeries[] {
   return eventSnapshotIndex(eventId)
     .divisions.map((item) => {
       const series = buildVideoSeries(item.hourKeys, item.entriesByHour, watchId, item.outOfPeriod);
@@ -66,5 +91,5 @@ export function videoDivisionSeries(eventId, watchId) {
         outOfPeriodHourCount: item.outOfPeriod.size,
       };
     })
-    .filter(Boolean);
+    .filter((series): series is DivisionSeries => series !== null);
 }

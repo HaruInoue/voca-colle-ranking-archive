@@ -1,6 +1,15 @@
 /** 開催回ごとのアクセント色。 */
 
-const THEMES = {
+import type { EventId } from '@data-model';
+
+export interface EventTheme {
+  accent: string;
+  accentInk: string;
+  accentInkDark: string;
+  onAccent: string;
+}
+
+const THEMES: Record<EventId, EventTheme> = {
   '2026-summer': {
     accent: '#473DC1',
     accentInk: '#473DC1',
@@ -22,19 +31,19 @@ const THEMES = {
 };
 
 /** 未登録の開催回に使うテーマ色。 */
-const FALLBACK = {
+const FALLBACK: EventTheme = {
   accent: '#0E7A62',
   accentInk: '#0B5C4A',
   accentInkDark: '#6FD9BE',
   onAccent: '#FFFFFF',
 };
 
-export function eventTheme(eventId) {
-  return THEMES[eventId] ?? FALLBACK;
+export function eventTheme(eventId: EventId | null | undefined): EventTheme {
+  return (eventId ? THEMES[eventId] : undefined) ?? FALLBACK;
 }
 
 /** 開催回テーマをCSSカスタムプロパティに変換する。 */
-export function themeStyle(eventId) {
+export function themeStyle(eventId: EventId | null | undefined): string {
   const theme = eventTheme(eventId);
   return [
     `--accent:${theme.accent}`,

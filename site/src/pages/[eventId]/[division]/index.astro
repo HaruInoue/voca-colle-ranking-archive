@@ -12,12 +12,12 @@ import {
   loadSnapshot,
   loadFinal,
   availableHourKeys,
-} from '@/lib/data.js';
-import { divisionLabel, resolveHourWindow, outOfPeriodHourKeys } from '@/lib/ranking.js';
-import { columnBodyHtml, columnShellHtml } from '@/lib/render-column.js';
-import { noticesForDivisionPage } from '@/lib/notices.js';
-import { eventHref, columnFragmentHref } from '@/lib/urls.js';
-import { formatAggregationPeriod } from '@/lib/format.js';
+} from '#lib/data.ts';
+import { divisionLabel, resolveHourWindow, outOfPeriodHourKeys } from '#lib/ranking.ts';
+import { columnBodyHtml, columnShellHtml } from '#lib/render-column.ts';
+import { noticesForDivisionPage } from '#lib/notices.ts';
+import { eventHref, columnFragmentHref } from '#lib/urls.ts';
+import { formatAggregationPeriod } from '#lib/format.ts';
 
 const PRERENDERED_COLUMNS = 6;
 
@@ -39,7 +39,7 @@ const final = loadFinal(eventId, division);
 const prerendered = new Set(resolveHourWindow(hourKeys, null, PRERENDERED_COLUMNS).hourKeys);
 
 /** 直前に比較可能なスナップショットを返す。 */
-function previousSnapshotOf(hourKey) {
+function previousSnapshotOf(hourKey: string) {
   const position = hourKeys.indexOf(hourKey);
   if (position <= 0) return null;
   return loadSnapshot(eventId, division, hourKeys[position - 1]);

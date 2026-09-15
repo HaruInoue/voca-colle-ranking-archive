@@ -1,6 +1,8 @@
-import { publishableEvents, loadEvent, loadVideos } from './data.js';
-import { eventSnapshotIndex } from './video-series.js';
-import { eventTheme } from './theme.js';
+import { publishableEvents, loadEvent, loadVideos } from '#lib/data.ts';
+import { eventSnapshotIndex } from '#lib/video-series.ts';
+import { eventTheme } from '#lib/theme.ts';
+
+import type { EventId, WatchId } from '@data-model';
 
 /**
  * 全開催回を横断する検索索引をビルド時に組み立てる。
@@ -10,9 +12,9 @@ import { eventTheme } from './theme.js';
  */
 
 /** 開催回内の各動画の最高順位。毎時スナップショットと最終ランキングの両方から採る。 */
-function bestRanks(eventId) {
-  const best = new Map();
-  const record = (watchId, rank) => {
+function bestRanks(eventId: EventId): Map<WatchId, number> {
+  const best = new Map<WatchId, number>();
+  const record = (watchId: WatchId, rank: number): void => {
     const current = best.get(watchId);
     if (current === undefined || rank < current) best.set(watchId, rank);
   };
@@ -27,10 +29,17 @@ function bestRanks(eventId) {
   return best;
 }
 
-export function buildSearchIndex() {
+export interface SearchIndex {
+  events: Record<EventId, { label: string; accent: string }>;
+  /** [watchId, タイトル, 投稿者名, eventId] */
+  videos: [WatchId, string, string, EventId][];
+}
+
+export function buildSearchIndex(): SearchIndex {
   const events = publishableEvents();
 
-  const scored = [];
+  const scored: { rank: number; eventOrder: number; row: [WatchId, string, string, EventId] }[] =
+    [];
   events.forEach((summary, eventOrder) => {
     const { eventId } = summary;
     const videos = loadVideos(eventId);

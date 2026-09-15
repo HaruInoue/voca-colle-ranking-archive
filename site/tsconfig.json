@@ -1,9 +1,8 @@
 {
-  "extends": "astro/tsconfigs/base",
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "erasableSyntaxOnly": true,
     "checkJs": false,
-    "noImplicitAny": false,
     "paths": {
       "@data-model": ["../types/data-model.d.ts"],
       "@/*": ["./src/*"]

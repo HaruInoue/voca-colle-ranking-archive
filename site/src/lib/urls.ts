@@ -1,46 +1,58 @@
 /** URLを組み立てる。 */
 
+import type { Division, EventId, HourKey, WatchId } from '@data-model';
+
 const BASE = import.meta.env?.BASE_URL ?? '/';
 
 /** サイト内リンクを返す。 */
-export function siteHref(pathname) {
+export function siteHref(pathname: string): string {
   const trimmedBase = BASE.endsWith('/') ? BASE.slice(0, -1) : BASE;
   return `${trimmedBase}${pathname}`;
 }
 
-export function eventHref(eventId) {
+export function eventHref(eventId: EventId): string {
   return siteHref(`/${eventId}/`);
 }
 
-export function divisionHref(eventId, division, hourKey) {
+export function divisionHref(
+  eventId: EventId,
+  division: Division,
+  hourKey?: HourKey | null,
+): string {
   const query = hourKey ? `?hour=${encodeURIComponent(hourKey)}` : '';
   return siteHref(`/${eventId}/${division}/${query}`);
 }
 
-export function videoHref(eventId, watchId) {
+export function videoHref(eventId: EventId, watchId: WatchId): string {
   return siteHref(`/${eventId}/watch/${watchId}/`);
 }
 
 /** 時刻列のHTML断片のURLを返す。 */
-export function columnFragmentHref(eventId, division, hourKey) {
+export function columnFragmentHref(
+  eventId: EventId,
+  division: Division,
+  hourKey: HourKey,
+): string {
   return siteHref(`/${eventId}/${division}/columns/${hourKey}.html`);
 }
 
-export function watchUrl(watchId) {
+export function watchUrl(watchId: WatchId): string {
   return `https://www.nicovideo.jp/watch/${watchId}`;
 }
 
 /** 埋め込みプレイヤーのスクリプトURLを返す。 */
-export function embedScriptUrl(watchId) {
+export function embedScriptUrl(watchId: WatchId): string {
   return `https://embed.nicovideo.jp/watch/${watchId}/script?w=640&h=360`;
 }
 
-export function ownerUrl(ownerId) {
+export function ownerUrl(ownerId: string): string {
   return `https://www.nicovideo.jp/user/${ownerId}`;
 }
 
 /** 外部サービスの動画リンクをグループ化して返す。 */
-export function externalVideoLinkGroups(watchId) {
+export function externalVideoLinkGroups(
+  watchId: WatchId,
+): { name: string; links: { label: string; url: string; icon: string }[] }[] {
   return [
     {
       name: 'ニコニコ動画',
@@ -84,6 +96,6 @@ export function externalVideoLinkGroups(watchId) {
 }
 
 /** 保存済みサービスアイコンのパスを返す。 */
-export function serviceIconHref(fileName) {
+export function serviceIconHref(fileName: string): string {
   return siteHref(`/icons/${fileName}`);
 }

@@ -1,9 +1,9 @@
 ---
-import { parseHourKey } from '@/lib/format.js';
+import { parseHourKey } from '#lib/format.ts';
 
 interface Props {
   hourKeys: string[];
-  rightEdge: string;
+  rightEdge?: string;
   hasFinal: boolean;
   outOfPeriod?: Set<string>;
 }
@@ -15,7 +15,7 @@ const options = hourKeys.map((hourKey) => ({
 }));
 
 // スクリプトが付く前に押されても 1 時刻ぶんだけ動くようにする。端は自分自身に留める
-const edgeIndex = hourKeys.indexOf(rightEdge);
+const edgeIndex = rightEdge === undefined ? -1 : hourKeys.indexOf(rightEdge);
 const atOldest = edgeIndex <= 0;
 const atLatest = edgeIndex >= hourKeys.length - 1;
 const previousHour = hourKeys[Math.max(0, edgeIndex - 1)];

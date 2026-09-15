@@ -1,43 +1,94 @@
 /** 表示用のランキング導出規則。 */
 
-import { hourKeyToPlotSeconds, isoToPlotSeconds } from './format.js';
+import { hourKeyToPlotSeconds, isoToPlotSeconds } from '#lib/format.ts';
 
-export const METRIC_KEYS = ['view', 'comment', 'mylist', 'like'];
+import type {
+  AggregationPeriod,
+  Division,
+  FinalRanking,
+  HourKey,
+  MetricKey,
+  Snapshot,
+  WatchId,
+} from '@data-model';
 
-export const METRIC_LABELS = {
+/** entries の 1 行を名前付きにしたもの。 */
+export interface RankRow {
+  rank: number;
+  watchId: WatchId;
+  view: number;
+  comment: number;
+  mylist: number;
+  like: number;
+}
+
+export type RankDelta =
+  | { kind: 'none' }
+  | { kind: 'rankin' }
+  | { kind: 'same'; value: 0 }
+  | { kind: 'up' | 'down'; value: number };
+
+export interface SeriesPoint {
+  hourKey: HourKey;
+  rank: number | null;
+  view: number | null;
+  comment: number | null;
+  mylist: number | null;
+  like: number | null;
+}
+
+export interface VideoSeries {
+  points: SeriesPoint[];
+  bestRank: number | null;
+  bestRankHourKey: HourKey | null;
+  lastRankedHourKey: HourKey | null;
+  rankedHourCount: number;
+}
+
+export const METRIC_KEYS: MetricKey[] = ['view', 'comment', 'mylist', 'like'];
+
+export const METRIC_LABELS: Record<MetricKey, string> = {
   view: '再生',
   comment: 'コメント',
   mylist: 'マイリスト',
   like: 'いいね',
 };
 
-const DIVISION_LABELS = {
+const DIVISION_LABELS: Record<Division, string> = {
   top100: 'TOP100',
   rookie: 'ルーキー',
   remix: 'REMIX',
 };
 
 /** 部門の表示名を返す。 */
-export function divisionLabel(division) {
+export function divisionLabel(division: Division): string {
   return DIVISION_LABELS[division] ?? division;
 }
 
 /** 列指向のentriesをオブジェクトの配列に変換する。 */
-export function toEntries(snapshot) {
+export function toEntries(snapshot: Snapshot | FinalRanking): RankRow[] {
   const { columns, entries } = snapshot;
-  const indexOf = {};
+  const indexOf: Record<string, number> = {};
   columns.forEach((name, i) => {
     indexOf[name] = i;
   });
   return entries.map((row) => {
-    const entry = { rank: row[indexOf.rank], watchId: row[indexOf.watchId] };
-    for (const key of METRIC_KEYS) entry[key] = row[indexOf[key]];
+    const cells = row as readonly (number | string)[];
+    const entry = {
+      rank: cells[indexOf.rank] as number,
+      watchId: cells[indexOf.watchId] as WatchId,
+    } as RankRow;
+    for (const key of METRIC_KEYS) entry[key] = cells[indexOf[key]] as number;
     return entry;
   });
 }
 
 /** 順位変動を判定する。 */
-export function rankDelta(rank, watchId, previousRankByWatchId) {
+export function rankDelta(
+  rank: number,
+  watchId: WatchId,
+  previousRankByWatchId: Map<WatchId, number> | null | undefined,
+): RankDelta {
   if (!previousRankByWatchId) return { kind: 'none' };
   const previousRank = previousRankByWatchId.get(watchId);
   if (previousRank === undefined) return { kind: 'rankin' };
@@ -46,12 +97,16 @@ export function rankDelta(rank, watchId, previousRankByWatchId) {
   return { kind: change > 0 ? 'up' : 'down', value: Math.abs(change) };
 }
 
-export function rankMapOf(entries) {
+export function rankMapOf(entries: RankRow[]): Map<WatchId, number> {
   return new Map(entries.map((entry) => [entry.watchId, entry.rank]));
 }
 
 /** 表示する毎時ランキングの範囲を解決する。 */
-export function resolveHourWindow(availableHourKeys, requestedHour, windowSize) {
+export function resolveHourWindow(
+  availableHourKeys: HourKey[],
+  requestedHour: HourKey | null | undefined,
+  windowSize: number,
+): { hourKeys: HourKey[]; rightEdge: HourKey | null } {
   if (availableHourKeys.length === 0) {
     return { hourKeys: [], rightEdge: null };
   }
@@ -65,10 +120,13 @@ export function resolveHourWindow(availableHourKeys, requestedHour, windowSize) 
 }
 
 /** 集計期間の外にある時刻キーを返す。 */
-export function outOfPeriodHourKeys(hourKeys, aggregationPeriod) {
+export function outOfPeriodHourKeys(
+  hourKeys: HourKey[],
+  aggregationPeriod: AggregationPeriod | null | undefined,
+): Set<HourKey> {
   const from = isoToPlotSeconds(aggregationPeriod?.startDateTime);
   const until = isoToPlotSeconds(aggregationPeriod?.endDateTime);
-  if (from === null && until === null) return new Set();
+  if (from === null && until === null) return new Set<HourKey>();
   return new Set(
     hourKeys.filter((hourKey) => {
       const at = hourKeyToPlotSeconds(hourKey);
@@ -78,7 +136,12 @@ export function outOfPeriodHourKeys(hourKeys, aggregationPeriod) {
 }
 
 /** 1曲の部門別推移を作る。最高順位とランクイン回数は公式の集計期間内だけで数える。 */
-export function buildVideoSeries(hourKeys, entriesByHour, watchId, outOfPeriod = new Set()) {
+export function buildVideoSeries(
+  hourKeys: HourKey[],
+  entriesByHour: Map<HourKey, Map<WatchId, RankRow>>,
+  watchId: WatchId,
+  outOfPeriod: Set<HourKey> = new Set(),
+): VideoSeries {
   const points = hourKeys.map((hourKey) => {
     const entry = entriesByHour.get(hourKey)?.get(watchId);
     return {
@@ -90,7 +153,9 @@ export function buildVideoSeries(hourKeys, entriesByHour, watchId, outOfPeriod =
       like: entry ? entry.like : null,
     };
   });
-  const ranked = points.filter((point) => point.rank !== null);
+  const ranked = points.filter(
+    (point): point is SeriesPoint & { rank: number } => point.rank !== null,
+  );
   const rankedInPeriod = ranked.filter((point) => !outOfPeriod.has(point.hourKey));
   const bestRank = rankedInPeriod.length
     ? Math.min(...rankedInPeriod.map((point) => point.rank))
@@ -105,7 +170,9 @@ export function buildVideoSeries(hourKeys, entriesByHour, watchId, outOfPeriod =
 }
 
 /** 曲を代表する部門を返す。 */
-export function canonicalDivision(seriesList) {
+export function canonicalDivision<
+  T extends { division: Division; finalEntry: unknown; lastRankedHourKey: HourKey | null },
+>(seriesList: T[]): Division | null {
   const finalized = seriesList.filter((series) => series.finalEntry);
   const candidates = finalized.length > 0 ? finalized : seriesList;
   if (candidates.length === 0) return null;
@@ -115,13 +182,14 @@ export function canonicalDivision(seriesList) {
 }
 
 /** 直前に比較可能な点との差分を作る。 */
-export function metricDiffs(points) {
-  let previous = null;
+export function metricDiffs(points: SeriesPoint[]): Record<MetricKey, number | null>[] {
+  let previous: SeriesPoint | null = null;
   return points.map((point) => {
-    const diffs = {};
+    const diffs = {} as Record<MetricKey, number | null>;
     for (const key of METRIC_KEYS) {
-      diffs[key] =
-        previous && previous[key] !== null && point[key] !== null ? point[key] - previous[key] : null;
+      const before = previous?.[key] ?? null;
+      const after = point[key];
+      diffs[key] = previous && before !== null && after !== null ? after - before : null;
     }
     if (point.rank !== null) previous = point;
     return diffs;
