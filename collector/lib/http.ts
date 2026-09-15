@@ -10,14 +10,17 @@ const BACKOFF_BASE_MS = 2000;
 
 /** 再試行可能な取得失敗。 */
 export class FetchError extends Error {
-  constructor(message, status = null) {
+  status: number | null;
+
+  constructor(message: string, status: number | null = null) {
     super(message);
     this.name = 'FetchError';
     this.status = status;
   }
 }
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 let lastRequestAt = 0;
 
@@ -28,15 +31,15 @@ async function waitForSlot() {
 }
 
 /** 本文をテキストとして取得する。 */
-export async function fetchText(url) {
-  let lastError = null;
+export async function fetchText(url: string): Promise<{ status: number; text: string }> {
+  let lastError: FetchError | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
     if (attempt > 1) await sleep(BACKOFF_BASE_MS * 2 ** (attempt - 2));
     await waitForSlot();
 
-    let response;
-    let text;
+    let response: Response;
+    let text: string;
     try {
       response = await fetch(url, {
         headers: { 'user-agent': USER_AGENT, accept: '*/*' },
@@ -45,7 +48,8 @@ export async function fetchText(url) {
       });
       text = await response.text();
     } catch (cause) {
-      lastError = new FetchError(`取得に失敗: ${cause.message ?? cause}`);
+      const detail = cause instanceof Error ? cause.message : String(cause);
+      lastError = new FetchError(`取得に失敗: ${detail}`);
       continue;
     }
 
@@ -61,11 +65,11 @@ export async function fetchText(url) {
 }
 
 /** ステータスコードだけをHEADで調べる。取得できなければ null を返す。 */
-export async function fetchStatus(url) {
+export async function fetchStatus(url: string): Promise<number | null> {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
     if (attempt > 1) await sleep(BACKOFF_BASE_MS * 2 ** (attempt - 2));
 
-    let status;
+    let status: number;
     try {
       const response = await fetch(url, {
         method: 'HEAD',

@@ -5,8 +5,8 @@ import path from 'node:path';
 import process from 'node:process';
 import { parseArgs } from 'node:util';
 
-import { fetchStatus, fetchText } from './lib/http.js';
-import * as store from './lib/store.js';
+import { fetchStatus, fetchText } from '#lib/http.ts';
+import * as store from '#lib/store.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 

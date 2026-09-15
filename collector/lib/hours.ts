@@ -1,14 +1,16 @@
 // JST時刻キーとUTCエポックを変換する。
 
+import type { HourKey, IsoDateTime } from '@data-model';
+
 const HOUR_KEY_RE = /^(\d{4})-(\d{2})-(\d{2})-(\d{2})00$/;
 const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
 
 export const HOUR_MS = 60 * 60 * 1000;
 
-const p2 = (n) => String(n).padStart(2, '0');
+const p2 = (n: number): string => String(n).padStart(2, '0');
 
 /** 時刻キーをUTCエポックへ変換する。 */
-export function hourKeyToEpoch(hourKey) {
+export function hourKeyToEpoch(hourKey: HourKey): number {
   const m = HOUR_KEY_RE.exec(hourKey ?? '');
   if (!m) throw new Error(`時刻キーの形式が不正: ${hourKey}`);
   const [, year, month, day, hour] = m;
@@ -18,13 +20,13 @@ export function hourKeyToEpoch(hourKey) {
 }
 
 /** UTCエポックを時刻キーへ変換する。 */
-export function epochToHourKey(epoch) {
+export function epochToHourKey(epoch: number): HourKey {
   const d = new Date(Math.floor(epoch / HOUR_MS) * HOUR_MS + JST_OFFSET_MS);
   return `${d.getUTCFullYear()}-${p2(d.getUTCMonth() + 1)}-${p2(d.getUTCDate())}-${p2(d.getUTCHours())}00`;
 }
 
 /** 時刻キーをISO 8601へ変換する。 */
-export function hourKeyToIso(hourKey) {
+export function hourKeyToIso(hourKey: HourKey): IsoDateTime {
   const m = HOUR_KEY_RE.exec(hourKey ?? '');
   if (!m) throw new Error(`時刻キーの形式が不正: ${hourKey}`);
   const [, year, month, day, hour] = m;
@@ -32,7 +34,7 @@ export function hourKeyToIso(hourKey) {
 }
 
 /** UTCエポックをISO 8601へ変換する。 */
-export function epochToIso(epoch) {
+export function epochToIso(epoch: number): IsoDateTime {
   const d = new Date(epoch + JST_OFFSET_MS);
   const date = `${d.getUTCFullYear()}-${p2(d.getUTCMonth() + 1)}-${p2(d.getUTCDate())}`;
   const time = `${p2(d.getUTCHours())}:${p2(d.getUTCMinutes())}:${p2(d.getUTCSeconds())}`;
@@ -40,30 +42,30 @@ export function epochToIso(epoch) {
 }
 
 /** 取得可能な最新時刻キーを返す。 */
-export function latestFetchableHourKey(nowEpoch) {
+export function latestFetchableHourKey(nowEpoch: number): HourKey {
   return epochToHourKey(nowEpoch);
 }
 
 /** 時刻キーの範囲を列挙する。 */
-export function enumerateHourKeys(fromKey, untilKey) {
+export function enumerateHourKeys(fromKey: HourKey, untilKey: HourKey): HourKey[] {
   const from = hourKeyToEpoch(fromKey);
   const until = hourKeyToEpoch(untilKey);
-  const keys = [];
+  const keys: HourKey[] = [];
   for (let t = from; t <= until; t += HOUR_MS) keys.push(epochToHourKey(t));
   return keys;
 }
 
 /** 時刻キーを比較する。 */
-export function compareHourKey(a, b) {
+export function compareHourKey(a: HourKey, b: HourKey): number {
   return a < b ? -1 : a > b ? 1 : 0;
 }
 
-export function minHourKey(a, b) {
+export function minHourKey(a: HourKey, b: HourKey): HourKey {
   return a <= b ? a : b;
 }
 
 /** オフセット付きISO 8601をUTCエポックへ変換する。 */
-export function isoToEpoch(value, label) {
+export function isoToEpoch(value: unknown, label: string): number {
   if (typeof value !== 'string') throw new Error(`${label} が文字列でない: ${value}`);
   if (!/(?:Z|[+-]\d{2}:?\d{2})$/.test(value)) {
     throw new Error(`${label} にタイムゾーンオフセットが無い: ${value}`);

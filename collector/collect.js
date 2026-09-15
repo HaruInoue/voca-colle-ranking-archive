@@ -15,9 +15,9 @@ import {
   isoToEpoch,
   latestFetchableHourKey,
   minHourKey,
-} from './lib/hours.js';
-import * as store from './lib/store.js';
-import { FetchError, fetchText } from './lib/http.js';
+} from '#lib/hours.ts';
+import * as store from '#lib/store.ts';
+import { FetchError, fetchText } from '#lib/http.ts';
 import { ParseError, resolveHourlyParser } from './parsers/index.js';
 
 const ROOT = path.resolve(import.meta.dirname, '..');

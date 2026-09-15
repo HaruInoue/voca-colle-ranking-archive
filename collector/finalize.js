@@ -5,9 +5,9 @@ import path from 'node:path';
 import process from 'node:process';
 import { parseArgs } from 'node:util';
 
-import { epochToIso, isoToEpoch } from './lib/hours.js';
-import * as store from './lib/store.js';
-import { FetchError, fetchText } from './lib/http.js';
+import { epochToIso, isoToEpoch } from '#lib/hours.ts';
+import * as store from '#lib/store.ts';
+import { FetchError, fetchText } from '#lib/http.ts';
 import { ParseError, resolveFinalParser } from './parsers/index.js';
 
 const ROOT = path.resolve(import.meta.dirname, '..');

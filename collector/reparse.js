@@ -5,8 +5,8 @@ import path from 'node:path';
 import process from 'node:process';
 import { parseArgs } from 'node:util';
 
-import { compareHourKey, epochToIso } from './lib/hours.js';
-import * as store from './lib/store.js';
+import { compareHourKey, epochToIso } from '#lib/hours.ts';
+import * as store from '#lib/store.ts';
 import { ParseError, resolveFinalParser, resolveHourlyParser } from './parsers/index.js';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
