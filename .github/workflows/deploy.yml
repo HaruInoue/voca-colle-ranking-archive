@@ -42,6 +42,11 @@ jobs:
         working-directory: site
         run: npm ci
 
+      # astro build は型検査をしないため、別に走らせる。
+      - name: 型検査
+        working-directory: site
+        run: npm run typecheck
+
       - name: ビルド
         working-directory: site
         run: npm run build

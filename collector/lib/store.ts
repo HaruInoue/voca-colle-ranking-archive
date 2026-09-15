@@ -216,7 +216,7 @@ export const rawFinalPath = (root: string, eventId: EventId, division: Division)
 /**
  * 解析に失敗した生データ・別の開催回だった生データの退避先。
  * スナップショットと 1 対 1 にならないため raw/hourly とは分ける
- * （reparse.js が raw/hourly だけを辿れるようにするため）。
+ * （reparse.ts が raw/hourly だけを辿れるようにするため）。
  */
 export const rawAnomalyPath = (
   root: string,

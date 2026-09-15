@@ -38,7 +38,8 @@ export interface EventFile {
   eventId: EventId;
   title: string;
   parser: string;
-  finalParser: string;
+  /** 最終ランキングを取得できる開催回だけが持つ。 */
+  finalParser?: string;
   eventTag: string;
   website?: { notices?: Notice[] };
   collect: {
@@ -48,7 +49,8 @@ export interface EventFile {
     maxRequestsPerRun?: number;
   };
   divisions: Division[];
-  final: {
+  /** 最終ランキングを取得できる開催回だけが持つ。 */
+  final?: {
     archiveUrlTemplate: string;
     submissionFrom: IsoDateTime;
     submissionUntil: IsoDateTime;

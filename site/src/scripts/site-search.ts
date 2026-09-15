@@ -19,11 +19,11 @@ export function setupSiteSearch(): void {
     configElement.textContent ?? ''
   ) as SearchConfig;
 
-  const input = root.querySelector<HTMLInputElement>('.search-input') as HTMLInputElement;
-  const panel = root.querySelector<HTMLElement>('.search-panel') as HTMLElement;
-  const listbox = root.querySelector<HTMLElement>('.search-listbox') as HTMLElement;
-  const note = root.querySelector<HTMLElement>('.search-note') as HTMLElement;
-  const status = root.querySelector<HTMLElement>('[data-search-status]') as HTMLElement;
+  const input = root.querySelector<HTMLInputElement>('.search-input')!;
+  const panel = root.querySelector<HTMLElement>('.search-panel')!;
+  const listbox = root.querySelector<HTMLElement>('.search-listbox')!;
+  const note = root.querySelector<HTMLElement>('.search-note')!;
+  const status = root.querySelector<HTMLElement>('[data-search-status]')!;
 
   let events: SearchIndex['events'] = {};
   let rows: SearchRow[] | null = null;

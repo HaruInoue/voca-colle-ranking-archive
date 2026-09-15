@@ -36,7 +36,7 @@ getthumbinfo から現在の版数を引いて差し替える。
 
 異常があれば終了コード 1 で終わる。
 
-reparse.js は videos.json を raw から作り直すため、実行後はこのコマンドも回し直す。
+reparse.ts は videos.json を raw から作り直すため、実行後はこのコマンドも回し直す。
 `;
 
 /** 並列数を抑えて順に処理する。 */
