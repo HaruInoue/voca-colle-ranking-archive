@@ -7,7 +7,7 @@ import { parseArgs } from 'node:util';
 
 import { compareHourKey, epochToIso } from '#lib/hours.ts';
 import * as store from '#lib/store.ts';
-import { ParseError, resolveFinalParser, resolveHourlyParser } from './parsers/index.js';
+import { ParseError, resolveFinalParser, resolveHourlyParser } from '#parsers/index.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 

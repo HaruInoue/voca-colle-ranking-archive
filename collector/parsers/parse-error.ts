@@ -5,7 +5,7 @@
  * （取得元の構造が変わった可能性があり、静かに欠測させてはいけない）。
  */
 export class ParseError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super(message);
     this.name = 'ParseError';
   }

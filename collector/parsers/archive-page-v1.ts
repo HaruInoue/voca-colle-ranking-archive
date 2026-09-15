@@ -1,24 +1,26 @@
 // 最終ランキングのアーカイブページを解析する。
 
-import { ParseError } from './parse-error.js';
+import { ParseError } from '#parsers/parse-error.ts';
+
+import type { FinalParseResult, RankingColumn, RankingEntry, Video, WatchId } from '@data-model';
 
 export const name = 'archive-page-v1';
 
-export const columns = ['rank', 'watchId', 'view', 'comment', 'mylist', 'like'];
+export const columns: RankingColumn[] = ['rank', 'watchId', 'view', 'comment', 'mylist', 'like'];
 
 const NEXT_DATA_RE = /<script[^>]*id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/;
-const METRICS = ['view', 'comment', 'mylist', 'like'];
+const METRICS = ['view', 'comment', 'mylist', 'like'] as const;
 
-function requireString(value, label) {
+function requireString(value: unknown, label: string): string {
   if (typeof value !== 'string' || value === '') throw new ParseError(`${label} が文字列でない`);
   return value;
 }
 
-function optionalString(value) {
+function optionalString(value: unknown): string | null {
   return typeof value === 'string' ? value : null;
 }
 
-function requireInteger(value, label) {
+function requireInteger(value: unknown, label: string): number {
   if (typeof value !== 'number' || !Number.isInteger(value)) {
     throw new ParseError(`${label} が整数でない`);
   }
@@ -26,15 +28,16 @@ function requireInteger(value, label) {
 }
 
 /** アーカイブページを解析する。 */
-export function parse(rawHtml, _context = {}) {
+export function parse(rawHtml: string, _context: object = {}): FinalParseResult {
   const matched = NEXT_DATA_RE.exec(rawHtml);
-  if (!matched) throw new ParseError('__NEXT_DATA__ が無い（構造 C の可能性がある）');
+  if (!matched?.[1]) throw new ParseError('__NEXT_DATA__ が無い（構造 C の可能性がある）');
 
-  let data;
+  let data: any;
   try {
     data = JSON.parse(matched[1]);
   } catch (cause) {
-    throw new ParseError(`__NEXT_DATA__ が JSON として読めない: ${cause.message}`);
+    const detail = cause instanceof Error ? cause.message : String(cause);
+    throw new ParseError(`__NEXT_DATA__ が JSON として読めない: ${detail}`);
   }
 
   const pageProps = data?.props?.pageProps;
@@ -47,10 +50,10 @@ export function parse(rawHtml, _context = {}) {
   }
   if (items.length === 0) throw new ParseError('items が空');
 
-  const entries = [];
-  const videos = {};
+  const entries: RankingEntry[] = [];
+  const videos: Record<WatchId, Video> = {};
 
-  items.forEach((item, i) => {
+  items.forEach((item: any, i: number) => {
     const video = item?.video;
     if (!video || typeof video !== 'object') throw new ParseError(`items[${i}].video が無い`);
 
@@ -62,13 +65,11 @@ export function parse(rawHtml, _context = {}) {
     const count = video.count;
     if (!count || typeof count !== 'object') throw new ParseError(`items[${i}].video.count が無い`);
 
-    entries.push([
-      rank,
-      watchId,
-      ...METRICS.map((metric) =>
-        requireInteger(count[metric], `items[${i}].video.count.${metric}`),
-      ),
-    ]);
+    const [view, comment, mylist, like] = METRICS.map((metric) =>
+      requireInteger(count[metric], `items[${i}].video.count.${metric}`),
+    ) as [number, number, number, number];
+
+    entries.push([rank, watchId, view, comment, mylist, like]);
 
     const owner = video.owner;
     videos[watchId] = {

@@ -8,7 +8,7 @@ import { parseArgs } from 'node:util';
 import { epochToIso, isoToEpoch } from '#lib/hours.ts';
 import * as store from '#lib/store.ts';
 import { FetchError, fetchText } from '#lib/http.ts';
-import { ParseError, resolveFinalParser } from './parsers/index.js';
+import { ParseError, resolveFinalParser } from '#parsers/index.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 

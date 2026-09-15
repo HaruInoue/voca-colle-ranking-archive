@@ -1,23 +1,32 @@
 // 毎時履歴JSONを解析する。
 
-import { ParseError } from './parse-error.js';
+import { ParseError } from '#parsers/parse-error.ts';
+
+import type {
+  HourlyParseResult,
+  RankingColumn,
+  RankingEntry,
+  RankingMeta,
+  Video,
+  WatchId,
+} from '@data-model';
 
 export const name = 'sds-history-v1';
 
-export const columns = ['rank', 'watchId', 'view', 'comment', 'mylist', 'like'];
+export const columns: RankingColumn[] = ['rank', 'watchId', 'view', 'comment', 'mylist', 'like'];
 
-const METRICS = ['view', 'comment', 'mylist', 'like'];
+const METRICS = ['view', 'comment', 'mylist', 'like'] as const;
 
-function requireString(value, label) {
+function requireString(value: unknown, label: string): string {
   if (typeof value !== 'string' || value === '') throw new ParseError(`${label} が文字列でない`);
   return value;
 }
 
-function optionalString(value) {
+function optionalString(value: unknown): string | null {
   return typeof value === 'string' ? value : null;
 }
 
-function requireInteger(value, label) {
+function requireInteger(value: unknown, label: string): number {
   if (typeof value !== 'number' || !Number.isInteger(value)) {
     throw new ParseError(`${label} が整数でない`);
   }
@@ -25,12 +34,13 @@ function requireInteger(value, label) {
 }
 
 /** 毎時履歴JSONを解析する。 */
-export function parse(rawText, _context = {}) {
-  let body;
+export function parse(rawText: string, _context: object = {}): HourlyParseResult {
+  let body: any;
   try {
     body = JSON.parse(rawText);
   } catch (cause) {
-    throw new ParseError(`JSON として読めない: ${cause.message}`);
+    const detail = cause instanceof Error ? cause.message : String(cause);
+    throw new ParseError(`JSON として読めない: ${detail}`);
   }
 
   const metaStatus = body?.meta?.status;
@@ -46,7 +56,7 @@ export function parse(rawText, _context = {}) {
   const setting = rankingRaw.setting;
   if (!setting || typeof setting !== 'object') throw new ParseError('data.ranking.setting が無い');
 
-  const ranking = {
+  const ranking: RankingMeta = {
     id: requireInteger(rankingRaw.id ?? setting.id, 'ranking.id'),
     tag: requireString(setting.tag, 'setting.tag'),
     term: requireString(setting.term, 'setting.term'),
@@ -58,10 +68,10 @@ export function parse(rawText, _context = {}) {
   if (!Array.isArray(videosRaw)) throw new ParseError('data.ranking.videos が配列でない');
   if (videosRaw.length === 0) return { status: 'empty', ranking, entries: [], videos: {} };
 
-  const entries = [];
-  const videos = {};
+  const entries: RankingEntry[] = [];
+  const videos: Record<WatchId, Video> = {};
 
-  videosRaw.forEach((video, i) => {
+  videosRaw.forEach((video: any, i: number) => {
     if (!video || typeof video !== 'object') throw new ParseError(`videos[${i}] がオブジェクトでない`);
 
     const rank = i + 1;
@@ -69,11 +79,11 @@ export function parse(rawText, _context = {}) {
     const count = video.count;
     if (!count || typeof count !== 'object') throw new ParseError(`videos[${i}].count が無い`);
 
-    entries.push([
-      rank,
-      watchId,
-      ...METRICS.map((metric) => requireInteger(count[metric], `videos[${i}].count.${metric}`)),
-    ]);
+    const [view, comment, mylist, like] = METRICS.map((metric) =>
+      requireInteger(count[metric], `videos[${i}].count.${metric}`),
+    ) as [number, number, number, number];
+
+    entries.push([rank, watchId, view, comment, mylist, like]);
 
     const owner = video.owner;
     videos[watchId] = {
