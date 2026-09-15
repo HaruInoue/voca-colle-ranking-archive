@@ -1,24 +1,36 @@
 const MAX_CONCURRENT_LOADS = 3;
 const MAX_LOADED_COLUMNS = 40;
 
-function whenIdle(callback) {
+interface StripConfig {
+  hourKeys: string[];
+  fragmentUrlTemplate: string;
+}
+
+/** data-hour が付いた要素からしか呼ばないので、値は必ずある。 */
+const hourOf = (element: HTMLElement): string => element.dataset.hour as string;
+
+function whenIdle(callback: () => void): void {
   if (typeof requestIdleCallback === 'function') requestIdleCallback(callback, { timeout: 300 });
   else setTimeout(callback, 0);
 }
 
-export function setupHourNavigation() {
+export function setupHourNavigation(): void {
   const configElement = document.getElementById('strip-config');
   const strip = document.getElementById('rank-strip');
   if (!configElement || !strip) return;
 
-  const { hourKeys, fragmentUrlTemplate } = JSON.parse(configElement.textContent);
+  const stripElement = strip;
 
-  const previousLink = document.querySelector('[data-hour-nav="prev"]');
-  const nextLink = document.querySelector('[data-hour-nav="next"]');
-  const select = document.querySelector('[data-hour-nav="select"]');
+  const { hourKeys, fragmentUrlTemplate } = JSON.parse(
+    configElement.textContent ?? ''
+  ) as StripConfig;
+
+  const previousLink = document.querySelector<HTMLElement>('[data-hour-nav="prev"]');
+  const nextLink = document.querySelector<HTMLElement>('[data-hour-nav="next"]');
+  const select = document.querySelector<HTMLSelectElement>('[data-hour-nav="select"]');
 
   // 端に来たボタンは消さずに無効表示にする。消すと行の幅が変わってしまう
-  function setDisabled(link, disabled) {
+  function setDisabled(link: HTMLElement | null, disabled: boolean): void {
     if (!link) return;
     link.hidden = false;
     link.classList.toggle('is-disabled', disabled);
@@ -26,19 +38,23 @@ export function setupHourNavigation() {
     else link.removeAttribute('aria-disabled');
   }
 
-  const columnOf = (hourKey) => strip.querySelector(`[data-column="${hourKey}"]`);
-  const bodyOf = (hourKey) => columnOf(hourKey)?.querySelector('.col-body');
+  const columnOf = (hourKey: string): HTMLElement | null =>
+    strip.querySelector<HTMLElement>(`[data-column="${hourKey}"]`);
+  const bodyOf = (hourKey: string): HTMLElement | null | undefined =>
+    columnOf(hourKey)?.querySelector<HTMLElement>('.col-body');
 
-  const htmlCache = new Map();
-  const visibleHours = new Set();
-  const pendingQueue = [];
+  const htmlCache = new Map<string, string>();
+  const visibleHours = new Set<string>();
+  const pendingQueue: string[] = [];
   let activeLoads = 0;
 
-  for (const body of strip.querySelectorAll('.col-body[data-hour][data-state="loaded"]')) {
-    htmlCache.set(body.dataset.hour, body.innerHTML);
+  for (const body of strip.querySelectorAll<HTMLElement>(
+    '.col-body[data-hour][data-state="loaded"]'
+  )) {
+    htmlCache.set(hourOf(body), body.innerHTML);
   }
 
-  function setPlaceholder(body) {
+  function setPlaceholder(body: HTMLElement): void {
     body.dataset.state = 'placeholder';
     body.setAttribute('aria-busy', 'true');
     body.replaceChildren();
@@ -48,7 +64,7 @@ export function setupHourNavigation() {
     body.append(skeleton);
   }
 
-  function setLoaded(body, html) {
+  function setLoaded(body: HTMLElement, html: string): void {
     const template = document.createElement('template');
     template.innerHTML = html;
     body.replaceChildren(template.content);
@@ -56,7 +72,7 @@ export function setupHourNavigation() {
     body.removeAttribute('aria-busy');
   }
 
-  function setError(body, hourKey) {
+  function setError(body: HTMLElement, hourKey: string): void {
     body.dataset.state = 'error';
     body.removeAttribute('aria-busy');
     body.replaceChildren();
@@ -73,8 +89,10 @@ export function setupHourNavigation() {
     body.append(message);
   }
 
-  function trimLoadedColumns() {
-    const loaded = [...strip.querySelectorAll('.col-body[data-hour][data-state="loaded"]')];
+  function trimLoadedColumns(): void {
+    const loaded = [
+      ...stripElement.querySelectorAll<HTMLElement>('.col-body[data-hour][data-state="loaded"]'),
+    ];
     if (loaded.length <= MAX_LOADED_COLUMNS) return;
 
     const visibleIndexes = [...visibleHours].map((hourKey) => hourKeys.indexOf(hourKey));
@@ -82,15 +100,15 @@ export function setupHourNavigation() {
     const center = (Math.min(...visibleIndexes) + Math.max(...visibleIndexes)) / 2;
 
     loaded
-      .map((body) => ({ body, distance: Math.abs(hourKeys.indexOf(body.dataset.hour) - center) }))
+      .map((body) => ({ body, distance: Math.abs(hourKeys.indexOf(hourOf(body)) - center) }))
       .sort((a, b) => b.distance - a.distance)
       .slice(0, loaded.length - MAX_LOADED_COLUMNS)
       .forEach(({ body }) => setPlaceholder(body));
   }
 
-  function runQueue() {
+  function runQueue(): void {
     while (activeLoads < MAX_CONCURRENT_LOADS && pendingQueue.length > 0) {
-      const hourKey = pendingQueue.shift();
+      const hourKey = pendingQueue.shift() as string;
       activeLoads += 1;
       fetchColumn(hourKey).finally(() => {
         activeLoads -= 1;
@@ -99,7 +117,7 @@ export function setupHourNavigation() {
     }
   }
 
-  async function fetchColumn(hourKey) {
+  async function fetchColumn(hourKey: string): Promise<void> {
     const body = bodyOf(hourKey);
     if (!body) return;
     try {
@@ -118,7 +136,7 @@ export function setupHourNavigation() {
     }
   }
 
-  function load(hourKey) {
+  function load(hourKey: string): void {
     const body = bodyOf(hourKey);
     if (!body || body.dataset.state === 'loading' || body.dataset.state === 'loaded') return;
 
@@ -138,10 +156,11 @@ export function setupHourNavigation() {
     runQueue();
   }
 
-  function reflectVisibleRange() {
+  function reflectVisibleRange(): void {
     if (visibleHours.size === 0) return;
     const sorted = [...visibleHours].sort();
     const rightEdge = sorted.at(-1);
+    if (rightEdge === undefined) return;
 
     if (select && select.value !== rightEdge) select.value = rightEdge;
 
@@ -159,7 +178,7 @@ export function setupHourNavigation() {
   const loader = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        if (entry.isIntersecting) load(entry.target.dataset.hour);
+        if (entry.isIntersecting) load(hourOf(entry.target as HTMLElement));
       }
     },
     { root: strip, rootMargin: '0px 60%' }
@@ -168,21 +187,21 @@ export function setupHourNavigation() {
   const tracker = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        if (entry.isIntersecting) visibleHours.add(entry.target.dataset.hour);
-        else visibleHours.delete(entry.target.dataset.hour);
+        if (entry.isIntersecting) visibleHours.add(hourOf(entry.target as HTMLElement));
+        else visibleHours.delete(hourOf(entry.target as HTMLElement));
       }
       onScrollSettled();
     },
     { root: strip, threshold: 0 }
   );
 
-  for (const body of strip.querySelectorAll('.col-body[data-hour]')) {
+  for (const body of strip.querySelectorAll<HTMLElement>('.col-body[data-hour]')) {
     loader.observe(body);
     tracker.observe(body);
   }
 
-  let settleTimer = 0;
-  function onScrollSettled() {
+  let settleTimer: ReturnType<typeof setTimeout> | undefined;
+  function onScrollSettled(): void {
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => {
       reflectVisibleRange();
@@ -193,24 +212,25 @@ export function setupHourNavigation() {
   strip.addEventListener('scroll', onScrollSettled, { passive: true });
 
   strip.addEventListener('click', (event) => {
-    const retry = event.target.closest('[data-retry]');
+    const retry = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-retry]');
     if (!retry) return;
-    const hourKey = retry.dataset.retry;
-    setPlaceholder(bodyOf(hourKey));
+    const hourKey = retry.dataset.retry as string;
+    const body = bodyOf(hourKey);
+    if (body) setPlaceholder(body);
     load(hourKey);
   });
 
-  function scrollToHour(hourKey, { focus = false } = {}) {
+  function scrollToHour(hourKey: string, { focus = false }: { focus?: boolean } = {}): void {
     const column = columnOf(hourKey);
     if (!column) return;
     load(hourKey);
     column.scrollIntoView({ inline: 'end', block: 'nearest' });
-    if (focus) column.querySelector('.col-head')?.focus();
+    if (focus) column.querySelector<HTMLElement>('.col-head')?.focus();
   }
 
-  function step(offset) {
+  function step(offset: number): void {
     const sorted = [...visibleHours].sort();
-    const base = sorted.length ? hourKeys.indexOf(sorted.at(-1)) : hourKeys.length - 1;
+    const base = sorted.length ? hourKeys.indexOf(sorted.at(-1) as string) : hourKeys.length - 1;
     const target = hourKeys[base + offset];
     if (target) scrollToHour(target);
   }
@@ -226,7 +246,7 @@ export function setupHourNavigation() {
   });
 
   select?.addEventListener('change', (event) => {
-    scrollToHour(event.target.value, { focus: true });
+    scrollToHour((event.target as HTMLSelectElement).value, { focus: true });
   });
 
   const requested = new URL(window.location.href).searchParams.get('hour');

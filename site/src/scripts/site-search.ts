@@ -1,51 +1,62 @@
 import { MAX_SUGGESTIONS, prepareRows, searchVideos } from '#lib/search-match.ts';
 
+import type { EventId } from '@data-model';
+import type { SearchIndex } from '#lib/search-index.ts';
+import type { SearchRow } from '#lib/search-match.ts';
+
+interface SearchConfig {
+  indexUrl: string;
+  videoUrlTemplate: string;
+}
+
 /** ヘッダーの動画検索。候補リストは combobox として組み立てる。 */
-export function setupSiteSearch() {
-  const root = document.querySelector('[data-site-search]');
+export function setupSiteSearch(): void {
+  const root = document.querySelector<HTMLElement>('[data-site-search]');
   const configElement = document.getElementById('search-config');
   if (!root || !configElement) return;
 
-  const { indexUrl, videoUrlTemplate } = JSON.parse(configElement.textContent);
+  const { indexUrl, videoUrlTemplate } = JSON.parse(
+    configElement.textContent ?? ''
+  ) as SearchConfig;
 
-  const input = root.querySelector('.search-input');
-  const panel = root.querySelector('.search-panel');
-  const listbox = root.querySelector('.search-listbox');
-  const note = root.querySelector('.search-note');
-  const status = root.querySelector('[data-search-status]');
+  const input = root.querySelector<HTMLInputElement>('.search-input') as HTMLInputElement;
+  const panel = root.querySelector<HTMLElement>('.search-panel') as HTMLElement;
+  const listbox = root.querySelector<HTMLElement>('.search-listbox') as HTMLElement;
+  const note = root.querySelector<HTMLElement>('.search-note') as HTMLElement;
+  const status = root.querySelector<HTMLElement>('[data-search-status]') as HTMLElement;
 
-  let events = {};
-  let rows = null;
-  let loading = null;
-  let options = [];
+  let events: SearchIndex['events'] = {};
+  let rows: SearchRow[] | null = null;
+  let loading: Promise<void> | null = null;
+  let options: HTMLAnchorElement[] = [];
   let activeIndex = -1;
 
-  const eventLabel = (eventId) => events[eventId]?.label ?? eventId;
-  const eventAccent = (eventId) => events[eventId]?.accent ?? 'transparent';
+  const eventLabel = (eventId: EventId): string => events[eventId]?.label ?? eventId;
+  const eventAccent = (eventId: EventId): string => events[eventId]?.accent ?? 'transparent';
 
-  function videoUrl(row) {
+  function videoUrl(row: SearchRow): string {
     return videoUrlTemplate.replace('{eventId}', row.eventId).replace('{watchId}', row.watchId);
   }
 
-  function setNote(text) {
+  function setNote(text: string): void {
     note.textContent = text;
     note.hidden = text === '';
     status.textContent = text;
   }
 
-  function openPanel() {
+  function openPanel(): void {
     panel.hidden = false;
     input.setAttribute('aria-expanded', 'true');
   }
 
-  function closePanel() {
+  function closePanel(): void {
     panel.hidden = true;
     input.setAttribute('aria-expanded', 'false');
     input.removeAttribute('aria-activedescendant');
     activeIndex = -1;
   }
 
-  function setActive(index, { scroll = false } = {}) {
+  function setActive(index: number, { scroll = false }: { scroll?: boolean } = {}): void {
     activeIndex = index;
     options.forEach((option, i) => {
       option.setAttribute('aria-selected', String(i === index));
@@ -59,7 +70,7 @@ export function setupSiteSearch() {
     }
   }
 
-  function renderOptions(hits) {
+  function renderOptions(hits: SearchRow[]): void {
     listbox.replaceChildren(
       ...hits.map((row, i) => {
         const option = document.createElement('a');
@@ -85,17 +96,17 @@ export function setupSiteSearch() {
         return option;
       })
     );
-    options = [...listbox.children];
+    options = [...listbox.children] as HTMLAnchorElement[];
     // 候補が1件のときも、常に先頭を選択済みにして Enter の挙動を揃える
     setActive(options.length > 0 ? 0 : -1);
   }
 
-  function loadIndex() {
+  function loadIndex(): Promise<void> {
     if (loading) return loading;
     loading = fetch(indexUrl)
       .then((response) => {
         if (!response.ok) throw new Error(`検索索引の取得に失敗しました: ${response.status}`);
-        return response.json();
+        return response.json() as Promise<SearchIndex>;
       })
       .then((index) => {
         events = index.events;
@@ -108,7 +119,7 @@ export function setupSiteSearch() {
     return loading;
   }
 
-  function render() {
+  function render(): void {
     const query = input.value.trim();
     if (query === '') {
       listbox.replaceChildren();
@@ -162,6 +173,6 @@ export function setupSiteSearch() {
   });
 
   document.addEventListener('click', (event) => {
-    if (!root.contains(event.target)) closePanel();
+    if (!root.contains(event.target as Node | null)) closePanel();
   });
 }

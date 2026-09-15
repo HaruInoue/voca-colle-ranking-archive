@@ -1,8 +1,8 @@
 ---
-import Base from '@/layouts/Base.astro';
-import EventNotices from '@/components/EventNotices.astro';
-import DivisionTabs from '@/components/DivisionTabs.astro';
-import HourNavigator from '@/components/HourNavigator.astro';
+import Base from '#layouts/Base.astro';
+import EventNotices from '#components/EventNotices.astro';
+import DivisionTabs from '#components/DivisionTabs.astro';
+import HourNavigator from '#components/HourNavigator.astro';
 import {
   publishableEvents,
   publishableDivisions,
@@ -139,7 +139,7 @@ const clientConfig = {
 
   <script type="application/json" id="strip-config" set:html={JSON.stringify(clientConfig)} is:inline />
   <script>
-    import { setupHourNavigation } from '@/scripts/hour-navigation.js';
+    import { setupHourNavigation } from '#scripts/hour-navigation.ts';
     setupHourNavigation();
   </script>
 </Base>

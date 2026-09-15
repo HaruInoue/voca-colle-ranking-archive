@@ -3,6 +3,42 @@ import 'uplot/dist/uPlot.min.css';
 import { METRIC_LABELS } from '#lib/ranking.ts';
 import { niceCeil } from '#lib/format.ts';
 
+import type { MetricKey } from '@data-model';
+
+interface Colors {
+  accent: string;
+  grid: string;
+  text: string;
+  bar: string;
+  band: string;
+  day: string;
+  line: string;
+}
+
+/** 集計期間の両端。x 値（秒）で持つ。 */
+interface Tally {
+  from: number | null;
+  until: number | null;
+}
+
+interface ChartGroup {
+  charts: uPlot[];
+  hovered: uPlot | null;
+  buttons?: HTMLElement[];
+}
+
+interface SeriesData {
+  x: number[];
+  rank: (number | null)[];
+  metrics: Record<MetricKey, (number | null)[]>;
+  diffs: Record<MetricKey, (number | null)[]>;
+}
+
+interface TrendData {
+  series: SeriesData[];
+  tally: Tally | null;
+}
+
 /** 曲詳細ページの推移グラフを初期化する。 */
 const RANK_RANGE = [1, 100];
 const RANK_SPLITS = [1, 20, 40, 60, 80, 100];
@@ -11,13 +47,13 @@ const BAR_HEADROOM = 2.6;
 
 const HOUR = 3600;
 
-function readCssColor(name, fallback) {
+function readCssColor(name: string, fallback: string): string {
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   return value || fallback;
 }
 
 /** CSSから解決済みの色を読む。 */
-function readPaintColor(className, fallback) {
+function readPaintColor(className: string, fallback: string): string {
   const probe = document.createElement('span');
   probe.className = className;
   probe.hidden = true;
@@ -28,7 +64,7 @@ function readPaintColor(className, fallback) {
 }
 
 /** グラフに使う色を今のテーマから読む。色は uPlot に関数で渡し、描画のたびに読み直させる。 */
-function readColors() {
+function readColors(): Colors {
   const text = readCssColor('--muted-text', '#5f5f6b');
   return {
     accent: readCssColor('--accent-ink', '#0B5C4A'),
@@ -42,10 +78,10 @@ function readColors() {
   };
 }
 
-const pad = (value) => String(value).padStart(2, '0');
+const pad = (value: number): string => String(value).padStart(2, '0');
 
 /** グラフのx値をJST表記に整形する。 */
-function jstDateTime(seconds) {
+function jstDateTime(seconds: number): { date: string; time: string } {
   const date = new Date(seconds * 1000);
   return {
     date: `${pad(date.getUTCMonth() + 1)}/${pad(date.getUTCDate())}`,
@@ -53,22 +89,24 @@ function jstDateTime(seconds) {
   };
 }
 
-const axisTimeLabels = (splits) => splits.map((seconds) => jstDateTime(seconds).time);
+const axisTimeLabels = (splits: number[]): string[] =>
+  splits.map((seconds) => jstDateTime(seconds).time);
 
-const formatNumber = (value) => value.toLocaleString('ja-JP');
-const formatSigned = (value) => (value > 0 ? `+${formatNumber(value)}` : formatNumber(value));
+const formatNumber = (value: number): string => value.toLocaleString('ja-JP');
+const formatSigned = (value: number): string =>
+  value > 0 ? `+${formatNumber(value)}` : formatNumber(value);
 
 const DAY = 86400;
 
 /** 集計期間外と日付境界を描画する。 */
-function underlayHook(tally, colors) {
-  return (self) => {
+function underlayHook(tally: Tally | null, colors: Colors) {
+  return (self: uPlot): void => {
     const { left, top, width, height } = self.bbox;
     const right = left + width;
     const ctx = self.ctx;
-    const posX = (seconds) => self.valToPos(seconds, 'x', true);
+    const posX = (seconds: number): number => self.valToPos(seconds, 'x', true);
 
-    const stroke = (x, color, dash) => {
+    const stroke = (x: number, color: string, dash: number[]): void => {
       if (x <= left || x >= right) return;
       ctx.strokeStyle = color;
       ctx.lineWidth = Math.max(1, Math.round(uPlot.pxRatio));
@@ -85,7 +123,7 @@ function underlayHook(tally, colors) {
     ctx.rect(left, top, width, height);
     ctx.clip();
 
-    const edges = [];
+    const edges: number[] = [];
     for (const [from, to] of tally
       ? [
           [left, tally.from === null ? left : posX(tally.from)],
@@ -98,7 +136,7 @@ function underlayHook(tally, colors) {
       edges.push(to === right ? from : to);
     }
 
-    const { min, max } = self.scales.x;
+    const { min, max } = self.scales.x as { min: number; max: number };
     for (let midnight = Math.ceil(min / DAY) * DAY; midnight <= max; midnight += DAY) {
       stroke(posX(midnight), colors.day, []);
     }
@@ -110,14 +148,17 @@ function underlayHook(tally, colors) {
 }
 
 /** カーソル位置の値を表示する。 */
-function tooltipHook(element, { label, isRank, group }) {
-  const tip = element.querySelector('.chart-tip');
-  const timeText = tip.querySelector('.chart-tip-time');
-  const valueText = tip.querySelector('.chart-tip-value');
-  const diffText = tip.querySelector('.chart-tip-diff');
+function tooltipHook(
+  element: HTMLElement,
+  { label, isRank, group }: { label: string; isRank: boolean; group: ChartGroup }
+) {
+  const tip = element.querySelector('.chart-tip') as HTMLElement;
+  const timeText = tip.querySelector('.chart-tip-time') as HTMLElement;
+  const valueText = tip.querySelector('.chart-tip-value') as HTMLElement;
+  const diffText = tip.querySelector('.chart-tip-diff') as HTMLElement;
   let placed = false;
 
-  return (self) => {
+  return (self: uPlot): void => {
     // プロット領域の中に置くと、カーソルの座標をそのまま位置に使える
     if (!placed) {
       self.over.append(tip);
@@ -127,16 +168,18 @@ function tooltipHook(element, { label, isRank, group }) {
       placed = true;
     }
 
-    const { idx, left } = self.cursor;
+    const { idx } = self.cursor;
+    const left = self.cursor.left as number;
     if (idx === null || idx === undefined || left < 0 || group.hovered !== self) {
       tip.hidden = true;
       return;
     }
 
     // 順位のグラフは 1 系列、指標のグラフは 1 が毎時の伸びの棒、2 が累計の線
-    const value = isRank ? self.data[1][idx] : self.data[2][idx];
-    const diff = isRank ? null : self.data[1][idx];
-    const { date, time } = jstDateTime(self.data[0][idx]);
+    const rows = self.data as unknown as (number | null)[][];
+    const value = isRank ? rows[1][idx] : rows[2][idx];
+    const diff = isRank ? null : rows[1][idx];
+    const { date, time } = jstDateTime(rows[0][idx] as number);
     timeText.textContent = `${date} ${time}`;
     valueText.textContent =
       value === null
@@ -159,16 +202,29 @@ function tooltipHook(element, { label, isRank, group }) {
   };
 }
 
-function baseOptions(element, options) {
+function baseOptions(
+  element: HTMLElement,
+  options: {
+    label: string;
+    values: (number | null)[];
+    diffs: (number | null)[] | null;
+    isRank: boolean;
+    tally: Tally | null;
+    colors: Colors;
+    group: ChartGroup;
+    index: number;
+    onZoom: (source: uPlot) => void;
+  }
+): uPlot.Options {
   const { label, values, diffs, isRank, tally, colors, group, index, onZoom } = options;
   const width = element.clientWidth || 320;
   const height = element.classList.contains('chart-small') ? 120 : 200;
 
-  const known = values.filter((value) => value !== null);
+  const known = values.filter((value): value is number => value !== null);
   const min = known.length ? Math.min(...known) : 0;
   const max = known.length ? Math.max(...known) : 1;
   const metricTop = niceCeil(max);
-  const knownDiffs = (diffs ?? []).filter((value) => value !== null);
+  const knownDiffs = (diffs ?? []).filter((value): value is number => value !== null);
   const diffMax = knownDiffs.length ? Math.max(...knownDiffs) : 1;
   const diffMin = knownDiffs.length ? Math.min(...knownDiffs) : 0;
 
@@ -184,7 +240,7 @@ function baseOptions(element, options) {
     scale: 'd',
     fill: () => colors.bar,
     width: 0,
-    paths: uPlot.paths.bars({ size: [0.9, 20], align: 0 }),
+    paths: uPlot.paths.bars!({ size: [0.9, 20], align: 0 }),
     points: { show: false },
   };
 
@@ -209,7 +265,7 @@ function baseOptions(element, options) {
         grid: { stroke: () => colors.grid },
         ticks: { stroke: () => colors.grid },
         // 既定の英語 12 時間表記ではなく、JST の 24 時間表記で表示する
-        values: (self, splits) => axisTimeLabels(splits),
+        values: (_self: uPlot, splits: number[]) => axisTimeLabels(splits),
       },
       {
         stroke: () => colors.text,
@@ -218,7 +274,7 @@ function baseOptions(element, options) {
         size: 52,
         // 目盛りは自分で決める。ラベルが出ない目盛りを作らない
         splits: isRank ? RANK_SPLITS : [Math.min(0, min), metricTop / 2, metricTop],
-        values: (self, ticks) =>
+        values: (_self: uPlot, ticks: number[]) =>
           ticks.map((tick) => (isRank ? `${tick}位` : formatNumber(tick))),
       },
     ],
@@ -228,20 +284,25 @@ function baseOptions(element, options) {
     hooks: {
       drawClear: [underlayHook(tally, colors)],
       setCursor: [tooltipHook(element, { label, isRank, group })],
-      setScale: [(self, key) => key === 'x' && onZoom(self)],
+      setScale: [
+        (self: uPlot, key: string) => {
+          if (key === 'x') onZoom(self);
+        },
+      ],
     },
-  };
+  } as unknown as uPlot.Options;
 }
 
 /** 表示期間のボタンの押下状態を、実際の横軸の範囲から決める */
-function markZoomButtons(group) {
+function markZoomButtons(group: ChartGroup): void {
   const [first] = group.charts;
-  const { min, max } = first.scales.x;
-  const full = first.data[0];
-  const last = full[full.length - 1];
-  const isFull = min <= full[0] && max >= last;
+  if (!first) return;
+  const { min, max } = first.scales.x as { min: number; max: number };
+  const full = first.data[0] as unknown as number[];
+  const last = full[full.length - 1] as number;
+  const isFull = min <= (full[0] as number) && max >= last;
 
-  for (const button of group.buttons) {
+  for (const button of group.buttons ?? []) {
     const hours = Number(button.dataset.zoomHours);
     const pressed = hours
       ? !isFull && max >= last && Math.round((max - min) / HOUR) === hours
@@ -251,22 +312,24 @@ function markZoomButtons(group) {
   }
 }
 
-export function setupVideoTrends() {
+export function setupVideoTrends(): void {
   const dataElement = document.getElementById('trend-data');
   if (!dataElement) return;
 
-  const { series: seriesList, tally } = JSON.parse(dataElement.textContent);
+  const { series: seriesList, tally } = JSON.parse(dataElement.textContent ?? '') as TrendData;
   const colors = readColors();
 
-  const charts = [];
+  const charts: { chart: uPlot; element: HTMLElement }[] = [];
   /* 同じ部門のグラフは横軸が同じなので、表示期間も連動させる */
-  const groups = new Map();
+  const groups = new Map<number, ChartGroup>();
   let syncing = false;
 
-  const onZoom = (index) => (source) => {
+  const onZoom =
+    (index: number) =>
+    (source: uPlot): void => {
     const group = groups.get(index);
     if (!group?.buttons || syncing) return;
-    const { min, max } = source.scales.x;
+    const { min, max } = source.scales.x as { min: number; max: number };
     syncing = true;
     for (const chart of group.charts) {
       if (chart !== source) chart.setScale('x', { min, max });
@@ -275,18 +338,19 @@ export function setupVideoTrends() {
     markZoomButtons(group);
   };
 
-  for (const element of document.querySelectorAll('[data-chart]')) {
+  for (const element of document.querySelectorAll<HTMLElement>('[data-chart]')) {
     const index = Number(element.dataset.series);
     const series = seriesList[index];
     if (!series) continue;
     const kind = element.dataset.chart;
     const isRank = kind === 'rank';
-    const values = isRank ? series.rank : series.metrics[kind];
-    const diffs = isRank ? null : series.diffs[kind];
-    const label = isRank ? '順位' : METRIC_LABELS[kind];
+    const metric = kind as MetricKey;
+    const values = isRank ? series.rank : series.metrics[metric];
+    const diffs = isRank ? null : series.diffs[metric];
+    const label = isRank ? '順位' : METRIC_LABELS[metric];
 
     if (!groups.has(index)) groups.set(index, { charts: [], hovered: null });
-    const group = groups.get(index);
+    const group = groups.get(index) as ChartGroup;
 
     const chart = new uPlot(
       baseOptions(element, {
@@ -300,7 +364,7 @@ export function setupVideoTrends() {
         index,
         onZoom: onZoom(index),
       }),
-      isRank ? [series.x, values] : [series.x, diffs, values],
+      (isRank ? [series.x, values] : [series.x, diffs, values]) as unknown as uPlot.AlignedData,
       element
     );
     charts.push({ chart, element });
@@ -308,12 +372,13 @@ export function setupVideoTrends() {
   }
 
   for (const [index, group] of groups) {
-    const tools = document.querySelector(`[data-chart-tools="${index}"]`);
+    const tools = document.querySelector<HTMLElement>(`[data-chart-tools="${index}"]`);
     const [first] = group.charts;
-    const full = first.data[0];
-    const span = full[full.length - 1] - full[0];
+    if (!tools || !first) continue;
+    const full = first.data[0] as unknown as number[];
+    const span = (full[full.length - 1] as number) - (full[0] as number);
 
-    group.buttons = [...tools.querySelectorAll('[data-zoom-hours]')].filter((button) => {
+    group.buttons = [...tools.querySelectorAll<HTMLElement>('[data-zoom-hours]')].filter((button) => {
       const hours = Number(button.dataset.zoomHours);
       // 全期間より長い窓は選ぶ意味がない
       if (hours && hours * HOUR >= span) {
@@ -321,8 +386,8 @@ export function setupVideoTrends() {
         return false;
       }
       button.addEventListener('click', () => {
-        const last = full[full.length - 1];
-        const min = hours ? Math.max(full[0], last - hours * HOUR) : full[0];
+        const last = full[full.length - 1] as number;
+        const min = hours ? Math.max(full[0] as number, last - hours * HOUR) : (full[0] as number);
         for (const chart of group.charts) chart.setScale('x', { min, max: last });
       });
       return true;

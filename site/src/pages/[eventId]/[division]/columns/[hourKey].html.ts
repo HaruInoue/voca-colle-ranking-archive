@@ -7,7 +7,9 @@ import {
 } from '#lib/data.ts';
 import { columnBodyHtml } from '#lib/render-column.ts';
 
-export function getStaticPaths() {
+import type { APIRoute, GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
   return publishableEvents().flatMap((event) =>
     publishableDivisions(event.eventId).flatMap((division) =>
       availableHourKeys(event.eventId, division).map((hourKey) => ({
@@ -15,10 +17,11 @@ export function getStaticPaths() {
       }))
     )
   );
-}
+};
 
-export function GET({ params }) {
+export const GET: APIRoute = ({ params }) => {
   const { eventId, division, hourKey } = params;
+  if (!eventId || !division || !hourKey) throw new Error('時刻列のパラメータが足りません');
   const hourKeys = availableHourKeys(eventId, division);
   const position = hourKeys.indexOf(hourKey);
 
@@ -32,4 +35,4 @@ export function GET({ params }) {
   return new Response(html, {
     headers: { 'content-type': 'text/html; charset=utf-8' },
   });
-}
+};
