@@ -24,27 +24,34 @@
 Node.js は `.nvmrc` の版（現在 24.19.0）。`collector/` と `site/` はそれぞれ独立した
 npm パッケージで、リポジトリ直下にパッケージは無い。
 
-### collector（依存0）
+コードは TypeScript。Node が `.ts` の型注釈を取り除いて直接実行するため、ビルドは要らない。
+型検査だけ `typescript` を使う（各パッケージの devDependencies）。
+
+### collector（実行時依存0）
 
 ```
-node collector/collect.js                                     # 開催中の収集（Actions と同じ挙動）
-node collector/collect.js --event <eventId> --dry-run         # 候補時刻を確認するだけ（取得しない）
-node collector/collect.js --event <eventId> --assume-expired  # 過去回の一括取り込み
-node collector/finalize.js --event <eventId>                  # 最終ランキングの取得（手動）
-node collector/reparse.js --dry-run                           # raw/ からの再解析（パーサの回帰確認）
-node collector/refresh-thumbnails.js --dry-run                # 404 になったサムネイルURLの確認
+node collector/collect.ts                                     # 開催中の収集（Actions と同じ挙動）
+node collector/collect.ts --event <eventId> --dry-run         # 候補時刻を確認するだけ（取得しない）
+node collector/collect.ts --event <eventId> --assume-expired  # 過去回の一括取り込み
+node collector/finalize.ts --event <eventId>                  # 最終ランキングの取得（手動）
+node collector/reparse.ts --dry-run                           # raw/ からの再解析（パーサの回帰確認）
+node collector/refresh-thumbnails.ts --dry-run                # 404 になったサムネイルURLの確認
 ```
 
 各コマンドは `--help` で使い方を表示する。新しい開催回を追加するには`data/events/<eventId>/event.json` を作成する。
 
+型検査は `cd collector && npm ci && npm run typecheck`。収集の実行には不要で、
+収集ワークフローも依存をインストールしない。
+
 ### site（Astro）
 
 ```
-npm ci          # 初回のみ
-npm run dev     # 開発サーバ
-npm run build   # dist/ へ静的ビルド
-npm run preview # ビルド結果の確認
-npm test        # test/ のテスト
+npm ci            # 初回のみ
+npm run dev       # 開発サーバ
+npm run build     # dist/ へ静的ビルド
+npm run preview   # ビルド結果の確認
+npm test          # test/ のテスト
+npm run typecheck # astro check による型検査
 ```
 
 `data/` を直接読んでビルドするため、収集済みのデータがそのまま表示される。

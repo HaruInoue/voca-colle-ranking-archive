@@ -8,6 +8,14 @@ import { parseArgs } from 'node:util';
 import { fetchStatus, fetchText } from '#lib/http.ts';
 import * as store from '#lib/store.ts';
 
+import type { EventId, WatchId } from '@data-model';
+
+type ThumbInfo = { ok: true; url: string } | { ok: false; reason: string };
+
+interface RefreshOptions {
+  dryRun: boolean;
+}
+
 const ROOT = path.resolve(import.meta.dirname, '..');
 
 const THUMB_INFO_URL = 'https://ext.nicovideo.jp/api/getthumbinfo/';
@@ -16,7 +24,7 @@ const MIDDLE_SUFFIX = '.M';
 
 const CHECK_CONCURRENCY = 4;
 
-const USAGE = `使い方: node collector/refresh-thumbnails.js [--event <eventId>] [--dry-run]
+const USAGE = `使い方: node collector/refresh-thumbnails.ts [--event <eventId>] [--dry-run]
 
   --event <eventId>   対象の開催回（既定: 全開催回）
   --dry-run           書き換えず、差し替え対象だけを報告する
@@ -32,8 +40,12 @@ reparse.js は videos.json を raw から作り直すため、実行後はこの
 `;
 
 /** 並列数を抑えて順に処理する。 */
-async function mapLimited(items, limit, task) {
-  const results = new Array(items.length);
+async function mapLimited<T, R>(
+  items: T[],
+  limit: number,
+  task: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
   let cursor = 0;
   await Promise.all(
     Array.from({ length: Math.min(limit, items.length) }, async () => {
@@ -48,7 +60,7 @@ async function mapLimited(items, limit, task) {
 }
 
 /** getthumbinfo の応答から現在のサムネイルURLを取り出す。 */
-export function parseThumbInfo(xml) {
+export function parseThumbInfo(xml: string): ThumbInfo {
   if (/<nicovideo_thumb_response[^>]*status="ok"/.test(xml)) {
     const url = /<thumbnail_url>([^<]+)<\/thumbnail_url>/.exec(xml)?.[1];
     return url ? { ok: true, url } : { ok: false, reason: 'thumbnail_url が無い' };
@@ -58,18 +70,28 @@ export function parseThumbInfo(xml) {
 }
 
 /** 1開催回のサムネイルURLを検査して差し替える。 */
-async function refreshEvent(eventId, options) {
+async function refreshEvent(
+  eventId: EventId,
+  options: RefreshOptions,
+): Promise<{
+  checked: number;
+  stillLost: number;
+  fixed: string[];
+  lost: string[];
+  problems: string[];
+  written: boolean;
+}> {
   const state = store.readVideos(ROOT, eventId);
   const watchIds = Object.keys(state.videos);
 
-  const statuses = await mapLimited(watchIds, CHECK_CONCURRENCY, async (watchId) => {
+  const statuses = await mapLimited(watchIds, CHECK_CONCURRENCY, async (watchId: WatchId) => {
     const url = state.videos[watchId].thumbnailUrl;
     return { watchId, status: url === null ? 404 : await fetchStatus(url) };
   });
 
-  const fixed = [];
-  const lost = [];
-  const problems = [];
+  const fixed: string[] = [];
+  const lost: string[] = [];
+  const problems: string[] = [];
   let stillLost = 0;
 
   for (const { watchId, status } of statuses) {
@@ -128,7 +150,7 @@ async function main() {
     console.log(USAGE);
     return;
   }
-  const options = { dryRun: values['dry-run'] };
+  const options: RefreshOptions = { dryRun: values['dry-run'] };
 
   const eventIds = values.event
     ? [store.readEvent(ROOT, values.event).eventId]

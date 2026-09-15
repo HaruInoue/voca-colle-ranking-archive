@@ -28,11 +28,11 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          # .nvmrc と同じ版を使う。依存が 0 なのでキャッシュは指定しない。
+          # .nvmrc と同じ版を使う。実行時依存が 0 なのでキャッシュは指定しない。
           node-version-file: .nvmrc
 
       - name: 収集
-        run: node collector/collect.js --commit-message-out "$RUNNER_TEMP/msg.txt"
+        run: node collector/collect.ts --commit-message-out "$RUNNER_TEMP/msg.txt"
 
       # 解析失敗（終了コード 1）でも、保存できたデータは残してジョブは失敗させる。
       # 途中でクラッシュした場合はコミットしない（index.json が更新されておらず

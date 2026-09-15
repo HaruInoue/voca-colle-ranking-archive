@@ -10,13 +10,41 @@ import * as store from '#lib/store.ts';
 import { FetchError, fetchText } from '#lib/http.ts';
 import { ParseError, resolveFinalParser } from '#parsers/index.ts';
 
+import type { FinalParser } from '#parsers/index.ts';
+import type { Division, EventFile, Video, WatchId } from '@data-model';
+
+interface FinalizeOk {
+  division: Division;
+  ok: true;
+  notYet?: false;
+  url: string;
+  videos: Record<WatchId, Video>;
+  entryCount: number;
+  inPeriodRatio: number;
+}
+
+interface FinalizeNg {
+  division: Division;
+  ok: false;
+  notYet?: boolean;
+  message: string;
+}
+
+type FinalizeResult = FinalizeOk | FinalizeNg;
+
+/** finalParser と final の設定が揃っている開催回。 */
+type FinalizableEvent = store.CollectorEvent & {
+  finalParser: string;
+  final: NonNullable<EventFile['final']>;
+};
+
 const ROOT = path.resolve(import.meta.dirname, '..');
 
 const MIN_IN_PERIOD_RATIO = 0.9;
 
 const FINAL_SOURCE_HOUR = 'final';
 
-const USAGE = `使い方: node collector/finalize.js --event <eventId>
+const USAGE = `使い方: node collector/finalize.ts --event <eventId>
 
   --event <eventId>   対象の開催回（必須）
   --division <name>   部門を 1 つだけ処理する（既定: event.json の全部門）
@@ -24,10 +52,15 @@ const USAGE = `使い方: node collector/finalize.js --event <eventId>
 `;
 
 /** 最終ランキングを取得して保存する。 */
-async function finalizeDivision(root, event, parser, division) {
+async function finalizeDivision(
+  root: string,
+  event: FinalizableEvent,
+  parser: FinalParser,
+  division: Division,
+): Promise<FinalizeResult> {
   const url = event.final.archiveUrlTemplate.replace('{division}', division);
 
-  let response;
+  let response: { status: number; text: string };
   try {
     response = await fetchText(url);
   } catch (cause) {
@@ -41,7 +74,7 @@ async function finalizeDivision(root, event, parser, division) {
     return { division, ok: false, message: `HTTP ${response.status}` };
   }
 
-  let parsed;
+  let parsed: ReturnType<typeof parser.parse>;
   try {
     parsed = parser.parse(response.text, { division });
   } catch (cause) {
@@ -94,13 +127,16 @@ async function finalizeDivision(root, event, parser, division) {
 }
 
 /** 投稿期間内のエントリ比率を数える。 */
-function checkSubmissionPeriod(event, videos) {
+function checkSubmissionPeriod(
+  event: FinalizableEvent,
+  videos: Record<WatchId, Video>,
+): { inPeriod: number; total: number; ratio: number; sample: string | null } {
   const from = isoToEpoch(event.final.submissionFrom, `${event.eventId}: final.submissionFrom`);
   const until = isoToEpoch(event.final.submissionUntil, `${event.eventId}: final.submissionUntil`);
 
   let inPeriod = 0;
   let total = 0;
-  let sample = null;
+  let sample: string | null = null;
   for (const [watchId, video] of Object.entries(videos)) {
     if (!video.registeredAt) continue;
     total += 1;
@@ -113,9 +149,10 @@ function checkSubmissionPeriod(event, videos) {
   return { inPeriod, total, ratio: total === 0 ? 0 : inPeriod / total, sample };
 }
 
-function requireFinalConfig(event) {
+function requireFinalConfig(event: store.CollectorEvent): asserts event is FinalizableEvent {
+  const finalConfig = event.final as Record<string, unknown> | null;
   const missing = ['archiveUrlTemplate', 'submissionFrom', 'submissionUntil'].filter(
-    (key) => !event.final?.[key],
+    (key) => !finalConfig?.[key],
   );
   if (missing.length > 0) {
     throw new Error(`${event.eventId}/event.json: final.${missing.join(' / final.')} が無い`);
@@ -147,7 +184,7 @@ async function main() {
   const divisions = values.division ? [values.division] : event.divisions;
 
   const videos = store.readVideos(ROOT, event.eventId);
-  const results = [];
+  const results: FinalizeResult[] = [];
 
   for (const division of divisions) {
     const result = await finalizeDivision(ROOT, event, parser, division);

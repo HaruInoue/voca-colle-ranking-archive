@@ -20,12 +20,62 @@ import * as store from '#lib/store.ts';
 import { FetchError, fetchText } from '#lib/http.ts';
 import { ParseError, resolveHourlyParser } from '#parsers/index.ts';
 
+import type { CollectionLogLine, Division, EventId, HourKey, IsoDateTime } from '@data-model';
+
+interface CliOptions {
+  eventId: EventId | null;
+  assumeExpired: boolean;
+  dryRun: boolean;
+  maxRequests: number | null;
+  commitMessageOut: string | null;
+  help: boolean;
+}
+
+/** 部門ごとの取得候補。 */
+interface DivisionPlan {
+  division: Division;
+  state: store.IndexState;
+  rangeCount: number;
+  candidates: HourKey[];
+}
+
+interface QueueItem {
+  entry: DivisionPlan;
+  divisionIndex: number;
+  hourKey: HourKey;
+}
+
+interface EventPlan {
+  latestFetchable: HourKey;
+  untilKey: HourKey;
+  clamped: boolean;
+  limit: number;
+  divisions: DivisionPlan[];
+  planned: QueueItem[];
+  deferred: number;
+}
+
+interface Counter {
+  saved: HourKey[];
+  unavailable: number;
+  notPublished: number;
+  error: number;
+}
+
+interface EventResult {
+  event: store.CollectorEvent;
+  counters: Map<Division, Counter>;
+  warnings: string[];
+  parseFailed: boolean;
+  deferred: number;
+}
+
 const ROOT = path.resolve(import.meta.dirname, '..');
 const HISTORY_BASE_URL = 'https://data.sds.nicovideo.jp/static/vocacolle-ranking-history';
 
 const EXPIRE_AFTER_MS = 14 * 24 * 60 * 60 * 1000;
 
-const USAGE = `使い方: node collector/collect.js [オプション]
+const USAGE = `使い方: node collector/collect.ts [オプション]
 
   --event <eventId>            対象の開催回を指定する（collect.until を見ない）
   --assume-expired             HTTP 404 を保持期限切れとして即確定する（過去回の取り込み用）
@@ -37,7 +87,7 @@ const USAGE = `使い方: node collector/collect.js [オプション]
 
 // ---------------------------------------------------------------- 引数
 
-function parseCliArgs() {
+function parseCliArgs(): CliOptions {
   const { values } = parseArgs({
     options: {
       event: { type: 'string' },
@@ -49,7 +99,7 @@ function parseCliArgs() {
     },
   });
 
-  let maxRequests = null;
+  let maxRequests: number | null = null;
   if (values['max-requests'] !== undefined) {
     maxRequests = Number(values['max-requests']);
     if (!Number.isInteger(maxRequests) || maxRequests < 0) {
@@ -69,7 +119,11 @@ function parseCliArgs() {
 
 // ---------------------------------------------------------------- 対象の決定
 
-function selectTargets(events, options, nowEpoch) {
+function selectTargets(
+  events: store.CollectorEvent[],
+  options: CliOptions,
+  nowEpoch: number,
+): store.CollectorEvent[] {
   if (options.eventId) {
     const found = events.find((event) => event.eventId === options.eventId);
     if (!found) {
@@ -85,13 +139,17 @@ function selectTargets(events, options, nowEpoch) {
 }
 
 /** 部門ごとの取得候補を作る。 */
-function planEvent(event, nowEpoch, maxRequests) {
+function planEvent(
+  event: store.CollectorEvent,
+  nowEpoch: number,
+  maxRequests: number | null,
+): EventPlan {
   const limit = maxRequests ?? event.collect.maxRequestsPerRun;
   const latestFetchable = latestFetchableHourKey(nowEpoch);
   const untilKey = minHourKey(event.collect.hourUntil, latestFetchable);
   const range = enumerateHourKeys(event.collect.hourFrom, untilKey);
 
-  const divisions = event.divisions.map((division) => {
+  const divisions: DivisionPlan[] = event.divisions.map((division) => {
     const state = store.readIndexState(ROOT, event.eventId, division);
     const known = store.knownHourKeys(state);
     return {
@@ -102,7 +160,7 @@ function planEvent(event, nowEpoch, maxRequests) {
     };
   });
 
-  const queue = [];
+  const queue: QueueItem[] = [];
   divisions.forEach((entry, divisionIndex) => {
     for (const hourKey of entry.candidates) queue.push({ entry, divisionIndex, hourKey });
   });
@@ -122,8 +180,8 @@ function planEvent(event, nowEpoch, maxRequests) {
 }
 
 /** 連続する時刻をまとめる。 */
-function compressHourKeys(hourKeys) {
-  const groups = [];
+function compressHourKeys(hourKeys: HourKey[]): string[] {
+  const groups: { from: HourKey; to: HourKey; count: number }[] = [];
   for (const hourKey of hourKeys) {
     const last = groups.at(-1);
     if (last && hourKeyToEpoch(hourKey) === hourKeyToEpoch(last.to) + HOUR_MS) {
@@ -140,7 +198,7 @@ function compressHourKeys(hourKeys) {
 
 // ---------------------------------------------------------------- --dry-run
 
-function printDryRun(event, plan, nowEpoch) {
+function printDryRun(event: store.CollectorEvent, plan: EventPlan, nowEpoch: number): void {
   console.log(`\n${event.eventId}（${event.title}）`);
   console.log(`  parser              ${event.parser}`);
   console.log(`  現在時刻            ${epochToIso(nowEpoch)}`);
@@ -172,7 +230,20 @@ function printDryRun(event, plan, nowEpoch) {
 
 // ---------------------------------------------------------------- 収集
 
-function logAttempt(eventId, { at, division, hourKey, httpStatus, result, ...extra }) {
+function logAttempt(
+  eventId: EventId,
+  {
+    at,
+    division,
+    hourKey,
+    httpStatus,
+    result,
+    ...extra
+  }: Omit<CollectionLogLine, 'at' | 'httpStatus'> & {
+    at?: IsoDateTime;
+    httpStatus?: number | null;
+  },
+): void {
   store.appendLog(ROOT, eventId, {
     at: at ?? epochToIso(Date.now()),
     division,
@@ -184,7 +255,7 @@ function logAttempt(eventId, { at, division, hourKey, httpStatus, result, ...ext
 }
 
 /** HTTP 404をexpiredと判断する時刻を返す。 */
-function expireCutoffEpoch(event, state) {
+function expireCutoffEpoch(event: store.CollectorEvent, state: store.IndexState): number {
   const endDateTime = state.aggregationPeriod?.endDateTime;
   const endEpoch = endDateTime
     ? isoToEpoch(endDateTime, `${state.division}: aggregationPeriod.endDateTime`)
@@ -193,7 +264,13 @@ function expireCutoffEpoch(event, state) {
 }
 
 /** HTTP 404を分類する。 */
-function classifyNotFound(event, state, hourKey, nowEpoch, assumeExpired) {
+function classifyNotFound(
+  event: store.CollectorEvent,
+  state: store.IndexState,
+  hourKey: HourKey,
+  nowEpoch: number,
+  assumeExpired: boolean,
+): 'out-of-period' | 'expired' | null {
   const startDateTime = state.aggregationPeriod?.startDateTime;
   if (startDateTime) {
     const label = `${state.division}: aggregationPeriod.startDateTime`;
@@ -204,27 +281,32 @@ function classifyNotFound(event, state, hourKey, nowEpoch, assumeExpired) {
   return null;
 }
 
-async function collectEvent(event, options, nowEpoch, plan) {
+async function collectEvent(
+  event: store.CollectorEvent,
+  options: CliOptions,
+  nowEpoch: number,
+  plan: EventPlan,
+): Promise<EventResult> {
   const parser = resolveHourlyParser(event.parser);
   const videos = store.readVideos(ROOT, event.eventId);
-  const counters = new Map(
+  const counters = new Map<Division, Counter>(
     event.divisions.map((division) => [
       division,
       { saved: [], unavailable: 0, notPublished: 0, error: 0 },
     ]),
   );
-  const warnings = [];
-  const notFound = [];
+  const warnings: string[] = [];
+  const notFound: { entry: DivisionPlan; hourKey: HourKey; at: IsoDateTime }[] = [];
   let parseFailed = false;
 
   for (const item of plan.planned) {
     const { division, state } = item.entry;
     const { hourKey } = item;
-    const counter = counters.get(division);
+    const counter = counters.get(division) as Counter;
     const url = `${HISTORY_BASE_URL}/${division}/${hourKey}.json`;
     const label = `[${event.eventId}/${division}] ${hourKey}`;
 
-    let response;
+    let response: { status: number; text: string };
     try {
       response = await fetchText(url);
     } catch (cause) {
@@ -259,7 +341,7 @@ async function collectEvent(event, options, nowEpoch, plan) {
       continue;
     }
 
-    let parsed;
+    let parsed: ReturnType<typeof parser.parse>;
     try {
       parsed = parser.parse(response.text, { eventTag: event.eventTag });
     } catch (cause) {
@@ -358,7 +440,7 @@ async function collectEvent(event, options, nowEpoch, plan) {
   for (const item of notFound) {
     const { division, state } = item.entry;
     const { hourKey } = item;
-    const counter = counters.get(division);
+    const counter = counters.get(division) as Counter;
     const label = `[${event.eventId}/${division}] ${hourKey}`;
     const reason = classifyNotFound(event, state, hourKey, nowEpoch, options.assumeExpired);
 
@@ -390,9 +472,9 @@ async function collectEvent(event, options, nowEpoch, plan) {
 
 // ---------------------------------------------------------------- 報告
 
-export function summarizeEvent(summary) {
-  const saved = [];
-  const hours = new Set();
+export function summarizeEvent(summary: EventResult) {
+  const saved: string[] = [];
+  const hours = new Set<HourKey>();
   let unavailable = 0;
   let notPublished = 0;
   let error = 0;
@@ -406,8 +488,8 @@ export function summarizeEvent(summary) {
   return { saved, hours: [...hours].sort(), unavailable, notPublished, error };
 }
 
-export function buildCommitMessage(summaries) {
-  const segments = [];
+export function buildCommitMessage(summaries: EventResult[]): string {
+  const segments: { eventId: EventId; text: string }[] = [];
   for (const summary of summaries) {
     const { hours, unavailable } = summarizeEvent(summary);
     const chunks = [];
@@ -422,8 +504,8 @@ export function buildCommitMessage(summaries) {
   return `collect: ${segments.map((s) => `${s.eventId} ${s.text}`).join('; ')}`;
 }
 
-function report(summaries) {
-  const lines = [];
+function report(summaries: EventResult[]): void {
+  const lines: string[] = [];
   for (const summary of summaries) {
     const { saved, unavailable, notPublished, error } = summarizeEvent(summary);
     const detail = [
@@ -480,7 +562,7 @@ async function main() {
     return;
   }
 
-  const summaries = [];
+  const summaries: EventResult[] = [];
   for (const event of targets) {
     const plan = planEvent(event, nowEpoch, options.maxRequests);
     if (options.dryRun) {

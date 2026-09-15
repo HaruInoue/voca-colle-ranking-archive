@@ -9,11 +9,18 @@ import { compareHourKey, epochToIso } from '#lib/hours.ts';
 import * as store from '#lib/store.ts';
 import { ParseError, resolveFinalParser, resolveHourlyParser } from '#parsers/index.ts';
 
+import type { Division, FinalRanking, HourlyIndex, Snapshot } from '@data-model';
+
+interface ReparseOptions {
+  parser: string | null;
+  dryRun: boolean;
+}
+
 const ROOT = path.resolve(import.meta.dirname, '..');
 
 const FINAL_SOURCE_HOUR = 'final';
 
-const USAGE = `使い方: node collector/reparse.js [--event <eventId>] [--parser <name>] [--dry-run]
+const USAGE = `使い方: node collector/reparse.ts [--event <eventId>] [--parser <name>] [--dry-run]
 
   --event <eventId>   対象の開催回（既定: 全開催回）
   --parser <name>     毎時履歴のパーサ（既定: event.json の parser）
@@ -23,17 +30,21 @@ const USAGE = `使い方: node collector/reparse.js [--event <eventId>] [--parse
 差分または異常があれば終了コード 1 で終わる。
 `;
 
-const relative = (filePath) => path.relative(ROOT, filePath).split(path.sep).join('/');
+const relative = (filePath: string): string =>
+  path.relative(ROOT, filePath).split(path.sep).join('/');
 
 /** 1開催回をrawデータから再構築する。 */
-function reparseEvent(event, options) {
+function reparseEvent(
+  event: store.CollectorEvent,
+  options: ReparseOptions,
+): { hourlyCount: number; changed: string[]; problems: string[] } {
   const parserName = options.parser ?? event.parser;
   const parser = resolveHourlyParser(parserName);
-  const changed = [];
-  const problems = [];
+  const changed: string[] = [];
+  const problems: string[] = [];
 
-  const videos = { videos: {}, changed: false };
-  const states = new Map(
+  const videos: store.VideosState = { videos: {}, changed: false };
+  const states = new Map<Division, store.IndexState>(
     event.divisions.map((division) => [
       division,
       store.readIndexState(ROOT, event.eventId, division),
@@ -52,9 +63,10 @@ function reparseEvent(event, options) {
     const label = `${division} ${hourKey}`;
     const rawText = store.readRaw(store.rawSnapshotPath(ROOT, event.eventId, division, hourKey));
 
-    let parsed;
+    let parsed: ReturnType<typeof parser.parse>;
     try {
-      parsed = parser.parse(rawText, { eventTag: event.eventTag });
+      // listRawHourKeys が返した時刻なので raw は存在する。
+      parsed = parser.parse(rawText as string, { eventTag: event.eventTag });
     } catch (cause) {
       if (!(cause instanceof ParseError)) throw cause;
       problems.push(`${label}: 解析に失敗（${cause.message}）`);
@@ -70,7 +82,9 @@ function reparseEvent(event, options) {
       continue;
     }
 
-    const prev = store.readJsonFile(store.snapshotPath(ROOT, event.eventId, division, hourKey));
+    const prev = store.readJsonFile<Snapshot>(
+      store.snapshotPath(ROOT, event.eventId, division, hourKey),
+    );
     if (!prev) {
       problems.push(`${label}: スナップショットが無い（capturedAt と URL を引き継げない）`);
       continue;
@@ -91,7 +105,7 @@ function reparseEvent(event, options) {
       changed.push(relative(store.snapshotPath(ROOT, event.eventId, division, hourKey)));
     }
 
-    const state = states.get(division);
+    const state = states.get(division) as store.IndexState;
     store.recordAggregationPeriod(state, parsed.ranking);
     store.addCollected(state, hourKey, parsed.entries.length);
     store.mergeVideos(videos, parsed.videos, hourKey);
@@ -102,7 +116,7 @@ function reparseEvent(event, options) {
   const now = epochToIso(Date.now());
   for (const state of states.values()) {
     const filePath = store.indexJsonPath(ROOT, event.eventId, state.division);
-    const keptAt = store.readJsonFile(filePath)?.updatedAt ?? now;
+    const keptAt = store.readJsonFile<HourlyIndex>(filePath)?.updatedAt ?? now;
     if (!store.writeIndexState(ROOT, state, keptAt, true)) continue;
     store.writeIndexState(ROOT, state, now, options.dryRun);
     changed.push(relative(filePath));
@@ -116,7 +130,13 @@ function reparseEvent(event, options) {
 }
 
 /** 最終ランキングをrawデータから再構築する。 */
-function reparseFinal(event, videos, changed, problems, options) {
+function reparseFinal(
+  event: store.CollectorEvent,
+  videos: store.VideosState,
+  changed: string[],
+  problems: string[],
+  options: ReparseOptions,
+): void {
   if (!event.finalParser) return;
   const parser = resolveFinalParser(event.finalParser);
 
@@ -124,7 +144,7 @@ function reparseFinal(event, videos, changed, problems, options) {
     const rawText = store.readRaw(store.rawFinalPath(ROOT, event.eventId, division));
     if (rawText === null) continue;
 
-    let parsed;
+    let parsed: ReturnType<typeof parser.parse>;
     try {
       parsed = parser.parse(rawText, { division });
     } catch (cause) {
@@ -138,7 +158,7 @@ function reparseFinal(event, videos, changed, problems, options) {
     }
 
     const filePath = store.finalPath(ROOT, event.eventId, division);
-    const prev = store.readJsonFile(filePath);
+    const prev = store.readJsonFile<FinalRanking>(filePath);
     if (!prev) {
       problems.push(`${division} final: 最終ランキングが無い（capturedAt と URL を引き継げない）`);
       continue;
@@ -172,7 +192,7 @@ async function main() {
     console.log(USAGE);
     return;
   }
-  const options = { parser: values.parser ?? null, dryRun: values['dry-run'] };
+  const options: ReparseOptions = { parser: values.parser ?? null, dryRun: values['dry-run'] };
 
   const events = values.event ? [store.readEvent(ROOT, values.event)] : store.readEvents(ROOT);
   let changedTotal = 0;

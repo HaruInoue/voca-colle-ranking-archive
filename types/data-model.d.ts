@@ -139,7 +139,9 @@ export type CollectionResult =
   | 'empty'
   | 'expired'
   | 'error'
-  | 'tag-mismatch';
+  | 'tag-mismatch'
+  | 'parse-failed'
+  | 'failed';
 
 export interface CollectionLogLine {
   at: IsoDateTime;
@@ -150,15 +152,27 @@ export interface CollectionLogLine {
   entryCount?: number;
   message?: string;
   tag?: string;
+  /** 最終ランキングの取得試行であることを示す。毎時履歴の行には付かない。 */
+  target?: 'final';
 }
 
-/** 毎時履歴パーサ (sds-history-v1) の戻り値。 */
-export interface HourlyParseResult {
-  status: 'ok' | 'empty' | 'out-of-period';
-  ranking: RankingMeta | null;
-  entries: RankingEntry[];
-  videos: Record<WatchId, Video>;
-}
+/**
+ * 毎時履歴パーサ (sds-history-v1) の戻り値。
+ * 集計期間外のときだけ ranking を取得できないため、status で判別する。
+ */
+export type HourlyParseResult =
+  | {
+      status: 'out-of-period';
+      ranking: null;
+      entries: RankingEntry[];
+      videos: Record<WatchId, Video>;
+    }
+  | {
+      status: 'ok' | 'empty';
+      ranking: RankingMeta;
+      entries: RankingEntry[];
+      videos: Record<WatchId, Video>;
+    };
 
 /** 最終ランキングパーサ (archive-page-v1) の戻り値。 */
 export interface FinalParseResult {
